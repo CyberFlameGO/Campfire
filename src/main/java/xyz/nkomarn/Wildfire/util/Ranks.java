@@ -52,17 +52,17 @@ public class Ranks {
 
     private static String getHighestPriority(ArrayList<String> groups) {
         List<String> priority = Config.getList("tablist.priority");
-        for (int i = 0; i < priority.size(); i++) {
-            if (groups.contains("group." + priority.get(i))) return priority.get(i);
+        for (String s : priority) {
+            if (groups.contains("group." + s)) return s;
         }
         return "default"; // Otherwise, set player's group as default
     }
 
-    public static String getColor(String rank) {
+    private static String getColor(String rank) {
         return Config.getString("tablist.groups." + rank + ".color");
     }
 
-    public static String getPrefix(String rank) {
+    private static String getPrefix(String rank) {
         return Config.getString("tablist.groups." + rank + ".prefix");
     }
 }

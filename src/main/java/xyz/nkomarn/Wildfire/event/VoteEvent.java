@@ -11,7 +11,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import xyz.nkomarn.Kerosene.database.subscribers.BasicSubscriber;
 import xyz.nkomarn.Wildfire.Wildfire;
 import xyz.nkomarn.Wildfire.util.Config;
 
