@@ -1,0 +1,6 @@
+.classpath
+.project
+/src/main/resources/config.yml
+/target
+.idea
+.settings
