@@ -13,7 +13,7 @@ import xyz.nkomarn.Kerosene.database.SyncAsyncCollection;
 import xyz.nkomarn.Kerosene.database.subscribers.BasicSubscriber;
 import xyz.nkomarn.Wildfire.command.*;
 import xyz.nkomarn.Wildfire.event.PlayerEvent;
-import xyz.nkomarn.Wildfire.event.VoteEvent;
+import xyz.nkomarn.Wildfire.event.PluginMessage;
 import xyz.nkomarn.Wildfire.task.Exporter;
 import xyz.nkomarn.Wildfire.util.Config;
 import xyz.nkomarn.Wildfire.util.CustomMapRenderer;
@@ -31,7 +31,6 @@ public class Wildfire extends JavaPlugin {
     public static Essentials essentials;
 
     public static SyncAsyncCollection<Document> playerData;
-    public static SyncAsyncCollection<Document> boosts;
     public static SyncAsyncCollection<Document> maps;
 
     public void onEnable() {
@@ -44,21 +43,19 @@ public class Wildfire extends JavaPlugin {
         // Load database collections
         String databaseName = Config.getString("database.name");
         playerData = Database.getSyncAsyncCollection(databaseName, "players");
-        boosts = Database.getSyncAsyncCollection(databaseName, "boosts");
         maps = Database.getSyncAsyncCollection(databaseName, "maps");
 
         // Register events
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new PlayerEvent(), this);
-        pluginManager.registerEvents(new VoteEvent(), this);
-        //pluginManager.registerEvents(new AnvilEvent(), this);
 
         // Register commands
         getCommand("rtp").setExecutor(new RTP());
-        getCommand("vote").setExecutor(new Vote());
-        getCommand("discord").setExecutor(new Discord());
-        getCommand("playtime").setExecutor(new Playtime());
         getCommand("wildfire").setExecutor(new WildfireCommand());
+
+        // Register plugin channels
+        getServer().getMessenger().registerIncomingPluginChannel( this, "firestarter",
+                new PluginMessage());
 
         // Register repeating tasks
         BukkitScheduler scheduler = Bukkit.getScheduler();

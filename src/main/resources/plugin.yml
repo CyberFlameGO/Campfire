@@ -1,23 +1,16 @@
 name: ${name}
-version: Build${version}
+version: Build ${version}
 author: TechToolbox (@nkomarn)
 main: xyz.nkomarn.${name}.${name}
-description: Various custom bits and bobs for Firestarter servers!
+description: The core for Firestarter servers!
 api-version: 1.14
 depend: [Kerosene, ProtocolLib, GriefPrevention, Essentials]
 
 commands:
   wildfire:
     description: "Base command for Wildfire!"
-  playtime:
-    description: "View your current server playtime!"
-    aliases: ['played', 'joined']
   rtp:
     description: "Randomly teleport somewhere in the world!"
     aliases: ['wild']
-  discord:
-    description: "Get a link to join the Discord!"
   claim:
     description: "Obtain your very own claim kit!"
-  vote:
-    description: "Vote for the server!"

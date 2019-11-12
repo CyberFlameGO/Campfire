@@ -31,7 +31,7 @@ public class WildfireCommand implements CommandExecutor {
 
         if (args.length < 1) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&2&lWildfire &7- Firestarter Administration Utility by TechToolbox."));
+                    "&6&lWildfire &7- Firestarter Administration Utility by TechToolbox."));
             return true;
         }
 
@@ -41,19 +41,7 @@ public class WildfireCommand implements CommandExecutor {
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("addperk")) {
-            if (args.length > 1) {
-
-                // Add boost to database (or update if it already exists
-                Document boost = new Document("effect", Config.getString("boosts." + args[1] + ".effect"))
-                        .append("level", Config.getInteger("boosts." + args[1] + ".level"))
-                        .append("remaining", Config.getInteger("boosts." + args[1] + ".time"));
-                Wildfire.boosts.sync().insertOne(boost);
-
-                sender.sendMessage("Added boost.");
-            }
-        }
-        else if (args[0].equalsIgnoreCase("givemap")) {
+        if (args[0].equalsIgnoreCase("givemap")) {
 
             if (args.length < 2) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
