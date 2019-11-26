@@ -13,7 +13,6 @@ import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import xyz.nkomarn.Wildfire.Wildfire;
-import xyz.nkomarn.Wildfire.util.Config;
 import xyz.nkomarn.Wildfire.util.CustomMapRenderer;
 import xyz.nkomarn.Wildfire.util.Ranks;
 

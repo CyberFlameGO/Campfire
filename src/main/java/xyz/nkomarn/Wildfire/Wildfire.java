@@ -14,6 +14,7 @@ import xyz.nkomarn.Kerosene.database.subscribers.BasicSubscriber;
 import xyz.nkomarn.Wildfire.command.*;
 import xyz.nkomarn.Wildfire.event.PlayerEvent;
 import xyz.nkomarn.Wildfire.event.PluginMessage;
+import xyz.nkomarn.Wildfire.event.VoteEvent;
 import xyz.nkomarn.Wildfire.task.Exporter;
 import xyz.nkomarn.Wildfire.util.Config;
 import xyz.nkomarn.Wildfire.util.CustomMapRenderer;
@@ -48,14 +49,15 @@ public class Wildfire extends JavaPlugin {
         // Register events
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new PlayerEvent(), this);
+        pluginManager.registerEvents(new VoteEvent(), this);
 
         // Register commands
         getCommand("rtp").setExecutor(new RTP());
         getCommand("wildfire").setExecutor(new WildfireCommand());
 
         // Register plugin channels
-        getServer().getMessenger().registerIncomingPluginChannel( this, "firestarter",
-                new PluginMessage());
+        //getServer().getMessenger().registerIncomingPluginChannel( this, "firestarter:data",
+        //        new PluginMessage());
 
         // Register repeating tasks
         BukkitScheduler scheduler = Bukkit.getScheduler();

@@ -1,29 +1,22 @@
 package xyz.nkomarn.Wildfire.event;
 
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteStreams;
+import com.vexsoftware.votifier.model.VotifierEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import xyz.nkomarn.Wildfire.Wildfire;
 import xyz.nkomarn.Wildfire.util.Config;
 
-import java.util.concurrent.ForkJoinPool;
-
-public class PluginMessage implements PluginMessageListener {
-
-    @Override
-    public void onPluginMessageReceived(final String channel, final Player player, final byte[] message) {
-        if (!channel.equals("firestarter:data")) return;
-
-        ForkJoinPool.commonPool().submit(() -> {
-            Bukkit.getLogger().info(String.format("Received a new vote message from %s via Bungee.", player.getName()));
-            final ByteArrayDataInput in = ByteStreams.newDataInput(message);
-            final String subChannel = in.readUTF();
-            if (!subChannel.equals("vote")) return;
-
+public class VoteEvent implements Listener {
+    @EventHandler
+    public void onVote(VotifierEvent e) {
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(e.getVote().getUsername());
+        if (offlinePlayer.isOnline()) {
+            Player player = (Player) offlinePlayer;
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
             player.sendTitle(ChatColor.translateAlternateColorCodes('&', Config.getString("vote.title.top")),
                     ChatColor.translateAlternateColorCodes('&', Config.getString("vote.title.bottom")));
@@ -31,6 +24,6 @@ public class PluginMessage implements PluginMessageListener {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Config.getString("vote.command")
                         .replace("[player]", player.getName()));
             });
-        });
+        }
     }
 }
