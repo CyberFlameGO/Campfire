@@ -6,6 +6,7 @@ import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -110,12 +111,6 @@ public class PlayerEvent implements Listener {
     public void onRespawn(PlayerRespawnEvent e) {
         e.getPlayer().sendTitle(ChatColor.translateAlternateColorCodes('&', "&c&lF"),
                 ChatColor.GOLD + "/back to go back to your death location.");
-    }
-
-    @EventHandler
-    public void onDeath(PlayerDeathEvent e) {
-        Wildfire.playerData.sync().updateOne(Filters.eq("uuid", e.getEntity().getUniqueId().toString()),
-                new Document("$inc", new BasicDBObject().append("deaths", 1)));
     }
 
 }
