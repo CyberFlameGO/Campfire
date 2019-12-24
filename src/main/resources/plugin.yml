@@ -4,7 +4,7 @@ author: TechToolbox (@nkomarn)
 main: xyz.nkomarn.${name}.${name}
 description: The core for Firestarter servers!
 api-version: 1.14
-depend: [Kerosene, ProtocolLib, GriefPrevention, Essentials]
+depend: [Kerosene, GriefPrevention, Essentials]
 
 commands:
   wildfire:

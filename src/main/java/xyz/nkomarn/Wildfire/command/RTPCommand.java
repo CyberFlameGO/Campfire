@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Level;
 
-public class RTP implements CommandExecutor {
+public class RTPCommand implements CommandExecutor {
 
     private static HashMap<UUID, Long> cooldown = new HashMap<>();
     private static int queue = 0;

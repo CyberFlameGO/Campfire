@@ -1,13 +1,29 @@
 package xyz.nkomarn.Wildfire.util;
 
+import io.papermc.lib.PaperLib;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomTeleport {
+
+    /*public static void getLocationAndTeleport(final Player player) {
+        // Get a random x- and z- chunk coordinate within range
+        int x = ThreadLocalRandom.current().nextInt(Config.getInteger("rtp.min.x"),
+                Config.getInteger("rtp.max.x"));
+        int z = ThreadLocalRandom.current().nextInt(Config.getInteger("rtp.min.z"),
+                Config.getInteger("rtp.max.z"));
+
+        PaperLib.getChunkAtAsync(player.getWorld(), x, z, true).thenAccept((chunk) -> {
+            if (!chunk) {
+
+            }
+        });
+    }*/
 
     public static Location getRandomSafeLocation(World world) {
         while (true) {

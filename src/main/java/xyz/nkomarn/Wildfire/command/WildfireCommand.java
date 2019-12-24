@@ -4,6 +4,7 @@ import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,7 +31,7 @@ public class WildfireCommand implements CommandExecutor {
 
         if (args.length < 1) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&6&lWildfire &7- Firestarter Administration Utility by TechToolbox."));
+                    "&6&lWildfire &7- Firestarter Server Utility by TechToolbox."));
             return true;
         }
 
@@ -79,8 +80,6 @@ public class WildfireCommand implements CommandExecutor {
                 return true;
             }
 
-            System.out.println("Saving map to db.");
-
             // Insert record
             Document mapDoc = new Document("id", mapView.getId())
                     .append("image", Base64.getEncoder().encodeToString(os.toByteArray()));
@@ -92,6 +91,19 @@ public class WildfireCommand implements CommandExecutor {
             mapMeta.setMapView(mapView);
             map.setItemMeta(mapMeta);
             player.getInventory().addItem(map);
+        }
+        else if (args[0].equalsIgnoreCase("setdonor")) {
+            if (args.length < 2) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&8&l(&c&l!&8&l) &cProvide a username."));
+                return true;
+            }
+
+            OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
+            Wildfire.playerData.sync().updateOne(new Document("uuid", player.getUniqueId().toString()),
+                    new Document("$set", new Document("donor", true)));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "&8&l(&a&l!&8&l) &aMarked as donor."));
         }
         else if (args[0].equalsIgnoreCase("updatelist")) {
             Bukkit.getScheduler().runTaskAsynchronously(Wildfire.instance, () -> {

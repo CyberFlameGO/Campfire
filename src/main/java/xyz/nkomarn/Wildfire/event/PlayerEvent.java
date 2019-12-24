@@ -10,14 +10,10 @@ import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 import xyz.nkomarn.Wildfire.Wildfire;
 import xyz.nkomarn.Wildfire.util.Config;
 import xyz.nkomarn.Wildfire.util.Ranks;
@@ -25,31 +21,41 @@ import xyz.nkomarn.Wildfire.util.Webhooks;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.Random;
 
 public class PlayerEvent implements Listener {
 
     @EventHandler
     public void onCommandPreprocess(PlayerCommandPreprocessEvent e) {
 
+        Player player = e.getPlayer();
+        String[] args = e.getMessage().split("\\s+");
+
         // Claim command override
-        if (e.getMessage().split("\\s+")[0].equalsIgnoreCase("/claim")) {
+        if (args[0].equalsIgnoreCase("/claim")) {
             e.setCancelled(true);
-            e.getPlayer().chat("/kit claim");
+            player.chat("/kit claim");
+        }
+
+        // Custom enchant command (overpowered e-books)
+        if (args[0].equalsIgnoreCase("/enchant")) {
+            if (player.isOp()) return;
+            e.setCancelled(true);
+
+            // Get items in hands
+
         }
 
         // Alternate syntax blocking (/minecraft:whatever)
         if (!e.getPlayer().isOp() && e.getMessage().split("\\s+")[0].contains(":")) {
             e.setCancelled(true);
             e.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&8&l(&c&l!&8&l) &cInvalid syntax."));
+                    "&c&lError: &7Invalid syntax."));
         }
 
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-
         Player player = e.getPlayer();
 
         // Greet the player with a title message
