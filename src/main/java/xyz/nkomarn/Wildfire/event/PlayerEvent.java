@@ -2,18 +2,22 @@ package xyz.nkomarn.Wildfire.event;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Filters;
+import net.minecraft.server.v1_15_R1.TileEntity;
+import net.minecraft.server.v1_15_R1.TileEntityBeehive;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
+import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import xyz.nkomarn.Wildfire.Wildfire;
 import xyz.nkomarn.Wildfire.util.Config;
 import xyz.nkomarn.Wildfire.util.Ranks;
@@ -21,6 +25,8 @@ import xyz.nkomarn.Wildfire.util.Webhooks;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class PlayerEvent implements Listener {
 
@@ -119,4 +125,29 @@ public class PlayerEvent implements Listener {
                 ChatColor.GOLD + "/back to go back to your death location.");
     }
 
+    @EventHandler
+    public void onItemPickup(EntityPickupItemEvent event) {
+        if (!(event.getEntity() instanceof Player)) return;
+        final ItemStack pickedUpItem = event.getItem().getItemStack();
+        final Material itemType = pickedUpItem.getType();
+        if (itemType != Material.BEE_NEST && itemType != Material.BEEHIVE) return;
+
+        final net.minecraft.server.v1_15_R1.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(pickedUpItem);
+        int beeCount = 0;
+
+        try {
+            final String nmsContent = nmsItemStack.getTag().toString();
+            final String query = "HasStung:";
+            for (int i = 0; i < nmsContent.length(); i++) {
+                if (nmsContent.substring(i).startsWith(query)) beeCount++;
+            }
+        } catch (Exception exception) {
+            beeCount = 0;
+        }
+
+        ItemMeta itemMeta = pickedUpItem.getItemMeta();
+        itemMeta.setLore(Collections.singletonList(ChatColor.GOLD + String.format("%s bees", beeCount)));
+        pickedUpItem.setItemMeta(itemMeta);
+        event.getItem().setItemStack(pickedUpItem);
+    }
 }
