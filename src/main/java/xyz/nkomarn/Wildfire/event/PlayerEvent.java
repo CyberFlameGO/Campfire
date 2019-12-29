@@ -1,15 +1,9 @@
 package xyz.nkomarn.Wildfire.event;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.model.Filters;
-import net.minecraft.server.v1_15_R1.TileEntity;
-import net.minecraft.server.v1_15_R1.TileEntityBeehive;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Statistic;
-import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,14 +19,12 @@ import xyz.nkomarn.Wildfire.util.Webhooks;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 
 public class PlayerEvent implements Listener {
 
     @EventHandler
     public void onCommandPreprocess(PlayerCommandPreprocessEvent e) {
-
         Player player = e.getPlayer();
         String[] args = e.getMessage().split("\\s+");
 
@@ -47,8 +39,7 @@ public class PlayerEvent implements Listener {
             if (player.isOp()) return;
             e.setCancelled(true);
 
-            // Get items in hands
-
+            // Get items in hands TODO
         }
 
         // Alternate syntax blocking (/minecraft:whatever)
@@ -58,6 +49,12 @@ public class PlayerEvent implements Listener {
                     "&c&lError: &7Invalid syntax."));
         }
 
+        // OP command blocking (for security reasons)
+        if (e.getMessage().split("\\s+")[0].equalsIgnoreCase("/op")) {
+            e.setCancelled(true);
+            e.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "&c&lError: &7Insufficient permissions."));
+        }
     }
 
     @EventHandler
