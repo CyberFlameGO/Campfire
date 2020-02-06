@@ -3,6 +3,10 @@ package xyz.nkomarn.Wildfire;
 import com.earth2me.essentials.Essentials;
 import org.bson.Document;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.PluginManager;
@@ -53,12 +57,24 @@ public class Wildfire extends JavaPlugin {
         // Register commands
         getCommand("rtp").setExecutor(new RTPCommand());
         getCommand("wildfire").setExecutor(new WildfireCommand());
+        getCommand("skull").setExecutor(new SkullCommand());
 
         // Register repeating tasks
         BukkitScheduler scheduler = Bukkit.getScheduler();
         scheduler.scheduleSyncRepeatingTask(instance, new Exporter(), 0L, 60 * 20);
 
+        // Load bell recipe
+        ItemStack bell = new ItemStack(Material.BELL, 1);
+        NamespacedKey key = new NamespacedKey(this, "bell");
+        ShapedRecipe recipe = new ShapedRecipe(key, bell);
+        recipe.shape(" S ", "NIN");
+        recipe.setIngredient('S', Material.STICK);
+        recipe.setIngredient('N', Material.GOLD_NUGGET);
+        recipe.setIngredient('I', Material.GOLD_INGOT);
+        Bukkit.addRecipe(recipe);
+
         // Load in custom maps
+        if (!getConfig().getBoolean("maps")) return;
         maps.async().find().subscribe(new BasicSubscriber<Document>() {
             @Override
             public void onNext(Document document) {
@@ -92,7 +108,5 @@ public class Wildfire extends JavaPlugin {
         });
     }
 
-    public void onDisable() {
-    }
-
+    public void onDisable() { }
 }

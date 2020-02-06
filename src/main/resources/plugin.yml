@@ -1,9 +1,9 @@
-name: ${name}
-version: Build ${version}
+name: Wildfire
+version: 1.4
 author: TechToolbox (@nkomarn)
-main: xyz.nkomarn.${name}.${name}
+main: xyz.nkomarn.Wildfire.Wildfire
 description: The core for Firestarter servers!
-api-version: 1.14
+api-version: 1.15
 depend: [Kerosene, GriefPrevention, Essentials]
 
 commands:
@@ -14,3 +14,9 @@ commands:
     aliases: ['wild']
   claim:
     description: "Obtain your very own claim kit!"
+  skull:
+    description: "Obtain a custom player head of your choosing!"
+
+permissions:
+  firestarter.features.skull:
+    default: op

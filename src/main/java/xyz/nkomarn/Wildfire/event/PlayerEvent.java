@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.Collections;
 
 public class PlayerEvent implements Listener {
-
     @EventHandler
     public void onCommandPreprocess(PlayerCommandPreprocessEvent e) {
         Player player = e.getPlayer();
@@ -34,12 +33,9 @@ public class PlayerEvent implements Listener {
             player.chat("/kit claim");
         }
 
-        // Custom enchant command (overpowered e-books)
-        if (args[0].equalsIgnoreCase("/enchant")) {
-            if (player.isOp()) return;
-            e.setCancelled(true);
-
-            // Get items in hands TODO
+        // Custom plugins message
+        if (args[0].equalsIgnoreCase("/pl") || args[0].equalsIgnoreCase("/plugins")) {
+            player.sendMessage("We're proudly open-source! Check out our GitHub at https://github.com/firestartermc.");
         }
 
         // Alternate syntax blocking (/minecraft:whatever)
@@ -146,5 +142,17 @@ public class PlayerEvent implements Listener {
         itemMeta.setLore(Collections.singletonList(ChatColor.GOLD + String.format("%s bees", beeCount)));
         pickedUpItem.setItemMeta(itemMeta);
         event.getItem().setItemStack(pickedUpItem);
+    }
+
+    @EventHandler
+    public void onPlayerRightClick(PlayerInteractEntityEvent event) {
+        if (!(event.getRightClicked() instanceof Player)) return;
+        Player rightClicked = (Player) event.getRightClicked();
+
+        if (rightClicked.getName().equals("iriscow")) {
+            if (event.getPlayer().getItemInHand().getType().equals(Material.BUCKET)) {
+                event.getPlayer().getItemInHand().setType(Material.MILK_BUCKET);
+            }
+        }
     }
 }
