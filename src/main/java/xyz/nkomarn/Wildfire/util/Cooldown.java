@@ -11,7 +11,6 @@ public class Cooldown {
         Bson filter = Filters.eq("uuid", uuid);
         Document player = Wildfire.playerData.sync().find(filter).first();
         if (!player.containsKey("cooldowns")) {
-            resetCooldown(uuid, type);
             return 0;
         }
         Document cooldowns = (Document) player.get("cooldowns");
