@@ -1,6 +1,9 @@
-package xyz.nkomarn.Wildfire.command;
+package xyz.nkomarn.Campfire.command;
 
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -13,9 +16,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
-import xyz.nkomarn.Wildfire.Wildfire;
-import xyz.nkomarn.Wildfire.util.CustomMapRenderer;
-import xyz.nkomarn.Wildfire.util.Ranks;
+import xyz.nkomarn.Campfire.Campfire;
+import xyz.nkomarn.Campfire.maps.CustomMapRenderer;
+import xyz.nkomarn.Campfire.util.Ranks;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -24,40 +27,37 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Base64;
 
-public class WildfireCommand implements CommandExecutor {
-
+public class CampfireCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (args.length < 1) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&6&lWildfire &7- Firestarter Server Utility by TechToolbox."));
+                    "&6&lCampfire: &7A package of Firestarter's custom features."));
             return true;
         }
 
         if (!sender.isOp()) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&8&l(&c&l!&8&l) &cInsufficient permissions."));
+                    "&c&lPermission: &7Insufficient permissions."));
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("givemap")) {
-
+        if (args[0].equalsIgnoreCase("createmap")) {
             if (args.length < 2) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&8&l(&c&l!&8&l) &cUsage: /wildfire givemap <URL>."));
+                        "&6&lUsage: &7/campfire givemap <direct url to .png image>."));
                 return true;
             }
 
             Player player = (Player) sender;
 
             // Fetch the image
-            BufferedImage image = null;
+            BufferedImage image;
             try {
                 image = ImageIO.read(new URL(args[1]));
             } catch (IOException e) {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&8&l(&c&l!&8&l) &cFailed to create map."));
+                        "&c&lError: &7Failed to create the map. Check console for errors."));
                 return true;
             }
 
@@ -76,14 +76,14 @@ public class WildfireCommand implements CommandExecutor {
                 ImageIO.write(image, "png", os);
             } catch (IOException e) {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&8&l(&c&l!&8&l) &cFailed to create map."));
+                        "&c&lError: &7Failed to create the map. Check console for errors."));
                 return true;
             }
 
             // Insert record
             Document mapDoc = new Document("id", mapView.getId())
                     .append("image", Base64.getEncoder().encodeToString(os.toByteArray()));
-            Wildfire.maps.sync().insertOne(mapDoc);
+            Campfire.getMaps().sync().insertOne(mapDoc);
 
             // Give map item
             ItemStack map = new ItemStack(Material.FILLED_MAP, 1);
@@ -95,30 +95,29 @@ public class WildfireCommand implements CommandExecutor {
         else if (args[0].equalsIgnoreCase("setdonor")) {
             if (args.length < 2) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&8&l(&c&l!&8&l) &cProvide a username."));
+                        "&6&lUsage: &7Provide a username to mark as donor."));
                 return true;
             }
 
             OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-            Wildfire.playerData.sync().updateOne(new Document("uuid", player.getUniqueId().toString()),
-                    new Document("$set", new Document("donor", true)));
+            Bson filter = Filters.eq("_id", player.getUniqueId().toString());
+            Bson update = new Document("$set", new Document().append("donor", true));
+            UpdateOptions options = new UpdateOptions().upsert(true);
+            Campfire.getPlayerData().sync().updateOne(filter, update, options);
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&8&l(&a&l!&8&l) &aMarked as donor."));
+                    "&a&lSuccess: &7Marked the player as a donor."));
         }
         else if (args[0].equalsIgnoreCase("updatelist")) {
-            Bukkit.getScheduler().runTaskAsynchronously(Wildfire.instance, () -> {
-                Bukkit.getOnlinePlayers().forEach(player -> {
-                    Ranks.addToTeam(player);
-                });
+            Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
+                Bukkit.getOnlinePlayers().forEach(Ranks::addToTeam);
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&8&l(&a&l!&8&l) &aUpdated ranks in tablist."));
+                        "&a&lSuccess: &7Updated the ranks in player list."));
             });
         }
         else {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&8&l(&c&l!&8&l) &cInvalid operation."));
+                    "&c&lError: &7Invalid operation specified."));
         }
         return true;
     }
-
 }

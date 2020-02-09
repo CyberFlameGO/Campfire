@@ -1,33 +1,22 @@
-package xyz.nkomarn.Wildfire.util;
+package xyz.nkomarn.Campfire.util;
 
-import io.papermc.lib.PaperLib;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import org.bukkit.*;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class RandomTeleport {
-
-    /*public static void getLocationAndTeleport(final Player player) {
-        // Get a random x- and z- chunk coordinate within range
-        int x = ThreadLocalRandom.current().nextInt(Config.getInteger("rtp.min.x"),
-                Config.getInteger("rtp.max.x"));
-        int z = ThreadLocalRandom.current().nextInt(Config.getInteger("rtp.min.z"),
-                Config.getInteger("rtp.max.z"));
-
-        PaperLib.getChunkAtAsync(player.getWorld(), x, z, true).thenAccept((chunk) -> {
-            if (!chunk) {
-
-            }
-        });
-    }*/
-
+/**
+ * Utility class that finds a random safe location in the world.
+ * Used for the RTP command.
+ */
+public class RandomLocation {
     public static Location getRandomSafeLocation(World world) {
         while (true) {
-
             // Get a random x- and z- coordinate within range
             int x = ThreadLocalRandom.current().nextInt(Config.getInteger("rtp.min.x"),
                     Config.getInteger("rtp.max.x"));
@@ -54,16 +43,15 @@ public class RandomTeleport {
                     return randomBlock.getLocation().add(0.5,1,0.5);
                 }
             }
-
         }
     }
 
+    // Checks if the location is safe for player teleportation
     private static boolean isLocationSafe(Block floor) {
         Block legs = floor.getLocation().add(0, 1,0).getBlock();
         Block head = floor.getLocation().add(0, 2,0).getBlock();
 
         return (floor.getType().isSolid() && legs.getType() == Material.AIR
-            && head.getType() == Material.AIR);
+                && head.getType() == Material.AIR);
     }
-
 }

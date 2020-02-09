@@ -1,22 +1,21 @@
-name: Wildfire
-version: 1.4
+name: Campfire
+version: 2.0
 author: TechToolbox (@nkomarn)
-main: xyz.nkomarn.Wildfire.Wildfire
-description: The core for Firestarter servers!
+main: xyz.nkomarn.Campfire.Campfire
+description: Firestarter's package of basic server utilities.
+website: https://firestartermc.com/opensource
 api-version: 1.15
-depend: [Kerosene, GriefPrevention, Essentials]
+depend: ['Kerosene', 'Vault']
 
 commands:
-  wildfire:
-    description: "Base command for Wildfire!"
-  rtp:
-    description: "Randomly teleport somewhere in the world!"
-    aliases: ['wild']
-  claim:
-    description: "Obtain your very own claim kit!"
+  campfire:
+    description: "Base Campfire management command."
+  wild:
+    description: "Teleport to a random location in the world."
+    aliases: ['rtp', 'wildtp']
   skull:
-    description: "Obtain a custom player head of your choosing!"
+    description: "Obtain one player head every hour."
 
 permissions:
-  firestarter.features.skull:
+  firestarter.spark:
     default: op

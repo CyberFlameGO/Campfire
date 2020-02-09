@@ -1,4 +1,4 @@
-package xyz.nkomarn.Wildfire.command;
+package xyz.nkomarn.Campfire.command;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,8 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import xyz.nkomarn.Wildfire.Wildfire;
-import xyz.nkomarn.Wildfire.util.Cooldown;
+import xyz.nkomarn.Campfire.Campfire;
+import xyz.nkomarn.Kerosene.util.Cooldown;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,20 +19,21 @@ public class SkullCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if (!sender.hasPermission("firestarter.features.skull")) {
+        if (!sender.hasPermission("firestarter.spark")) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                "%sSkulls is a donor feature that requires the Spark rank.", prefix
+                    "%sSkulls is a donor feature that requires the Spark rank.", prefix
             )));
             return true;
         }
 
         if (!(sender instanceof Player)) return true;
-        Bukkit.getScheduler().runTask(Wildfire.instance, () -> {
+        Bukkit.getScheduler().runTask(Campfire.getCampfire(), () -> {
             Player player = (Player) sender;
+            Cooldown cooldown = new Cooldown(Campfire.getPlayerData());
 
             // Cooldown check
-            long cooldown = Cooldown.getCooldown(player.getUniqueId().toString(), "skull");
-            long difference = System.currentTimeMillis() - cooldown;
+            long currentCooldown = cooldown.getCooldown(player.getUniqueId().toString(), "skull");
+            long difference = System.currentTimeMillis() - currentCooldown;
             if (difference <= 3600000L) {
                 long time = 3600000L - difference;
                 long minutes = TimeUnit.MILLISECONDS.toMinutes(time);
@@ -40,11 +41,11 @@ public class SkullCommand implements CommandExecutor {
 
                 if (seconds <= 60) {
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                            "%sYou can get another skull in %s seconds.", prefix, seconds
+                            "%sYou can obtain another skull in %s seconds.", prefix, seconds
                     )));
                 } else {
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                            "%sYou can get another skull in %s minutes.", prefix, minutes
+                            "%sYou can obtain another skull in %s minutes.", prefix, minutes
                     )));
                 }
                 return;
@@ -52,7 +53,7 @@ public class SkullCommand implements CommandExecutor {
 
             if (args.length != 1) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                        "%sObtain a player's head using &o/skull [player name]&7.", prefix
+                        "%sObtain a player's head using &o/skull <player name>&7.", prefix
                 )));
                 return;
             }
@@ -75,7 +76,7 @@ public class SkullCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
                     "%sGave you the skull- enjoy!", prefix
             )));
-            Cooldown.resetCooldown(player.getUniqueId().toString(), "skull");
+            cooldown.resetCooldown(player.getUniqueId().toString(), "skull");
         });
         return true;
     }
