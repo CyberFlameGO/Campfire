@@ -18,10 +18,10 @@ public class RandomLocation {
     public static Location getRandomSafeLocation(World world) {
         while (true) {
             // Get a random x- and z- coordinate within range
-            int x = ThreadLocalRandom.current().nextInt(Config.getInteger("rtp.min.x"),
-                    Config.getInteger("rtp.max.x"));
-            int z = ThreadLocalRandom.current().nextInt(Config.getInteger("rtp.min.z"),
-                    Config.getInteger("rtp.max.z"));
+            int x = ThreadLocalRandom.current().nextInt(Config.getInteger("wild.min.x"),
+                    Config.getInteger("wild.max.x"));
+            int z = ThreadLocalRandom.current().nextInt(Config.getInteger("wild.min.z"),
+                    Config.getInteger("wild.max.z"));
 
             Block block = world.getBlockAt(x, 62, z);
             Chunk chunk = world.getChunkAt(block);
@@ -34,8 +34,8 @@ public class RandomLocation {
             if (claims > 0) continue;
 
             // Figure out the highest safe y-value
-            int min = Config.getInteger("rtp.min.y");
-            int max = Config.getInteger("rtp.max.y");
+            int min = Config.getInteger("wild.min.y");
+            int max = Config.getInteger("wild.max.y");
 
             for (int y = min; y < max; y++) {
                 Block randomBlock = world.getBlockAt(x, y, z);

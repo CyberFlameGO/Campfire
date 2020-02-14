@@ -12,7 +12,7 @@ import xyz.nkomarn.Campfire.util.Ranks;
 public class PlayerQuitListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        int players = Bukkit.getOnlinePlayers().size() - Ranks.getVanishedPlayers();
+        int players = (Bukkit.getOnlinePlayers().size() - 1) - Ranks.getVanishedPlayers();
 
         // Update player count in player list
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
