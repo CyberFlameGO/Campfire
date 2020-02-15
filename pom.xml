@@ -48,6 +48,46 @@
             <artifactId>kerosene</artifactId>
             <version>cb284a2563</version>
         </dependency>
+        <dependency>
+            <groupId>com.acrobot.chestshop</groupId>
+            <artifactId>chestshop</artifactId>
+            <version>3.10</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.FirestarterMC</groupId>
+            <artifactId>Crazy-Auctions</artifactId>
+            <version>v1.2.10</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.FirestarterMC</groupId>
+            <artifactId>Crazy-Crates</artifactId>
+            <version>afbdb6ad19</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.FirestarterMC</groupId>
+            <artifactId>GriefPrevention</artifactId>
+            <version>bcfdd54e91</version>
+        </dependency>
+        <dependency>
+            <groupId>com.songoda</groupId>
+            <artifactId>UltimateTimber</artifactId>
+            <version>2.0.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/UltimateTimber-2.0.4.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>de.keyle</groupId>
+            <artifactId>mypet</artifactId>
+            <version>3.9</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/MyPet-3.9.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.github.FirestarterMC</groupId>
+            <artifactId>Jobs</artifactId>
+            <version>a1c2274b1b</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -66,6 +106,10 @@
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>chestshop-repo</id>
+            <url>https://repo.minebench.de/</url>
         </repository>
     </repositories>
 </project>

@@ -1,16 +1,17 @@
 package xyz.nkomarn.Campfire.command;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.advancement.Advancement;
+import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import xyz.nkomarn.Campfire.Campfire;
+import xyz.nkomarn.Campfire.util.Advancements;
 import xyz.nkomarn.Campfire.util.Config;
 import xyz.nkomarn.Campfire.util.RandomLocation;
 
@@ -72,6 +73,10 @@ public class WildCommand implements CommandExecutor {
                     player.removePotionEffect(PotionEffectType.CONFUSION);
                     player.removePotionEffect(PotionEffectType.BLINDNESS);
                     queue -= 1;
+
+                    if (Advancements.isComplete(player, "rtp")) return;
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("advancement grant %s only firestarter:rtp",
+                            player.getName()));
                 });
             });
         } else {

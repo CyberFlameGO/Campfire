@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import xyz.nkomarn.Campfire.Campfire;
+import xyz.nkomarn.Campfire.util.Advancements;
 import xyz.nkomarn.Campfire.util.Config;
 
 public class VoteListener implements Listener {
@@ -23,6 +24,10 @@ public class VoteListener implements Listener {
                     ChatColor.translateAlternateColorCodes('&', Config.getString("vote.title.bottom")));
             Bukkit.getScheduler().runTask(Campfire.getCampfire(), () -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                     Config.getString("vote.command").replace("[player]", player.getName())));
+
+            if (Advancements.isComplete(player, "vote")) return;
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("advancement grant %s only firestarter:vote",
+                    player.getName()));
         }
     }
 }

@@ -18,6 +18,7 @@ import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Campfire.maps.CustomMapRenderer;
+import xyz.nkomarn.Campfire.util.Advancements;
 import xyz.nkomarn.Campfire.util.Ranks;
 
 import javax.imageio.ImageIO;
@@ -106,6 +107,12 @@ public class CampfireCommand implements CommandExecutor {
             Campfire.getPlayerData().sync().updateOne(filter, update, options);
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&a&lSuccess: &7Marked the player as a donor."));
+
+            if (!player.isOnline()) return true;
+            Player onlinePlayer = (Player) player;
+            if (Advancements.isComplete(onlinePlayer, "spark")) return true;
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("advancement grant %s only firestarter:spark",
+                    onlinePlayer.getName()));
         }
         else if (args[0].equalsIgnoreCase("updatelist")) {
             Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
