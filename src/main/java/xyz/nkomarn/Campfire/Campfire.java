@@ -1,8 +1,10 @@
 package xyz.nkomarn.Campfire;
 
+import net.milkbowl.vault.economy.Economy;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.eclipse.jetty.server.Server;
 import xyz.nkomarn.Campfire.command.CampfireCommand;
@@ -18,7 +20,6 @@ import xyz.nkomarn.Campfire.listener.claim.ClaimCreatedListener;
 import xyz.nkomarn.Campfire.listener.crate.PlayerPrizeListener;
 import xyz.nkomarn.Campfire.listener.jobs.JobsJoinListener;
 import xyz.nkomarn.Campfire.listener.pets.PetCreatedListener;
-import xyz.nkomarn.Campfire.listener.pets.PetActiveSkillListener;
 import xyz.nkomarn.Campfire.listener.tree.TreeFallListener;
 import xyz.nkomarn.Campfire.maps.Maps;
 import xyz.nkomarn.Campfire.util.Metrics;
@@ -32,11 +33,15 @@ public class Campfire extends JavaPlugin {
     private static Campfire campfire;
     private static FlexibleCollection<Document> playerData;
     private static FlexibleCollection<Document> maps;
+    private static Economy economy = null;
     private Server metricsServer;
 
     public void onEnable() {
         campfire = this;
         saveDefaultConfig();
+        if (!initializeEconomy()) {
+            return;
+        }
 
         final String database = getConfig().getString("database");
         playerData = MongoDatabase.getFlexibleCollection(database, "players");
@@ -80,6 +85,8 @@ public class Campfire extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
     public void onDisable() {
@@ -90,8 +97,24 @@ public class Campfire extends JavaPlugin {
         }
     }
 
+    private boolean initializeEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            getLogger().severe("Phase requires Vault to operate.");
+            getServer().getPluginManager().disablePlugin(this);
+        }
+        RegisteredServiceProvider<Economy> provider = getServer().getServicesManager()
+                .getRegistration(Economy.class);
+        if (provider == null) return false;
+        economy = provider.getProvider();
+        return true;
+    }
+
     public static Campfire getCampfire() {
         return campfire;
+    }
+
+    public static Economy getEconomy() {
+        return economy;
     }
 
     public static FlexibleCollection<Document> getPlayerData() {
