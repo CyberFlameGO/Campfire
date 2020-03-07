@@ -46,8 +46,10 @@ public class WildCommand implements CommandExecutor {
                 } else {
                     long remaining = Config.getInteger("wild.cooldown") - minutes;
 
-                    player.sendTitle(ChatColor.translateAlternateColorCodes('&', Config.getString("wild.title.cooldown.top")),
-                            ChatColor.translateAlternateColorCodes('&', Config.getString("wild.title.cooldown.bottom")
+                    player.sendTitle(ChatColor.translateAlternateColorCodes('&',
+                            Config.getString("wild.title.cooldown.top")),
+                            ChatColor.translateAlternateColorCodes('&',
+                                    Config.getString("wild.title.cooldown.bottom")
                                     .replace("[minutes]", String.valueOf(remaining))));
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
                     return true;
@@ -56,18 +58,23 @@ public class WildCommand implements CommandExecutor {
 
             // Find a random location and teleport
             queue += 1;
-            player.sendTitle(ChatColor.translateAlternateColorCodes('&', Config.getString("wild.title.finding.top")),
-                    ChatColor.translateAlternateColorCodes('&', Config.getString("wild.title.finding.bottom")));
+            player.sendTitle(ChatColor.translateAlternateColorCodes('&',
+                    Config.getString("wild.title.finding.top")),
+                    ChatColor.translateAlternateColorCodes('&',
+                            Config.getString("wild.title.finding.bottom")));
             player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 200, 254));
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 200, 254));
             player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1.0f, 1.0f);
 
             Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
-                Location location = RandomLocation.getRandomSafeLocation(Objects.requireNonNull(Bukkit.getWorld(Config.getString("wild.world"))));
+                Location location = RandomLocation.getRandomSafeLocation(Objects.requireNonNull(Bukkit.getWorld(
+                        Config.getString("wild.world"))));
                 Bukkit.getScheduler().runTask(Campfire.getCampfire(), () -> {
                     player.teleport(location);
-                    player.sendTitle(ChatColor.translateAlternateColorCodes('&', Config.getString("wild.title.teleported.top")),
-                            ChatColor.translateAlternateColorCodes('&', Config.getString("wild.title.teleported.bottom")));
+                    player.sendTitle(ChatColor.translateAlternateColorCodes('&',
+                            Config.getString("wild.title.teleported.top")),
+                            ChatColor.translateAlternateColorCodes('&',
+                                    Config.getString("wild.title.teleported.bottom")));
                     cooldown.put(player.getUniqueId(), System.currentTimeMillis());
                     player.playSound(location, Sound.ITEM_CHORUS_FRUIT_TELEPORT, 1.0f, 1.0f);
                     player.removePotionEffect(PotionEffectType.CONFUSION);

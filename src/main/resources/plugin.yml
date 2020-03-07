@@ -1,5 +1,5 @@
 name: Campfire
-version: 2.0
+version: 2.0.1
 author: TechToolbox (@nkomarn)
 main: xyz.nkomarn.Campfire.Campfire
 description: Firestarter's package of basic server utilities.
@@ -13,8 +13,6 @@ commands:
   wild:
     description: "Teleport to a random location in the world."
     aliases: ['rtp', 'wildtp']
-  skull:
-    description: "Obtain one player head every hour."
 
 permissions:
   firestarter.spark:

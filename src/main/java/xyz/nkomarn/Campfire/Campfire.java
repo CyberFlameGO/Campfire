@@ -8,7 +8,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.eclipse.jetty.server.Server;
 import xyz.nkomarn.Campfire.command.CampfireCommand;
-import xyz.nkomarn.Campfire.command.SkullCommand;
 import xyz.nkomarn.Campfire.command.WildCommand;
 import xyz.nkomarn.Campfire.listener.*;
 import xyz.nkomarn.Campfire.listener.auction.AuctionBuyListener;
@@ -70,7 +69,6 @@ public class Campfire extends JavaPlugin {
 
         getCommand("campfire").setExecutor(new CampfireCommand());
         getCommand("wild").setExecutor(new WildCommand());
-        getCommand("skull").setExecutor(new SkullCommand());
 
         Maps.loadMaps();
         Recipes.loadRecipes();
