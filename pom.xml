@@ -46,7 +46,7 @@
         <dependency>
             <groupId>com.github.firestartermc</groupId>
             <artifactId>kerosene</artifactId>
-            <version>cb284a2563</version>
+            <version>587b9a7658</version>
         </dependency>
         <dependency>
             <groupId>com.github.MilkBowl</groupId>

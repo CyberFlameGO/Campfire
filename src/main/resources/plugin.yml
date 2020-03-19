@@ -13,6 +13,9 @@ commands:
   wild:
     description: "Teleport to a random location in the world."
     aliases: ['rtp', 'wildtp']
+  toggle:
+    description: "Toggle various features of the server."
+    aliases: ['toggles', 'change', 'switch', 'enable', 'disable']
 
 permissions:
   firestarter.spark:

@@ -8,6 +8,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.eclipse.jetty.server.Server;
 import xyz.nkomarn.Campfire.command.CampfireCommand;
+import xyz.nkomarn.Campfire.command.TogglesCommand;
 import xyz.nkomarn.Campfire.command.WildCommand;
 import xyz.nkomarn.Campfire.listener.*;
 import xyz.nkomarn.Campfire.listener.auction.AuctionBuyListener;
@@ -52,6 +53,7 @@ public class Campfire extends JavaPlugin {
         pluginManager.registerEvents(new PlayerJoinListener(), this);
         pluginManager.registerEvents(new PlayerQuitListener(), this);
         pluginManager.registerEvents(new PlayerRespawnListener(), this);
+        pluginManager.registerEvents(new PlayerInventoryClickListener(), this);
         pluginManager.registerEvents(new PlayerCommandPreProcessListener(), this);
         pluginManager.registerEvents(new VoteListener(), this);
         pluginManager.registerEvents(new ShopCreatedListener(), this);
@@ -69,6 +71,7 @@ public class Campfire extends JavaPlugin {
 
         getCommand("campfire").setExecutor(new CampfireCommand());
         getCommand("wild").setExecutor(new WildCommand());
+        getCommand("toggle").setExecutor(new TogglesCommand());
 
         Maps.loadMaps();
         Recipes.loadRecipes();
@@ -83,8 +86,6 @@ public class Campfire extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void onDisable() {
