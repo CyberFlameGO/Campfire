@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Utility class to manage the player list ranks.
+ * Utility class to manage the player list ranks
+ * using scoreboard teams.
  */
 public class Ranks {
     private static Scoreboard scoreboard = Bukkit.getServer().getScoreboardManager().getMainScoreboard();

@@ -5,7 +5,7 @@ main: xyz.nkomarn.Campfire.Campfire
 description: Firestarter's package of basic server utilities.
 website: https://firestartermc.com/opensource
 api-version: 1.15
-depend: ['Kerosene', 'GriefPrevention', 'Vault']
+depend: ['Kerosene', 'GriefPrevention']
 
 commands:
   campfire:

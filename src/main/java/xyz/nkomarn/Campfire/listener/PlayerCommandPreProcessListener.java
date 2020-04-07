@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import xyz.nkomarn.Campfire.util.Advancements;
+import xyz.nkomarn.Kerosene.util.AdvancementUtil;
 
 public class PlayerCommandPreProcessListener implements Listener {
     @EventHandler
@@ -25,15 +25,11 @@ public class PlayerCommandPreProcessListener implements Listener {
 
         if (command.equalsIgnoreCase("/ah")) {
             if (message.length < 2) {
-                if (Advancements.isComplete(event.getPlayer(), "ah-menu")) return;
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("advancement grant %s only firestarter:ah-menu",
-                        event.getPlayer().getName()));
+                AdvancementUtil.grantAdvancement(event.getPlayer(), "ah-menu");
             }
         } else if (command.equalsIgnoreCase("/hdb") || command.equalsIgnoreCase("/heads")) {
             if (message.length < 2) {
-                if (Advancements.isComplete(event.getPlayer(), "heads")) return;
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("advancement grant %s only firestarter:heads",
-                        event.getPlayer().getName()));
+                AdvancementUtil.grantAdvancement(event.getPlayer(), "heads");
             }
         } else if (command.equalsIgnoreCase("/claim")) {
             event.setCancelled(true);
@@ -43,7 +39,7 @@ public class PlayerCommandPreProcessListener implements Listener {
             event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&c&lError: &7This command is disabled for security."));
         } else if (command.equalsIgnoreCase("/pl") || command.equalsIgnoreCase("/plugins")) {
-            player.sendMessage("We're proudly open-source! Check out our GitHub at https://github.com/firestartermc.");
+            player.sendMessage("We're proudly open-source! Check out our GitHub at https://github.com/firestartermc."); // TODO replace with the new URL
         }
     }
 }

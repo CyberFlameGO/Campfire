@@ -17,8 +17,7 @@ import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import xyz.nkomarn.Campfire.Campfire;
-import xyz.nkomarn.Campfire.maps.CustomMapRenderer;
-import xyz.nkomarn.Campfire.util.Advancements;
+import xyz.nkomarn.Campfire.maps.FastMapRenderer;
 import xyz.nkomarn.Campfire.util.Ranks;
 
 import javax.imageio.ImageIO;
@@ -69,7 +68,7 @@ public class CampfireCommand implements CommandExecutor {
             for (MapRenderer renderer : mapView.getRenderers()) {
                 mapView.removeRenderer(renderer);
             }
-            mapView.addRenderer(new CustomMapRenderer(image));
+            mapView.addRenderer(new FastMapRenderer(image));
 
             // Record map in database (base64 image)
             ByteArrayOutputStream os = new ByteArrayOutputStream();

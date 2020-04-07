@@ -1,8 +1,3 @@
-database: "survival"
-
-metrics:
-  port: 2800
-
 messages:
   join:
     top: "&c&lFire&6&lstar&e&lter"
@@ -38,13 +33,11 @@ wild:
   cooldown: 5
   world: "world"
   min:
-    x: -50000
-    y: 62
-    z: -50000
+    x: -3125
+    z: -3125
   max:
-    x: 50000
-    y: 80
-    z: 50000
+    x: 3125
+    z: 3125
   title:
     finding:
       top: "&6&lLooking for a location..."

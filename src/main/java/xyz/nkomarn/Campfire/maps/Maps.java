@@ -50,7 +50,7 @@ public class Maps {
                     }
 
                     // Apply new custom renderer
-                    mapView.addRenderer(new CustomMapRenderer(image));
+                    mapView.addRenderer(new FastMapRenderer(image));
                     logger.log(Level.INFO, "Loaded map " + document.getInteger("id") + ".");
                 });
             }

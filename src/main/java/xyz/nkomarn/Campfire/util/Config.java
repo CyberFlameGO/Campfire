@@ -5,6 +5,10 @@ import xyz.nkomarn.Campfire.Campfire;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility class used to easily interface
+ * with the configuration from any class.
+ */
 public class Config {
     /**
      * Fetches a boolean from the configuration

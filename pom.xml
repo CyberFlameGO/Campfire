@@ -28,6 +28,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.github.firestartermc</groupId>
+            <artifactId>kerosene</artifactId>
+            <version>4b024f6098</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.dmulloy2</groupId>
             <artifactId>ProtocolLib</artifactId>
             <version>4.5.0</version>
@@ -44,17 +49,6 @@
             <version>16.12.0</version>
         </dependency>
         <dependency>
-            <groupId>com.github.firestartermc</groupId>
-            <artifactId>kerosene</artifactId>
-            <version>587b9a7658</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.MilkBowl</groupId>
-            <artifactId>VaultAPI</artifactId>
-            <version>1.7</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>com.acrobot.chestshop</groupId>
             <artifactId>chestshop</artifactId>
             <version>3.10</version>
@@ -64,8 +58,7 @@
             <groupId>com.github.FirestarterMC</groupId>
             <artifactId>Crazy-Auctions</artifactId>
             <version>v1.2.10</version>
-        </dependency>
-        <dependency>
+        </dependency><dependency>
             <groupId>com.github.FirestarterMC</groupId>
             <artifactId>Crazy-Crates</artifactId>
             <version>afbdb6ad19</version>
@@ -118,4 +111,42 @@
             <url>https://repo.minebench.de/</url>
         </repository>
     </repositories>
+
+    <build>
+        <directory>target</directory>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>plugin.yml</include>
+                    <include>config.yml</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
