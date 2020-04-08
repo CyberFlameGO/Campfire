@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.nkomarn.Campfire.command.CampfireCommand;
-import xyz.nkomarn.Campfire.command.TogglesCommand;
 import xyz.nkomarn.Campfire.command.WildCommand;
 import xyz.nkomarn.Campfire.listener.*;
 import xyz.nkomarn.Campfire.maps.Maps;
@@ -22,13 +21,11 @@ public class Campfire extends JavaPlugin {
         pluginManager.registerEvents(new PlayerJoinListener(), this);
         pluginManager.registerEvents(new PlayerQuitListener(), this);
         pluginManager.registerEvents(new PlayerRespawnListener(), this);
-        pluginManager.registerEvents(new PlayerInventoryClickListener(), this);
         pluginManager.registerEvents(new PlayerCommandPreProcessListener(), this);
         pluginManager.registerEvents(new AdvancementCriteriaListener(), this);
 
         getCommand("campfire").setExecutor(new CampfireCommand());
         getCommand("wild").setExecutor(new WildCommand());
-        getCommand("toggle").setExecutor(new TogglesCommand());
 
         Maps.loadMaps();
     }

@@ -1,5 +1,5 @@
 name: Campfire
-version: 2.0.1
+version: 3.0
 author: TechToolbox (@nkomarn)
 main: xyz.nkomarn.Campfire.Campfire
 description: Firestarter's package of basic server utilities.

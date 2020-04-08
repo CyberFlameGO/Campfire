@@ -41,16 +41,10 @@ wild:
   title:
     finding:
       top: "&6&lLooking for a location..."
-      bottom: "&7Hang tight until you arrive."
+      bottom: "&rHang tight until you arrive."
     teleported:
       top: "&6&lWelcome... home?"
-      bottom: "&7You've arrived at an uninhabited location."
+      bottom: "&rYou've arrived at an uninhabited location."
     cooldown:
       top: "&c&lCan't teleport just yet."
-      bottom: "&7Wait [minutes] more minute(s)."
-    queue:
-      top: "&d&lQueue limit."
-      bottom: "&7Looks like teleporting failed :/"
-    error:
-      top: "&c&lWelp, that failed."
-      bottom: "&7Looks like teleporting failed :/"
+      bottom: "&rWait [minutes] more minute(s)."

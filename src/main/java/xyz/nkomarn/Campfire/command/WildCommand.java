@@ -14,6 +14,7 @@ import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Campfire.util.Config;
 import xyz.nkomarn.Kerosene.paperlib.PaperLib;
 import xyz.nkomarn.Kerosene.util.AdvancementUtil;
+import xyz.nkomarn.Kerosene.util.LocationUtil;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -94,8 +95,8 @@ public class WildCommand implements CommandExecutor {
             // Find the highest suitable y-value
             for (int y = min; y < max; y++) {
                 final Block randomBlock = chunk.getBlock(8, y, 8);
-                if (isLocationSafe(randomBlock)) {
-                    PaperLib.teleportAsync(player, randomBlock.getLocation().add(0.5,1,0.5)); // TODO change to essentials teleport
+                if (LocationUtil.isLocationSafe(randomBlock)) {
+                    LocationUtil.teleportPlayer(player, randomBlock.getLocation().add(0.5,1,0.5));
                     Bukkit.getScheduler().runTask(Campfire.getCampfire(), () -> {
                         player.sendTitle(ChatColor.translateAlternateColorCodes('&',
                                 Config.getString("wild.title.teleported.top")),
@@ -115,13 +116,5 @@ public class WildCommand implements CommandExecutor {
             // If all else fails, try again :")
             attemptWildTeleport(player, world);
         });
-    }
-
-    private static boolean isLocationSafe(Block floor) {
-        Block legs = floor.getLocation().add(0, 1,0).getBlock();
-        Block head = floor.getLocation().add(0, 2,0).getBlock();
-
-        return (floor.getType().isSolid() && legs.getType() == Material.AIR
-                && head.getType() == Material.AIR);
     }
 }

@@ -6,7 +6,7 @@
 
     <groupId>xyz.nkomarn</groupId>
     <artifactId>Campfire</artifactId>
-    <version>2.0.1</version>
+    <version>3.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.github.firestartermc</groupId>
             <artifactId>kerosene</artifactId>
-            <version>4b024f6098</version>
+            <version>8fb1e50bee</version>
         </dependency>
         <dependency>
             <groupId>com.github.dmulloy2</groupId>
