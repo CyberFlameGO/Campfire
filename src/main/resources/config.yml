@@ -48,3 +48,17 @@ wild:
     cooldown:
       top: "&c&lCan't teleport just yet."
       bottom: "&rWait [minutes] more minute(s)."
+
+playtime:
+  60:
+    name: "camper"
+    commands:
+      - "lp user [player] parent add camper"
+  1440:
+    name: "pioneer"
+    commands:
+      - "lp user [player] parent add pioneer"
+  5760:
+    name: "vanguard"
+    commands:
+      - "lp user [player] parent add vanguard"

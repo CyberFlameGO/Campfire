@@ -55,10 +55,10 @@ public class AdvancementCriteriaListener implements Listener {
         AdvancementUtil.grantAdvancement((Player) event.getCreator(), "claim");
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onTrustChanged(TrustChangedEvent event) {
         AdvancementUtil.grantAdvancement(event.getChanger(), "claim-trust");
-    }
+    }*/
 
     @EventHandler
     public void onPlayerPrize(PlayerPrizeEvent event) {

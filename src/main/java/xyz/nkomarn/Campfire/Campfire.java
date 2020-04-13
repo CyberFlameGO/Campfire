@@ -4,9 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.nkomarn.Campfire.command.CampfireCommand;
+import xyz.nkomarn.Campfire.command.PlaytimeCommand;
 import xyz.nkomarn.Campfire.command.WildCommand;
 import xyz.nkomarn.Campfire.listener.*;
 import xyz.nkomarn.Campfire.maps.Maps;
+import xyz.nkomarn.Campfire.task.PlaytimeChecker;
 
 public class Campfire extends JavaPlugin {
     private static Campfire campfire;
@@ -26,6 +28,10 @@ public class Campfire extends JavaPlugin {
 
         getCommand("campfire").setExecutor(new CampfireCommand());
         getCommand("wild").setExecutor(new WildCommand());
+        getCommand("playtime").setExecutor(new PlaytimeCommand());
+
+        getServer().getScheduler().runTaskTimerAsynchronously(this,
+                new PlaytimeChecker(), 0L, 1200L);
 
         Maps.loadMaps();
     }

@@ -44,7 +44,7 @@ public class Maps {
                         mapView.removeRenderer(renderer);
                     }
                 } catch (NullPointerException e) {
-                    logger.warning(String.format("Failed to load map %s.", mapView.getId()));
+                    logger.warning(String.format("Failed to load map %s.", mapsResult.getInt(2)));
                     continue;
                 }
 

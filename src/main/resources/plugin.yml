@@ -16,6 +16,9 @@ commands:
   toggle:
     description: "Toggle various features of the server."
     aliases: ['toggles', 'change', 'switch', 'enable', 'disable']
+  playtime:
+    description: "View your total playtime on the server."
+    aliases: ["joined", "played", "timeplayed"]
 
 permissions:
   firestarter.spark:
