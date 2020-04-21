@@ -19,6 +19,9 @@ commands:
   playtime:
     description: "View your total playtime on the server."
     aliases: ["joined", "played", "timeplayed"]
+  ranks:
+    description: "View all of our ranks on the server."
+    aliases: ['rank']
 
 permissions:
   firestarter.spark:

@@ -10,8 +10,8 @@ import xyz.nkomarn.Kerosene.util.AdvancementUtil;
 public class PlayerCommandPreProcessListener implements Listener {
     @EventHandler
     public void onPlayerCommandPreProcess(PlayerCommandPreprocessEvent event) {
-        Player player = event.getPlayer();
-        String[] message = event.getMessage().split("\\s+");
+        final Player player = event.getPlayer();
+        final String[] message = event.getMessage().split("\\s+");
         final String command = message[0];
 
         // Alternate syntax blocking
@@ -38,7 +38,7 @@ public class PlayerCommandPreProcessListener implements Listener {
             event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&c&lError: &7This command is disabled for security."));
         } else if (command.equalsIgnoreCase("/pl") || command.equalsIgnoreCase("/plugins")) {
-            player.sendMessage("We're proudly open-source! Check out our GitHub at https://github.com/firestartermc."); // TODO replace with the new URL
+            player.sendMessage("We're proudly open-source! Check out our GitHub at https://github.com/firestarter.");
         }
     }
 }

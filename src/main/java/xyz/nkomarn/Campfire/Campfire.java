@@ -3,9 +3,7 @@ package xyz.nkomarn.Campfire;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.nkomarn.Campfire.command.CampfireCommand;
-import xyz.nkomarn.Campfire.command.PlaytimeCommand;
-import xyz.nkomarn.Campfire.command.WildCommand;
+import xyz.nkomarn.Campfire.command.*;
 import xyz.nkomarn.Campfire.listener.*;
 import xyz.nkomarn.Campfire.maps.Maps;
 import xyz.nkomarn.Campfire.task.PlaytimeChecker;
@@ -25,10 +23,14 @@ public class Campfire extends JavaPlugin {
         pluginManager.registerEvents(new PlayerRespawnListener(), this);
         pluginManager.registerEvents(new PlayerCommandPreProcessListener(), this);
         pluginManager.registerEvents(new AdvancementCriteriaListener(), this);
+        pluginManager.registerEvents(new InventoryClickListener(), this);
+        pluginManager.registerEvents(new EntitySpawnListener(), this);
 
         getCommand("campfire").setExecutor(new CampfireCommand());
         getCommand("wild").setExecutor(new WildCommand());
         getCommand("playtime").setExecutor(new PlaytimeCommand());
+        getCommand("ranks").setExecutor(new RanksCommand());
+        getCommand("toggle").setExecutor(new TogglesCommand());
 
         getServer().getScheduler().runTaskTimerAsynchronously(this,
                 new PlaytimeChecker(), 0L, 1200L);
