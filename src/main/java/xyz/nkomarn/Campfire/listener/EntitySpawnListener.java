@@ -17,9 +17,8 @@ public class EntitySpawnListener implements Listener {
 
         for (final Entity entity : event.getLocation().getNearbyEntities(10, 10, 10)) {
             if (entity instanceof Player) {
-                Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
-                    ((ArmorStand) event.getEntity()).setArms(ToggleUtil.getToggleState(entity.getUniqueId(), "armor-stand-arms"));
-                });
+                Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> ((ArmorStand) event.getEntity())
+                        .setArms(ToggleUtil.getToggleState(entity.getUniqueId(), "armor-stand-arms")));
             }
         }
     }

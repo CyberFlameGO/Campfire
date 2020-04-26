@@ -17,6 +17,7 @@ public class Campfire extends JavaPlugin {
 
         final PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new EntityPickupItemListener(), this);
+        pluginManager.registerEvents(new PlayerChatListener(), this);
         pluginManager.registerEvents(new PlayerInteractEntityListener(), this);
         pluginManager.registerEvents(new PlayerJoinListener(), this);
         pluginManager.registerEvents(new PlayerQuitListener(), this);
@@ -25,12 +26,15 @@ public class Campfire extends JavaPlugin {
         pluginManager.registerEvents(new AdvancementCriteriaListener(), this);
         pluginManager.registerEvents(new InventoryClickListener(), this);
         pluginManager.registerEvents(new EntitySpawnListener(), this);
+        pluginManager.registerEvents(new PvPListener(), this);
 
         getCommand("campfire").setExecutor(new CampfireCommand());
         getCommand("wild").setExecutor(new WildCommand());
         getCommand("playtime").setExecutor(new PlaytimeCommand());
+        getCommand("pvp").setExecutor(new PvPCommand());
         getCommand("ranks").setExecutor(new RanksCommand());
         getCommand("toggle").setExecutor(new TogglesCommand());
+        getCommand("setslots").setExecutor(new SetSlotsCommand());
 
         getServer().getScheduler().runTaskTimerAsynchronously(this,
                 new PlaytimeChecker(), 0L, 1200L);

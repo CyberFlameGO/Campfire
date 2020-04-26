@@ -19,10 +19,15 @@ commands:
   playtime:
     description: "View your total playtime on the server."
     aliases: ["joined", "played", "timeplayed"]
+  pvp:
+    description: "Toggle your PvP state."
   ranks:
     description: "View all of our ranks on the server."
     aliases: ['rank']
+  setslots:
+    description: "Adjust the maximum player slot count while the server is running."
+    permission: "campfire.admin"
 
 permissions:
-  firestarter.spark:
+  campfire.admin:
     default: op

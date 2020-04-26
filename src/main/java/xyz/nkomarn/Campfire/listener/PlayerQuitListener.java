@@ -15,6 +15,7 @@ public class PlayerQuitListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         int players = (Bukkit.getOnlinePlayers().size() - 1) - Ranks.getVanishedPlayers();
+        PvPListener.ENABLED_PLAYERS.remove(event.getPlayer().getUniqueId());
 
         new BukkitRunnable() {
             @Override
