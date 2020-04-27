@@ -3,6 +3,7 @@ package xyz.nkomarn.Campfire.maps;
 import org.bukkit.Bukkit;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
+import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Kerosene.Kerosene;
 import xyz.nkomarn.Kerosene.data.LocalStorage;
 
@@ -25,7 +26,7 @@ public class Maps {
      * Loads maps from local storage into the server.
      */
     public static void loadMaps() {
-        final Logger logger = Kerosene.getKerosene().getLogger();
+        final Logger logger = Campfire.getCampfire().getLogger();
         Connection connection = null;
 
         try {
