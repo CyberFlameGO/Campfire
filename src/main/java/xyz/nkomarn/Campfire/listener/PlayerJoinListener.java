@@ -6,15 +6,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Campfire.util.Config;
 import xyz.nkomarn.Campfire.util.Ranks;
+import xyz.nkomarn.Campfire.util.Webhooks;
+
+import java.awt.*;
+import java.io.IOException;
 
 public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
         // Greet the player with a title
         player.sendTitle(ChatColor.translateAlternateColorCodes('&',
@@ -22,29 +25,29 @@ public class PlayerJoinListener implements Listener {
                     Config.getString("messages.join.bottom"))
         );
 
-        // Update player count in player list
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                int players = Bukkit.getOnlinePlayers().size() - Ranks.getVanishedPlayers();
-                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                    onlinePlayer.setPlayerListHeader(ChatColor.translateAlternateColorCodes('&',
-                            Config.getString("tablist.header").replace("[online]", String.valueOf(players)))
-                    );
+        Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
+            Bukkit.getOnlinePlayers().forEach(onlinePlayer -> onlinePlayer.setPlayerListHeader(ChatColor
+                    .translateAlternateColorCodes('&', Config.getString("tablist.header")
+                            .replace("[online]", String.valueOf(Bukkit.getOnlinePlayers().size() - Ranks.getVanishedPlayers())))
+            ));
+
+            player.setPlayerListFooter(ChatColor.translateAlternateColorCodes('&',
+                    Config.getString("tablist.footer")));
+
+            if (!player.hasPlayedBefore()) {
+                final Webhooks hook = new Webhooks(Config.getString("webhooks.notifications"));
+                hook.addEmbed(new Webhooks.EmbedObject()
+                        .setDescription(":checkered_flag: " + event.getPlayer().getName() + " joined!")
+                        .setColor(Color.WHITE));
+                try {
+                    hook.execute();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
-
-                // Set the player list footer
-                player.setPlayerListFooter(ChatColor.translateAlternateColorCodes('&',
-                        Config.getString("tablist.footer")));
             }
-        }.runTaskAsynchronously(Campfire.getCampfire());
+        });
 
-        // Update player's player list team
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                Ranks.addToTeam(player);
-            }
-        }.runTask(Campfire.getCampfire());
+        // Update player's playerlist team
+        Ranks.addToTeam(player);
     }
 }

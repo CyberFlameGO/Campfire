@@ -90,3 +90,7 @@ ranks:
     - "&dDonor rank"
     - "&7All Vanguard rewards"
     - "&f+ extras (use /buy)"
+
+webhooks:
+  notifications: ""
+  moderation: ""
