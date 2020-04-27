@@ -3,7 +3,6 @@ package xyz.nkomarn.Campfire.listener;
 import com.Acrobot.ChestShop.Events.PreTransactionEvent;
 import com.Acrobot.ChestShop.Events.ShopCreatedEvent;
 import com.gamingmesh.jobs.api.JobsJoinEvent;
-import com.songoda.ultimatetimber.events.TreeFallEvent;
 import com.vexsoftware.votifier.model.VotifierEvent;
 import de.Keyle.MyPet.api.event.MyPetActivatedEvent;
 import de.Keyle.MyPet.api.event.MyPetCreateEvent;
@@ -12,7 +11,6 @@ import me.badbones69.crazyauctions.api.events.AuctionListEvent;
 import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.ryanhamshire.GriefPrevention.events.AccrueClaimBlocksEvent;
 import me.ryanhamshire.GriefPrevention.events.ClaimCreatedEvent;
-import me.ryanhamshire.GriefPrevention.events.TrustChangedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -81,13 +79,8 @@ public class AdvancementCriteriaListener implements Listener {
     }
 
     @EventHandler
-    public void onTreeFall(TreeFallEvent event) {
-        AdvancementUtil.grantAdvancement(event.getPlayer(), "tree");
-    }
-
-    @EventHandler
     public void onVote(VotifierEvent event) {
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(event.getVote().getUsername());
+        final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(event.getVote().getUsername());
         if (offlinePlayer.isOnline()) {
             Player player = (Player) offlinePlayer;
             AdvancementUtil.grantAdvancement(player.getPlayer(), "vote");
