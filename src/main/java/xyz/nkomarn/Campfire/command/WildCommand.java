@@ -1,6 +1,5 @@
 package xyz.nkomarn.Campfire.command;
 
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
@@ -14,6 +13,7 @@ import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Campfire.util.Config;
 import xyz.nkomarn.Kerosene.paperlib.PaperLib;
 import xyz.nkomarn.Kerosene.util.AdvancementUtil;
+import xyz.nkomarn.Kerosene.util.ClaimUtil;
 import xyz.nkomarn.Kerosene.util.LocationUtil;
 
 import java.util.HashMap;
@@ -66,35 +66,30 @@ public class WildCommand implements CommandExecutor {
         return true;
     }
 
-    private static void attemptWildTeleport(final Player player, final World world) {
-        final int chunkX = ThreadLocalRandom.current().nextInt(Config.getInteger("wild.min.x"),
+    private static void attemptWildTeleport(Player player, World world) {
+        int chunkX = ThreadLocalRandom.current().nextInt(Config.getInteger("wild.min.x"),
                 Config.getInteger("wild.max.x"));
-        final int chunkZ = ThreadLocalRandom.current().nextInt(Config.getInteger("wild.min.z"),
+        int chunkZ = ThreadLocalRandom.current().nextInt(Config.getInteger("wild.min.z"),
                 Config.getInteger("wild.max.z"));
 
         PaperLib.getChunkAtAsync(world, chunkX, chunkZ, true).thenAccept(chunk -> {
-            final Block block = chunk.getBlock(8, 62, 8);
+            Block block = chunk.getBlock(8, 62, 8);
 
-            // Ignore ocean biomes (TODO make sure this ignores all ocean types)
-            if (block.getBiome() == Biome.OCEAN) {
+            if (block.getBiome() == Biome.OCEAN) { // Ignore ocean biomes
                 attemptWildTeleport(player, world);
                 return;
             }
 
-            // Ignore areas that have already been claimed
-            int claims = GriefPrevention.instance.dataStore.getClaims(chunk.getX(), chunk.getZ()).size();
-            if (claims > 0) {
+            if (ClaimUtil.doesLocationHaveForeignClaims(player, block.getLocation())) { // Check for claims in the area
                 attemptWildTeleport(player, world);
                 return;
             }
 
-            // Figure out the highest safe y-value
             int min = Config.getInteger("wild.min.y");
             int max = Config.getInteger("wild.max.y");
 
-            // Find the highest suitable y-value
-            for (int y = min; y < max; y++) {
-                final Block randomBlock = chunk.getBlock(8, y, 8);
+            for (int y = min; y < max; y++) { // Find the highest suitable y-value
+                Block randomBlock = chunk.getBlock(8, y, 8);
                 if (LocationUtil.isLocationSafe(randomBlock)) {
                     LocationUtil.teleportPlayer(player, randomBlock.getLocation().add(0.5,1,0.5));
                     Bukkit.getScheduler().runTask(Campfire.getCampfire(), () -> {
@@ -113,8 +108,7 @@ public class WildCommand implements CommandExecutor {
                 }
             }
 
-            // If all else fails, try again :")
-            attemptWildTeleport(player, world);
+            attemptWildTeleport(player, world); // If all else fails, try again :")
         });
     }
 }

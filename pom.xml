@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.github.firestartermc</groupId>
             <artifactId>kerosene</artifactId>
-            <version>ad12d5a514</version>
+            <version>615aea4dce</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
