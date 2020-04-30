@@ -20,7 +20,7 @@ public class FastMapRenderer extends MapRenderer {
     private final BufferedImage image;
     private final Set<UUID> renderedPlayers = new HashSet<>();
 
-    public FastMapRenderer(final BufferedImage image) {
+    public FastMapRenderer(BufferedImage image) {
         this.image = image;
     }
 

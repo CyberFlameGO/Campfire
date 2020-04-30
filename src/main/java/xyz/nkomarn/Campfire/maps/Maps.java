@@ -1,10 +1,8 @@
 package xyz.nkomarn.Campfire.maps;
 
 import org.bukkit.Bukkit;
-import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import xyz.nkomarn.Campfire.Campfire;
-import xyz.nkomarn.Kerosene.Kerosene;
 import xyz.nkomarn.Kerosene.data.LocalStorage;
 
 import javax.imageio.ImageIO;
@@ -22,55 +20,40 @@ import java.util.logging.Logger;
  * Utility class to manage custom server maps.
  */
 public class Maps {
-    /**
-     * Loads maps from local storage into the server.
-     */
+    private static final Logger LOGGER = Campfire.getCampfire().getLogger();
+
     public static void loadMaps() {
-        final Logger logger = Campfire.getCampfire().getLogger();
-        Connection connection = null;
+        int loadedMaps = 0;
 
-        try {
-            connection = LocalStorage.getConnection();
-            PreparedStatement statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS maps " +
-                    "(id INTEGER PRIMARY KEY, map_id INTEGER NOT NULL, image TEXT NOT NULL);");
-            statement.execute();
-            statement = connection.prepareStatement("SELECT * FROM maps;");
-            ResultSet mapsResult = statement.executeQuery();
+        try (Connection connection = LocalStorage.getConnection()) {
+            connection.prepareStatement("CREATE TABLE IF NOT EXISTS maps (id INTEGER PRIMARY KEY, map_id INTEGER" +
+                    " NOT NULL, image TEXT NOT NULL);").execute();
 
-            while (mapsResult.next()) {
-                final MapView mapView = Bukkit.getMap(mapsResult.getInt(2));
+            try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM maps;")) {
+                try (ResultSet result = statement.executeQuery()) {
+                    while (result.next()) {
+                        MapView view = Bukkit.getMap(result.getInt(2));
+                        if (view == null) {
+                            LOGGER.warning(String.format("Failed to load map #%s.", result.getInt(2)));
+                        } else {
+                            view.getRenderers().forEach(view::removeRenderer);
 
-                try {
-                    for (final MapRenderer renderer : mapView.getRenderers()) {
-                        mapView.removeRenderer(renderer);
+                            try {
+                                BufferedImage image = ImageIO.read(new ByteArrayInputStream(Base64.getDecoder()
+                                        .decode(result.getString(3).getBytes())));
+                                view.addRenderer(new FastMapRenderer(image));
+                                loadedMaps++;
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
-                } catch (NullPointerException e) {
-                    logger.warning(String.format("Failed to load map %s.", mapsResult.getInt(2)));
-                    continue;
                 }
-
-                BufferedImage image = null;
-                ByteArrayInputStream is = new ByteArrayInputStream(Base64.getDecoder().decode(mapsResult
-                        .getString(3).getBytes()));
-                try {
-                    image = ImageIO.read(is);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                mapView.addRenderer(new FastMapRenderer(image));
-                logger.info(String.format("Loaded map %s.", mapsResult.getInt(2)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
+
+        LOGGER.info(String.format("Loaded %s maps.", loadedMaps));
     }
 }
