@@ -13,15 +13,17 @@ import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
 import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Campfire.maps.FastMapRenderer;
-import xyz.nkomarn.Campfire.util.Ranks;
+import xyz.nkomarn.Campfire.util.Teams;
 import xyz.nkomarn.Kerosene.data.LocalStorage;
 import xyz.nkomarn.Kerosene.data.PlayerData;
 import xyz.nkomarn.Kerosene.util.AdvancementUtil;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,62 +39,49 @@ public class CampfireCommand implements CommandExecutor {
         } else if (args[0].equalsIgnoreCase("createmap")) {
             if (args.length < 2) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&6&lUsage: &7/campfire createmap [PNG image direct URL]"));
-                return true;
-            }
-
-            Bukkit.getScheduler().runTask(Campfire.getCampfire(), () -> {
+                        "&6&lCampfire: &7Use /campfire createmap [image url] to create a custom map."));
+            } else {
                 Player player = (Player) sender;
-                BufferedImage image;
-                try {
-                    image = ImageIO.read(new URL(args[1])); // TODO move this off-thread
-                } catch (IOException e) {
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&c&lError: &7Failed to create the map. Check console for errors."));
-                    return;
-                }
+                Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
+                    try {
+                        BufferedImage image = ImageIO.read(new URL(args[1]));
+                        Bukkit.getScheduler().runTask(Campfire.getCampfire(), () -> {
+                            MapView view = Bukkit.createMap(player.getWorld());
+                            view.setLocked(true);
+                            view.getRenderers().forEach(view::removeRenderer);
+                            view.addRenderer(new FastMapRenderer(image));
 
-                MapView mapView = Bukkit.createMap(player.getWorld());
-                mapView.setLocked(true);
-                mapView.getRenderers().forEach(mapView::removeRenderer);
-                mapView.addRenderer(new FastMapRenderer(image));
+                            try {
+                                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                                ImageIO.write(image, "png", outputStream);
 
-                ByteArrayOutputStream os = new ByteArrayOutputStream();
-                try {
-                    ImageIO.write(image, "png", os);
-                } catch (IOException e) {
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&c&lError: &7Failed to create the map. Check console for errors."));
-                    return;
-                }
-
-                Connection connection = null;
-
-                try {
-                    connection = LocalStorage.getConnection();
-                    PreparedStatement statement = connection.prepareStatement(
-                            "INSERT INTO maps (map_id, image) VALUES (?, ?)");
-                    statement.setInt(1, mapView.getId());
-                    statement.setString(2, Base64.getEncoder().encodeToString(os.toByteArray()));
-                    statement.execute();
-                } catch (SQLException e) {
-                     e.printStackTrace();
-                } finally {
-                    if (connection != null) {
-                        try {
-                            connection.close();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
+                                try (Connection connection = LocalStorage.getConnection()) {
+                                    try (PreparedStatement statement = connection
+                                            .prepareStatement("INSERT INTO maps (map_id, image) VALUES (?, ?)")) {
+                                        statement.setInt(1, view.getId());
+                                        statement.setString(2, Base64.getEncoder().encodeToString(outputStream.toByteArray()));
+                                        statement.execute();
+                                    }
+                                } finally {
+                                    ItemStack map = new ItemStack(Material.FILLED_MAP, 1);
+                                    MapMeta mapMeta = (MapMeta) map.getItemMeta();
+                                    mapMeta.setMapView(view);
+                                    map.setItemMeta(mapMeta);
+                                    player.getInventory().addItem(map);
+                                }
+                            } catch (IOException | SQLException e) {
+                                e.printStackTrace();
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                        "&c&lError: &7Failed to create the map. Check console for errors."));
+                            }
+                        });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                "&c&lError: &7There was an error making the map- check console."));
                     }
-                }
-
-                ItemStack map = new ItemStack(Material.FILLED_MAP, 1);
-                MapMeta mapMeta = (MapMeta) map.getItemMeta();
-                mapMeta.setMapView(mapView);
-                map.setItemMeta(mapMeta);
-                player.getInventory().addItem(map);
-            });
+                });
+            }
         } else if (args[0].equalsIgnoreCase("setdonor")) {
             if (args.length < 2) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
@@ -128,9 +117,11 @@ public class CampfireCommand implements CommandExecutor {
 
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&a&lSuccess: &7Marked the player as a donor."));
-        } else if (args[0].equalsIgnoreCase("updatelist")) {
+        } else if (args[0].
+
+                equalsIgnoreCase("updatelist")) {
             Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
-                Bukkit.getOnlinePlayers().forEach(Ranks::addToTeam);
+                Bukkit.getOnlinePlayers().forEach(Teams::updateTeams);
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         "&a&lSuccess: &7Updated the ranks in player list."));
             });
