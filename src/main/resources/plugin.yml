@@ -27,6 +27,10 @@ commands:
   setslots:
     description: "Adjust the maximum player slot count while the server is running."
     permission: "campfire.admin"
+  vanish:
+    description: "Vanish from online players."
+    aliases: ['v']
+    permission: "firestarter.vanish"
 
 permissions:
   campfire.admin:

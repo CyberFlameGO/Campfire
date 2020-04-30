@@ -19,7 +19,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class PlaytimeCommand implements CommandExecutor {
-    private final DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
+    private final DateFormat FORMAT = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -33,7 +33,7 @@ public class PlaytimeCommand implements CommandExecutor {
         return true;
     }
 
-    public void sendPlaytime(CommandSender sender, OfflinePlayer player) {
+    private void sendPlaytime(CommandSender sender, OfflinePlayer player) {
         Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
             try (Connection connection = PlayerData.getConnection()) {
                 try (PreparedStatement statement = connection.prepareStatement("SELECT `joined` FROM `playerdata` " +
@@ -41,10 +41,10 @@ public class PlaytimeCommand implements CommandExecutor {
                     statement.setString(1, player.getUniqueId().toString());
                     try (ResultSet result = statement.executeQuery()) {
                         if (result.next()) {
-                            final int playtime = (player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20) / 60;
-                            final String message = "&f&m&l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n" +
+                            int playtime = (player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20) / 60;
+                            String message = "&f&m&l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n" +
                                     String.format("&7Playtime: &a%s\n", intToTimeString(playtime)) +
-                                    String.format("&7Join date: &a%s\n", dateFormat.format(result.getLong(1))) +
+                                    String.format("&7Join date: &a%s UTC\n", FORMAT.format(result.getLong(1))) +
                                     "&f&m&l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
                             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
                         } else {
@@ -61,6 +61,6 @@ public class PlaytimeCommand implements CommandExecutor {
     }
 
     private String intToTimeString(final int time) {
-        return time / 24 / 60 + " days, " + time / 60 % 24 + " hours, and " + time % 60 + " minutes";
+        return (time / 24 / 60) + " days, " + (time / 60 % 24) + " hours, and " + (time % 60) + " minutes";
     }
 }

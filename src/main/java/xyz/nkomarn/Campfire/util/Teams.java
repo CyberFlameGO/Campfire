@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  */
 public class Teams {
     private static final Scoreboard SCOREBOARD = Bukkit.getServer().getScoreboardManager().getMainScoreboard();
-    private static final List<String> TEAM_PRIORITY = Config.getList("tablist.priority");
+    private static final List<String> TEAM_PRIORITY = Config.getConfig().getStringList("tablist.priority");
 
     /**
      * Get the scoreboard team that the player should be part of based on permissions.

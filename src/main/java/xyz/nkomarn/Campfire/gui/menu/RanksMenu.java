@@ -68,7 +68,7 @@ public class RanksMenu {
      */
     private List<String> getLore(final String rank) {
         final List<String> lore = new ArrayList<>();
-        for (String line : Config.getList(String.format("ranks.%s", rank))) {
+        for (String line : Config.getConfig().getStringList(String.format("ranks.%s", rank))) {
             lore.add(ChatColor.translateAlternateColorCodes('&', line));
         }
         return lore;

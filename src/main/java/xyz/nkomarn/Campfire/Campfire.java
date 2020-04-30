@@ -27,6 +27,7 @@ public class Campfire extends JavaPlugin {
         pluginManager.registerEvents(new InventoryClickListener(), this);
         pluginManager.registerEvents(new EntitySpawnListener(), this);
         pluginManager.registerEvents(new PvPListener(), this);
+        pluginManager.registerEvents(new VanishListener(), this);
 
         getCommand("campfire").setExecutor(new CampfireCommand());
         getCommand("wild").setExecutor(new WildCommand());
@@ -35,6 +36,7 @@ public class Campfire extends JavaPlugin {
         getCommand("ranks").setExecutor(new RanksCommand());
         getCommand("toggle").setExecutor(new TogglesCommand());
         getCommand("setslots").setExecutor(new SetSlotsCommand());
+        getCommand("vanish").setExecutor(new VanishCommand());
 
         getServer().getScheduler().runTaskTimerAsynchronously(this,
                 new PlaytimeChecker(), 0L, 1200L);
