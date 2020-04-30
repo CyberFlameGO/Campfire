@@ -15,7 +15,7 @@ tablist:
     - mod
     - spark
     - default
-  groups:
+  teams:
     admin:
       color: "RED"
       prefix: "&c[Admin] "
