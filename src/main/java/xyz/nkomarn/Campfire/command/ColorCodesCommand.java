@@ -1,21 +1,8 @@
 package xyz.nkomarn.Campfire.command;
 
-<<<<<<< HEAD
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-=======
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
-
-import java.util.Arrays;
->>>>>>> e78acf53d9810ecc3fb5f7aa4587761a5e4ecf6c
 
 public class ColorCodesCommand implements CommandExecutor {
     @Override
