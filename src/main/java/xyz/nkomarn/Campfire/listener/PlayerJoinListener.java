@@ -37,10 +37,8 @@ public class PlayerJoinListener implements Listener {
                 VanishUtil.showPlayer(player);
             }
 
-            VanishUtil.getVanishedPlayers().forEach(uuid -> {
-                OfflinePlayer vanishedPlayer = Bukkit.getOfflinePlayer(uuid);
-                if (vanishedPlayer.isOnline()) player.hidePlayer(Kerosene.getKerosene(), (Player) vanishedPlayer);
-            });
+            VanishUtil.getOnlineVanishedPlayers().forEach(uuid ->
+                    player.hidePlayer(Kerosene.getKerosene(), Bukkit.getPlayer(uuid)));
         }
 
         Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
@@ -51,10 +49,7 @@ public class PlayerJoinListener implements Listener {
             player.setPlayerListFooter(ChatColor.translateAlternateColorCodes('&',
                     Config.getString("tablist.footer")));
 
-            Bukkit.getOnlinePlayers().forEach(onlinePlayer -> onlinePlayer.setPlayerListHeader(ChatColor
-                    .translateAlternateColorCodes('&', String.format(Config.getString("tablist.header"),
-                            Bukkit.getOnlinePlayers().size() - VanishUtil.getVanishedPlayers().size()
-            ))));
+            Campfire.updateTablistHeader();
 
             if (!player.hasPlayedBefore()) {
                 final Webhooks hook = new Webhooks(Config.getString("webhooks.notifications"));

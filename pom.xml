@@ -27,10 +27,16 @@
             <version>1.15-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>com.github.firestartermc</groupId>
             <artifactId>kerosene</artifactId>
-            <version>615aea4dce</version>
+            <version>3c9e136ef0</version>
+            <scope>provided</scope>
+        </dependency>-->
+        <dependency>
+            <groupId>xyz.nkomarn</groupId>
+            <artifactId>Kerosene</artifactId>
+            <version>LATEST</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -110,6 +110,17 @@ public class CampfireCommand implements CommandExecutor {
                 }
             }
 
+            // Create potion effect slots
+            try (Connection connection1 = LocalStorage.getConnection()) {
+                try (PreparedStatement statement = connection1.prepareStatement("REPLACE INTO potions (uuid, slot1," +
+                        " slot2, slot3) VALUES (?, 'NONE', 'NONE', 'NONE');")) {
+                    statement.setString(1, offlinePlayer.getUniqueId().toString());
+                    statement.execute();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
             if (offlinePlayer.isOnline()) {
                 final Player player = (Player) offlinePlayer;
                 AdvancementUtil.grantAdvancement(player, "spark");

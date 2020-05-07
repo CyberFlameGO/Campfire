@@ -1,7 +1,13 @@
 package xyz.nkomarn.Campfire.listener;
 
+import net.minecraft.server.v1_15_R1.BlockPosition;
+import net.minecraft.server.v1_15_R1.PacketPlayOutBlockAction;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,6 +18,8 @@ import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import xyz.nkomarn.Kerosene.util.VanishUtil;
+
+import java.lang.reflect.Field;
 
 public class VanishListener implements Listener {
     @EventHandler(ignoreCancelled = true)

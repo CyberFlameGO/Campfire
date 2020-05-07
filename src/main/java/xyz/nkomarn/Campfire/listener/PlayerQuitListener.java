@@ -27,11 +27,6 @@ public class PlayerQuitListener implements Listener {
             });
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
-            Bukkit.getOnlinePlayers().forEach(onlinePlayer -> onlinePlayer.setPlayerListHeader(ChatColor
-                    .translateAlternateColorCodes('&', String.format(Config.getString("tablist.header"),
-                            (Bukkit.getOnlinePlayers().size() - 1) - VanishUtil.getVanishedPlayers().size()
-            ))));
-        });
+        Campfire.updateTablistHeader();
     }
 }

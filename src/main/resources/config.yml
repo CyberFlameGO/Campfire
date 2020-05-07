@@ -94,3 +94,11 @@ ranks:
 webhooks:
   notifications: ""
   moderation: ""
+
+perks:
+  potions:
+    SPEED:
+      item: FEATHER
+      level: 2
+      name: "&f&lSpeed"
+      lore: "&7Speed II"

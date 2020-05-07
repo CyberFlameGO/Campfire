@@ -23,7 +23,7 @@ import java.util.UUID;
 
 public class RanksMenu {
     public RanksMenu(final Player player) {
-        final Inventory menu = Bukkit.createInventory(new GuiHolder(GuiType.RANKS, 1), 27, "Ranks");
+        Inventory menu = Bukkit.createInventory(new GuiHolder(GuiType.RANKS, 1), 27, "Ranks");
 
         ItemStack glass = new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1);
         ItemMeta glassMeta = glass.getItemMeta();

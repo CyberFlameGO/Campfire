@@ -10,12 +10,18 @@ depend: ['Kerosene', 'GriefPrevention']
 commands:
   campfire:
     description: "Base Campfire management command."
+  colorcodes:
+    description: "View all of the usable in-game color codes."
+    aliases: ['colors', 'color']
   wild:
     description: "Teleport to a random location in the world."
     aliases: ['rtp', 'wildtp']
   toggle:
     description: "Toggle various features of the server."
     aliases: ['toggles', 'change', 'switch', 'enable', 'disable']
+  #perks:
+  #  description: "View and manage your donor perks."
+  #  aliases: ['donor', 'spark']
   playtime:
     description: "View your total playtime on the server."
     aliases: ["joined", "played", "timeplayed"]
@@ -27,11 +33,13 @@ commands:
   setslots:
     description: "Adjust the maximum player slot count while the server is running."
     permission: "campfire.admin"
-  vanish:
-    description: "Vanish from online players."
-    aliases: ['v']
-    permission: "firestarter.vanish"
+  #vanish:
+  #  description: "Vanish from online players."
+  #  aliases: ['v']
+  #  permission: "firestarter.vanish"
 
 permissions:
+  campfire.perk.potions:
+    default: op
   campfire.admin:
     default: op
