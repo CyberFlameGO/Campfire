@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import xyz.nkomarn.Kerosene.util.AdvancementUtil;
 
 public class PlayerCommandPreProcessListener implements Listener {
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerCommandPreProcess(PlayerCommandPreprocessEvent event) {
         final Player player = event.getPlayer();
         final String[] message = event.getMessage().split("\\s+");

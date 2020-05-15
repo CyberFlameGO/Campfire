@@ -23,32 +23,32 @@ import xyz.nkomarn.Kerosene.util.AdvancementUtil;
  * that requires integration with other plugin APIs.
  */
 public class AdvancementCriteriaListener implements Listener {
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onAuctionBuy(AuctionBuyEvent event) { // TODO doesn't work right, might have to modify the API
         AdvancementUtil.grantAdvancement(event.getPlayer(), "ah-sold");
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onAuctionList(AuctionListEvent event) {
         AdvancementUtil.grantAdvancement(event.getPlayer(), "ah-sell");
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onShopCreated(ShopCreatedEvent event) {
         AdvancementUtil.grantAdvancement(event.getPlayer(), "chestshop-create");
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onTransaction(PreTransactionEvent event) {
         AdvancementUtil.grantAdvancement(event.getClient(), "chestshop-buy");
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onAccrueClaimBlocks(AccrueClaimBlocksEvent event) {
         AdvancementUtil.grantAdvancement(event.getPlayer(), "claim-blocks");
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onClaimCreated(ClaimCreatedEvent event) {
         AdvancementUtil.grantAdvancement((Player) event.getCreator(), "claim");
     }
@@ -58,27 +58,27 @@ public class AdvancementCriteriaListener implements Listener {
         AdvancementUtil.grantAdvancement(event.getChanger(), "claim-trust");
     }*/
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerPrize(PlayerPrizeEvent event) {
         AdvancementUtil.grantAdvancement(event.getPlayer(), "crates");
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onJobJoin(JobsJoinEvent event) {
         AdvancementUtil.grantAdvancement(event.getPlayer().getPlayer(), "jobs-join");
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPetActiveSkill(MyPetActivatedEvent event) {
         AdvancementUtil.grantAdvancement(event.getOwner().getPlayer(), "pets-skilltree");
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPetCreated(MyPetCreateEvent event) {
         AdvancementUtil.grantAdvancement(event.getOwner().getPlayer(), "pets-tame");
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onVote(VotifierEvent event) {
         final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(event.getVote().getUsername());
         if (offlinePlayer.isOnline()) {

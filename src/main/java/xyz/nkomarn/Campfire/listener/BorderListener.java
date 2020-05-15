@@ -17,12 +17,12 @@ public class BorderListener implements Listener {
         Border.sendBorder(event.getPlayer());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onWorldChange(PlayerChangedWorldEvent event) {
         Border.sendBorder(event.getPlayer());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onRespawn(PlayerRespawnEvent event) {
         Border.sendBorder(event.getPlayer());
     }

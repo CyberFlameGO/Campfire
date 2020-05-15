@@ -11,7 +11,7 @@ import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Kerosene.util.ToggleUtil;
 
 public class EntitySpawnListener implements Listener {
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntitySpawn(EntitySpawnEvent event) {
         if (!(event.getEntity() instanceof ArmorStand)) return;
 

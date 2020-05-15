@@ -17,7 +17,7 @@ public class TransactionListener implements Listener {
     private final String query = "INSERT INTO `shop_log` (`uuid`, `type`, `amount`, `price`) VALUES (?, ?, ?, ?) " +
             "ON DUPLICATE KEY UPDATE `amount` = `amount` + ?, `price` = `price` + ?;";
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onTransaction(TransactionEvent event) {
         OfflinePlayer shopOwner = Bukkit.getOfflinePlayer(event.getOwnerAccount().getUuid());
         if (!shopOwner.isOnline()) {

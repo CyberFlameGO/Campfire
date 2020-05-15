@@ -15,7 +15,7 @@ import xyz.nkomarn.Campfire.util.Config;
 import java.util.Collections;
 
 public class EntityPickupItemListener implements Listener {
-    @EventHandler // Add bee count to the lore of bee nests and beehives
+    @EventHandler(ignoreCancelled = true) // Add bee count to the lore of bee nests and beehives
     public void onEntityPickupItem(EntityPickupItemEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         final ItemStack pickedUpItem = event.getItem().getItemStack();

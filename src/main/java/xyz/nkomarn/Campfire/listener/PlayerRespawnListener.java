@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import xyz.nkomarn.Campfire.util.Config;
 
 public class PlayerRespawnListener implements Listener {
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         event.getPlayer().sendTitle(ChatColor.translateAlternateColorCodes('&',
                 Config.getString("messages.death.top")), ChatColor.translateAlternateColorCodes('&',
