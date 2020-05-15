@@ -1,11 +1,11 @@
 name: Campfire
-version: 3.1
+version: 3.2
 author: TechToolbox (@nkomarn)
 main: xyz.nkomarn.Campfire.Campfire
 description: Firestarter's package of basic server utilities.
 website: https://firestartermc.com/opensource
 api-version: 1.15
-depend: ['Kerosene', 'GriefPrevention']
+depend: ['Kerosene', 'GriefPrevention', 'Chairs']
 
 commands:
   campfire:
@@ -19,9 +19,9 @@ commands:
   toggle:
     description: "Toggle various features of the server."
     aliases: ['toggles', 'change', 'switch', 'enable', 'disable']
-  #perks:
-  #  description: "View and manage your donor perks."
-  #  aliases: ['donor', 'spark']
+  perks:
+    description: "View and manage your donor perks."
+    aliases: ['donor', 'spark']
   playtime:
     description: "View your total playtime on the server."
     aliases: ["joined", "played", "timeplayed"]
@@ -33,13 +33,22 @@ commands:
   setslots:
     description: "Adjust the maximum player slot count while the server is running."
     permission: "campfire.admin"
+  shoplog:
+    description: "View the items that were sold from your shops while you were offline."
+  skull:
+    description: "Obtain another player's head, even if they're offline."
+    permission: "campfire.perks.skull"
   #vanish:
   #  description: "Vanish from online players."
   #  aliases: ['v']
   #  permission: "firestarter.vanish"
 
 permissions:
-  campfire.perk.potions:
+  campfire.perks:
+    default: op
+  campfire.perks.potions:
+    default: op
+  campfire.perks.skull:
     default: op
   campfire.admin:
     default: op

@@ -33,9 +33,7 @@ public class Maps {
                 try (ResultSet result = statement.executeQuery()) {
                     while (result.next()) {
                         MapView view = Bukkit.getMap(result.getInt(2));
-                        if (view == null) {
-                            LOGGER.warning(String.format("Failed to load map #%s.", result.getInt(2)));
-                        } else {
+                        if (view != null) {
                             view.getRenderers().forEach(view::removeRenderer);
 
                             try {

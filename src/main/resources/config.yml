@@ -29,26 +29,6 @@ tablist:
       color: "RESET"
       prefix: ""
 
-wild:
-  cooldown: 5
-  world: "world"
-  min:
-    x: -3125
-    z: -3125
-  max:
-    x: 3125
-    z: 3125
-  title:
-    finding:
-      top: "&6&lLooking for a location..."
-      bottom: "&rHang tight until you arrive."
-    teleported:
-      top: "&6&lWelcome... home?"
-      bottom: "&rYou've arrived at an uninhabited location."
-    cooldown:
-      top: "&c&lCan't teleport just yet."
-      bottom: "&rWait [minutes] more minute(s)."
-
 playtime:
   60:
     name: "camper"
@@ -101,4 +81,58 @@ perks:
       item: FEATHER
       level: 2
       name: "&f&lSpeed"
-      lore: "&7Speed II"
+      lore: "&7Level II"
+    JUMP:
+      item: RABBIT_FOOT
+      level: 2
+      name: "&f&lJump Boost"
+      lore: "&7Level II"
+    INCREASE_DAMAGE:
+      item: IRON_AXE
+      level: 2
+      name: "&f&lStrength"
+      lore: "&7Level II"
+    NIGHT_VISION:
+      item: GOLDEN_CARROT
+      level: 1
+      name: "&f&lNight Vision"
+      lore: "&7Level I"
+    WATER_BREATHING:
+      item: PUFFERFISH
+      level: 1
+      name: "&f&lWater Breathing"
+      lore: "&7Level I"
+    SLOW_FALLING:
+      item: PHANTOM_MEMBRANE
+      level: 2
+      name: "&f&lSlow Falling"
+      lore: "&7Level II"
+
+world:
+  border:
+    worlds:
+      world: 50000
+      world_nether: 30000
+      world_the_end: 50000
+    message: "&4&lBorder: &7You crossed the world border, so you have been put back at spawn."
+  wild:
+    cooldown: 5
+    world: "world"
+    min:
+      x: -3125
+      y: 62
+      z: -3125
+    max:
+      x: 3125
+      y: 80
+      z: 3125
+    title:
+      finding:
+        top: "&6&lLooking for a location..."
+        bottom: "&rHang tight until you arrive."
+      teleported:
+        top: "&6&lWelcome... home?"
+        bottom: "&rYou've arrived at an uninhabited location."
+      cooldown:
+        top: "&c&lCan't teleport just yet."
+        bottom: "&rWait [minutes] more minute(s)."

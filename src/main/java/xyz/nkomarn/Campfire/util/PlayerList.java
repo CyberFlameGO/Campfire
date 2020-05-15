@@ -6,15 +6,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import xyz.nkomarn.Campfire.Campfire;
+import xyz.nkomarn.Kerosene.util.VanishUtil;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Utility class to manage the player list ranks
- * using scoreboard teams.
+ * Utility class to manage the player list and
+ * ranks using scoreboard teams.
  */
-public class Teams {
+public class PlayerList {
     private static final Scoreboard SCOREBOARD = Bukkit.getServer().getScoreboardManager().getMainScoreboard();
     private static final List<String> TEAM_PRIORITY = Config.getConfig().getStringList("tablist.priority");
 
@@ -58,5 +60,15 @@ public class Teams {
                     String.format("tablist.teams.%s.prefix", team)));
         }
         scoreboardTeam.addEntry(player.getName());
+    }
+
+    /**
+     * Updates the header with the amount of currently online players.
+     */
+    public static void updateHeader() {
+        String header = ChatColor.translateAlternateColorCodes('&', String.format(Config.getString("tablist.header"),
+                Bukkit.getOnlinePlayers().size() - VanishUtil.getOnlineVanishedPlayers().size()));
+        Bukkit.getScheduler().runTaskLaterAsynchronously(Campfire.getCampfire(), () -> Bukkit.getOnlinePlayers()
+                .forEach(player -> player.setPlayerListHeader(header)), 2L);
     }
 }

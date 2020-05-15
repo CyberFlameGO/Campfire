@@ -13,17 +13,15 @@ import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
 import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Campfire.maps.FastMapRenderer;
-import xyz.nkomarn.Campfire.util.Teams;
+import xyz.nkomarn.Campfire.util.PlayerList;
 import xyz.nkomarn.Kerosene.data.LocalStorage;
 import xyz.nkomarn.Kerosene.data.PlayerData;
 import xyz.nkomarn.Kerosene.util.AdvancementUtil;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -86,53 +84,30 @@ public class CampfireCommand implements CommandExecutor {
             if (args.length < 2) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         "&6&lUsage: &7Provide a username to mark as donor."));
-                return true;
-            }
-
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[1]);
-            Connection connection = null;
-
-            try {
-                connection = PlayerData.getConnection();
-                PreparedStatement statement = connection.prepareStatement("UPDATE `playerdata` SET `donor` = TRUE " +
-                        "WHERE `uuid` = ?;");
-                statement.setString(1, offlinePlayer.getUniqueId().toString());
-                statement.execute();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    try {
-                        connection.close();
+            } else {
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[1]);
+                Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
+                    try (Connection connection = PlayerData.getConnection()) {
+                        try (PreparedStatement statement = connection.prepareStatement("UPDATE `playerdata` SET " +
+                                "`donor` = TRUE WHERE `uuid` = ?;")) {
+                            statement.setString(1, offlinePlayer.getUniqueId().toString());
+                            statement.executeUpdate();
+                        }
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
+                });
+
+                if (offlinePlayer.isOnline()) {
+                    AdvancementUtil.grantAdvancement((Player) offlinePlayer, "spark");
                 }
+
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&a&lSuccess: &7Marked the player as a donor."));
             }
-
-            // Create potion effect slots
-            try (Connection connection1 = LocalStorage.getConnection()) {
-                try (PreparedStatement statement = connection1.prepareStatement("REPLACE INTO potions (uuid, slot1," +
-                        " slot2, slot3) VALUES (?, 'NONE', 'NONE', 'NONE');")) {
-                    statement.setString(1, offlinePlayer.getUniqueId().toString());
-                    statement.execute();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            if (offlinePlayer.isOnline()) {
-                final Player player = (Player) offlinePlayer;
-                AdvancementUtil.grantAdvancement(player, "spark");
-            }
-
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&a&lSuccess: &7Marked the player as a donor."));
-        } else if (args[0].
-
-                equalsIgnoreCase("updatelist")) {
+        } else if (args[0].equalsIgnoreCase("updatelist")) {
             Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
-                Bukkit.getOnlinePlayers().forEach(Teams::updateTeams);
+                Bukkit.getOnlinePlayers().forEach(PlayerList::updateTeams);
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         "&a&lSuccess: &7Updated the ranks in player list."));
             });

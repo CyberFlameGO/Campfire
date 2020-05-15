@@ -15,6 +15,8 @@ import java.util.UUID;
 /**
  * Custom implementation of the Bukkit MapRenderer that caches which players
  * the image was rendered for to reduce map rendering lag.
+ *
+ * Also renders the map asynchronously- not sure if this is totally safe yet.
  */
 public class FastMapRenderer extends MapRenderer {
     private final BufferedImage image;

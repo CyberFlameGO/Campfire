@@ -4,7 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import xyz.nkomarn.Campfire.gui.menu.TogglesMenu;
+import xyz.nkomarn.Campfire.gui.TogglesMenu;
 
 public class TogglesCommand implements CommandExecutor {
     @Override

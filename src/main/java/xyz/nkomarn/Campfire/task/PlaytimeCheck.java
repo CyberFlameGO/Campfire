@@ -10,7 +10,7 @@ import xyz.nkomarn.Campfire.util.Config;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class PlaytimeChecker implements Runnable {
+public class PlaytimeCheck implements Runnable {
     @Override
     public void run() {
         Set<Integer> times = Config.getConfig().getConfigurationSection("playtime").getKeys(false)
