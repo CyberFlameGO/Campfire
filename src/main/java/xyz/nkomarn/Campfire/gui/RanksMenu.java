@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * A Gui menu displaying all of the obtainable
+ * ranks on the server, including playtime ranks.
+ */
 public class RanksMenu extends Gui {
     public RanksMenu(final Player player) {
         super(player, "Ranks", 27);
@@ -58,7 +62,7 @@ public class RanksMenu extends Gui {
      */
     private List<String> getLore(final String rank) {
         final List<String> lore = new ArrayList<>();
-        for (String line : Config.getConfig().getStringList(String.format("ranks.%s", rank))) {
+        for (String line : Config.getConfig().getStringList(String.format("perks.ranks.%s", rank))) {
             lore.add(ChatColor.translateAlternateColorCodes('&', line));
         }
         return lore;

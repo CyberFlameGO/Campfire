@@ -15,11 +15,11 @@ public class VanishCommand implements CommandExecutor {
 
         if (VanishUtil.isVanished(player)) {
             VanishUtil.showPlayer(player);
-            Campfire.updateTablistHeader();
+            //Campfire.updateTablistHeader();
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lVanish: &7You are no longer vanished."));
         } else {
             VanishUtil.hidePlayer(player);
-            Campfire.updateTablistHeader();
+            //Campfire.updateTablistHeader();
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lVanish: &7You are now vanished."));
         }
         return true;

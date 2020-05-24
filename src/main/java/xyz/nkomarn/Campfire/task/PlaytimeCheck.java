@@ -13,15 +13,15 @@ import java.util.stream.Collectors;
 public class PlaytimeCheck implements Runnable {
     @Override
     public void run() {
-        Set<Integer> times = Config.getConfig().getConfigurationSection("playtime").getKeys(false)
+        Set<Integer> times = Config.getConfig().getConfigurationSection("perks.playtime").getKeys(false)
                 .stream().map(Integer::parseInt).collect(Collectors.toSet());
 
         Bukkit.getOnlinePlayers().forEach(player -> {
             int playtime = (player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20) / 60;
             times.forEach(time -> {
-                String rankName = Config.getString(String.format("playtime.%s.name", time));
+                String rankName = Config.getString(String.format("perks.playtime.%s.name", time));
                 if (playtime >= time && !player.hasPermission(String.format("group.%s", rankName))) {
-                    Config.getConfig().getStringList(String.format("playtime.%s.commands", time)).forEach(command ->
+                    Config.getConfig().getStringList(String.format("perks.playtime.%s.commands", time)).forEach(command ->
                             Bukkit.getScheduler().callSyncMethod(Campfire.getCampfire(), () -> Bukkit.dispatchCommand(
                                     Bukkit.getConsoleSender(), command.replace("[player]", player.getName()
                     ))));

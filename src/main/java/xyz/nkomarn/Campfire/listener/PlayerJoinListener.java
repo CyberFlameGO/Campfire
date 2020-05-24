@@ -78,7 +78,7 @@ public class PlayerJoinListener implements Listener {
                     e.printStackTrace();
                 }
             } else {
-                final Webhooks hook = new Webhooks(Config.getString("webhooks.notifications"));
+                Webhooks hook = new Webhooks(Config.getString("webhooks.notifications"));
                 hook.addEmbed(new Webhooks.EmbedObject()
                         .setDescription(":checkered_flag: " + event.getPlayer().getName() + " joined!")
                         .setColor(Color.WHITE));

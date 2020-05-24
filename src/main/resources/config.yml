@@ -1,4 +1,5 @@
 messages:
+  border: "&4&lBorder: &7You crossed the world border, so you have been put back at spawn."
   join:
     top: "&c&lFire&6&lstar&e&lter"
     bottom: "&rWelcome back."
@@ -29,53 +30,51 @@ tablist:
       color: "RESET"
       prefix: ""
 
-playtime:
-  60:
-    name: "camper"
-    commands:
-      - "lp user [player] parent add camper"
-      - "eco give [player] 100"
-  1440:
-    name: "pioneer"
-    commands:
-      - "lp user [player] parent add pioneer"
-      - "eco give [player] 500"
-  5760:
-    name: "vanguard"
-    commands:
-      - "lp user [player] parent add vanguard"
-      - "eco give [player] 1000"
-
-ranks:
-  scout:
-    - "&aDefault rank"
-    - "&71 job slot"
-    - "&79 pet slots"
-  camper:
-    - "&7Playtime: &b1 hour"
-    - "&72 job slot"
-    - "&718 pet slots"
-    - "&a+ $100"
-  pioneer:
-    - "&7Playtime: &b1 day"
-    - "&73 job slot"
-    - "&727 pet slots"
-    - "&a+ $500"
-  vanguard:
-    - "&7Playtime: &b5 days"
-    - "&75 job slot"
-    - "&736 pet slots"
-    - "&a+ $1,000"
-  spark:
-    - "&dDonor rank"
-    - "&7All Vanguard rewards"
-    - "&f+ extras (use /buy)"
-
 webhooks:
   notifications: ""
   moderation: ""
 
 perks:
+  playtime:
+    60:
+      name: "camper"
+      commands:
+        - "lp user [player] parent add camper"
+        - "eco give [player] 100"
+    1440:
+      name: "pioneer"
+      commands:
+        - "lp user [player] parent add pioneer"
+        - "eco give [player] 500"
+    5760:
+      name: "vanguard"
+      commands:
+        - "lp user [player] parent add vanguard"
+        - "eco give [player] 1000"
+  ranks:
+    scout:
+      - "&aDefault rank"
+      - "&71 job slot"
+      - "&79 pet slots"
+    camper:
+      - "&7Playtime: &b1 hour"
+      - "&72 job slot"
+      - "&718 pet slots"
+      - "&a+ $100"
+    pioneer:
+      - "&7Playtime: &b1 day"
+      - "&73 job slot"
+      - "&727 pet slots"
+      - "&a+ $500"
+    vanguard:
+      - "&7Playtime: &b5 days"
+      - "&75 job slot"
+      - "&736 pet slots"
+      - "&a+ $1,000"
+    spark:
+      - "&dDonor rank"
+      - "&7All Vanguard rewards except $$$"
+      - "&f+ extras (use /buy)"
   potions:
     SPEED:
       item: FEATHER
@@ -114,7 +113,6 @@ world:
       world: 50000
       world_nether: 30000
       world_the_end: 50000
-    message: "&4&lBorder: &7You crossed the world border, so you have been put back at spawn."
   wild:
     cooldown: 5
     world: "world"

@@ -14,7 +14,7 @@ public class BorderCheck implements Runnable{
     @Override
     public void run() {
         Bukkit.getOnlinePlayers().forEach(player -> {
-            if (Border.isLocationOutsideBorder(player.getLocation()) /*&& !player.hasPermission("campfire.admin")*/) {
+            if (!player.hasPermission("campfire.admin") && Border.isLocationOutsideBorder(player.getLocation())) {
                 if (player.isInsideVehicle()) {
                     player.leaveVehicle();
                 }
