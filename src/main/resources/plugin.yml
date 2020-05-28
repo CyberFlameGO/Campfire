@@ -30,6 +30,8 @@ commands:
   ranks:
     description: "View all of our ranks on the server."
     aliases: ['rank']
+  report:
+    description: "Report a player to the staff team with a reason."
   setslots:
     description: "Adjust the maximum player slot count while the server is running."
     permission: "campfire.admin"
@@ -49,6 +51,8 @@ permissions:
   campfire.perks.potions:
     default: op
   campfire.perks.skull:
+    default: op
+  campfire.staff:
     default: op
   campfire.admin:
     default: op

@@ -10,7 +10,7 @@ import xyz.nkomarn.Campfire.util.Config;
  * A repeating task that makes sure everyone online
  * is within the artificial border set for each world.
  */
-public class BorderCheck implements Runnable{
+public class BorderCheck implements Runnable {
     @Override
     public void run() {
         Bukkit.getOnlinePlayers().forEach(player -> {
@@ -21,7 +21,7 @@ public class BorderCheck implements Runnable{
 
                 Bukkit.getScheduler().callSyncMethod(Campfire.getCampfire(), () -> Bukkit.getServer()
                         .dispatchCommand(Bukkit.getConsoleSender(), String.format("spawn %s", player.getName())));
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', Config.getString("world.border.message")));
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', Config.getString("messages.border")));
             }
         });
     }

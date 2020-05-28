@@ -28,16 +28,20 @@ public class ShopLogCommand implements CommandExecutor {
                             "FROM `shop_log` WHERE `uuid` = ?")) {
                         statement.setString(1, player.getUniqueId().toString());
                         try (ResultSet result = statement.executeQuery()) {
-                            StringBuilder log = new StringBuilder("&f&m&l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+                            StringBuilder log = new StringBuilder("&r \n"
                                     + "&6&lSHOP LOG:\n");
+                            boolean empty = true;
                             while (result.next()) {
+                                empty = false;
                                 log.append(String.format("&6%sx &7%s (&6$%s&7)\n",
                                         result.getInt(2),
                                         WordUtils.capitalize(result.getString(1).toLowerCase().replace("_", " ")),
                                         NumberFormat.getNumberInstance(Locale.US).format(result.getDouble(3))
                                 ));
                             }
-                            log.append("&f&m&l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+
+                            if (empty) log.append("&7(Nothing to see here)\n");
+                            log.append("&r ");
                             player.sendMessage(ChatColor.translateAlternateColorCodes('&', log.toString()));
                         }
                     }

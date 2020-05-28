@@ -39,6 +39,7 @@ public class Campfire extends JavaPlugin {
         getCommand("playtime").setExecutor(new PlaytimeCommand());
         getCommand("pvp").setExecutor(new PvPCommand());
         getCommand("ranks").setExecutor(new RanksCommand());
+        getCommand("report").setExecutor(new ReportCommand());
         getCommand("toggle").setExecutor(new TogglesCommand());
         getCommand("setslots").setExecutor(new SetSlotsCommand());
         getCommand("shoplog").setExecutor(new ShopLogCommand());

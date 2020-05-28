@@ -37,11 +37,11 @@ public class Border {
      * @return Whether the given location would land outside of the border.
      */
     public static boolean isLocationOutsideBorder(Location location) {
-        int border = getWorldBorder(location.getWorld());
+        int border = getWorldBorder(location.getWorld()); // Assume this is 50,000
         return location.getBlockX() > border ||
                 location.getBlockX() < -border ||
-                location.getBlockY() > border ||
-                location.getBlockY() < -border;
+                location.getBlockZ() > border ||
+                location.getBlockZ() < -border;
     }
 
     /**

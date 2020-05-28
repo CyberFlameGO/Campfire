@@ -42,10 +42,10 @@ public class PlaytimeCommand implements CommandExecutor {
                     try (ResultSet result = statement.executeQuery()) {
                         if (result.next()) {
                             int playtime = (player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20) / 60;
-                            String message = "&f&m&l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n" +
-                                    String.format("&7Playtime: &a%s\n", intToTimeString(playtime)) +
-                                    String.format("&7Join date: &a%s UTC\n", FORMAT.format(result.getLong(1))) +
-                                    "&f&m&l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+                            String message = "&r \n" +
+                                    String.format("&f&lPlaytime: &a%s\n", intToTimeString(playtime)) +
+                                    String.format("&f&lJoin date: &a%s UTC\n", FORMAT.format(result.getLong(1))) +
+                                    "&r ";
                             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
                         } else {
                             sender.sendMessage(ChatColor.translateAlternateColorCodes('&',

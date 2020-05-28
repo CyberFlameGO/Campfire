@@ -46,7 +46,7 @@ perks:
       commands:
         - "lp user [player] parent add pioneer"
         - "eco give [player] 500"
-    5760:
+    7200:
       name: "vanguard"
       commands:
         - "lp user [player] parent add vanguard"
