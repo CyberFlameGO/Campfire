@@ -8,7 +8,6 @@ import de.Keyle.MyPet.api.event.MyPetActivatedEvent;
 import de.Keyle.MyPet.api.event.MyPetCreateEvent;
 import me.badbones69.crazyauctions.api.events.AuctionBuyEvent;
 import me.badbones69.crazyauctions.api.events.AuctionListEvent;
-import me.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import me.ryanhamshire.GriefPrevention.events.AccrueClaimBlocksEvent;
 import me.ryanhamshire.GriefPrevention.events.ClaimCreatedEvent;
 import org.bukkit.Bukkit;
@@ -16,13 +15,14 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import xyz.nkomarn.Barrel.event.CrateRewardEvent;
 import xyz.nkomarn.Kerosene.util.AdvancementUtil;
 
 /**
  * Listener class for all custom advancement criteria
  * that requires integration with other plugin APIs.
  */
-public class AdvancementCriteriaListener implements Listener {
+public class AdvancementCriterionListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onAuctionBuy(AuctionBuyEvent event) { // TODO doesn't work right, might have to modify the API
         AdvancementUtil.grantAdvancement(event.getPlayer(), "ah-sold");
@@ -59,7 +59,7 @@ public class AdvancementCriteriaListener implements Listener {
     }*/
 
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerPrize(PlayerPrizeEvent event) {
+    public void onPlayerPrize(CrateRewardEvent event) {
         AdvancementUtil.grantAdvancement(event.getPlayer(), "crates");
     }
 

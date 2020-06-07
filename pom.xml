@@ -58,9 +58,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.FirestarterMC</groupId>
-            <artifactId>Crazy-Crates</artifactId>
-            <version>afbdb6ad19</version>
+            <groupId>xyz.nkomarn</groupId>
+            <artifactId>Barrel</artifactId>
+            <version>1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

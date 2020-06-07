@@ -18,7 +18,7 @@ public class Campfire extends JavaPlugin {
         saveDefaultConfig();
 
         Arrays.asList(
-                new AdvancementCriteriaListener(),
+                new AdvancementCriterionListener(),
                 new BorderListener(),
                 new EntityPickupItemListener(),
                 new EntitySpawnListener(),
