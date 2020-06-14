@@ -53,7 +53,13 @@ public class PvPListener implements Listener {
                 }
             }
         } else if (event.getDamager() instanceof Firework && event.getEntity() instanceof Player) {
-            if (!ENABLED_PLAYERS.contains(event.getEntity().getUniqueId())) {
+            LivingEntity boostedEntity = ((Firework) event.getDamager()).getBoostedEntity();
+
+            if (boostedEntity instanceof Player) {
+                if (isPvPDisabled((Player) event.getEntity(), (Player) boostedEntity)) {
+                    event.setCancelled(true);
+                }
+            } else {
                 event.setCancelled(true);
             }
         }

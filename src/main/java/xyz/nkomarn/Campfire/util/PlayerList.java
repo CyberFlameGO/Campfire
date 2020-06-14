@@ -8,7 +8,6 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import xyz.nkomarn.Campfire.Campfire;
-import xyz.nkomarn.Kerosene.util.VanishUtil;
 
 import java.util.*;
 import java.util.stream.Collectors;

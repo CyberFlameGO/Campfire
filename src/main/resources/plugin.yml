@@ -40,10 +40,6 @@ commands:
   skull:
     description: "Obtain another player's head, even if they're offline."
     permission: "campfire.perks.skull"
-  #vanish:
-  #  description: "Vanish from online players."
-  #  aliases: ['v']
-  #  permission: "firestarter.vanish"
 
 permissions:
   campfire.perks:

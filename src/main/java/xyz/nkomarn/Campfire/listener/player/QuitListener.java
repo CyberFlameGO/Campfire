@@ -8,10 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Campfire.listener.PvPListener;
-import xyz.nkomarn.Campfire.util.Config;
 import xyz.nkomarn.Campfire.util.PlayerList;
 import xyz.nkomarn.Kerosene.data.PlayerData;
-import xyz.nkomarn.Kerosene.util.VanishUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
