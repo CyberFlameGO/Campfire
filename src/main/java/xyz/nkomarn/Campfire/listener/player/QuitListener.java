@@ -1,4 +1,4 @@
-package xyz.nkomarn.Campfire.listener;
+package xyz.nkomarn.Campfire.listener.player;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import xyz.nkomarn.Campfire.Campfire;
+import xyz.nkomarn.Campfire.listener.PvPListener;
 import xyz.nkomarn.Campfire.util.Config;
 import xyz.nkomarn.Campfire.util.PlayerList;
 import xyz.nkomarn.Kerosene.data.PlayerData;
@@ -16,9 +17,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class PlayerQuitListener implements Listener {
+public class QuitListener implements Listener {
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
+    public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         PvPListener.ENABLED_PLAYERS.remove(event.getPlayer().getUniqueId());
         PlayerList.updateHeader();

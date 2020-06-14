@@ -1,5 +1,6 @@
 package xyz.nkomarn.Campfire.util;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -66,9 +67,10 @@ public class PlayerList {
      * Updates the header with the amount of currently online players.
      */
     public static void updateHeader() {
-        String header = ChatColor.translateAlternateColorCodes('&', String.format(Config.getString("tablist.header"),
-                Bukkit.getOnlinePlayers().size() - VanishUtil.getOnlineVanishedPlayers().size()));
-        Bukkit.getScheduler().runTaskLaterAsynchronously(Campfire.getCampfire(), () -> Bukkit.getOnlinePlayers()
-                .forEach(player -> player.setPlayerListHeader(header)), 2L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(Campfire.getCampfire(), () -> {
+            String header = ChatColor.translateAlternateColorCodes('&', String.format(Config.getString("tablist.header"),
+                    Bukkit.getOnlinePlayers().size() - VanishAPI.getInvisiblePlayers().size()));
+            Bukkit.getOnlinePlayers().forEach(player -> player.setPlayerListHeader(header));
+        }, 5L);
     }
 }

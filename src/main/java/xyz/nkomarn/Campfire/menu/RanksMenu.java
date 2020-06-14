@@ -1,4 +1,4 @@
-package xyz.nkomarn.Campfire.gui;
+package xyz.nkomarn.Campfire.menu;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import xyz.nkomarn.Campfire.util.Config;
-import xyz.nkomarn.Kerosene.gui.Gui;
+import xyz.nkomarn.Kerosene.menu.Menu;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.UUID;
  * A Gui menu displaying all of the obtainable
  * ranks on the server, including playtime ranks.
  */
-public class RanksMenu extends Gui {
+public class RanksMenu extends Menu {
     public RanksMenu(final Player player) {
         super(player, "Ranks", 27);
         fill(Material.WHITE_STAINED_GLASS_PANE);

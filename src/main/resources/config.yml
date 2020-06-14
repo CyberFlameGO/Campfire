@@ -6,7 +6,6 @@ messages:
   death:
     top: "&c&lF"
     bottom: "&6/back to return to your death location."
-  beehive: "&6%s bees"
 
 tablist:
   header: "&r \n&c&lFire&6&lstar&e&lter\n&7&oSurvival Realm\n&r \n&7&oOnline players: %s"

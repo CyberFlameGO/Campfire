@@ -1,25 +1,22 @@
-package xyz.nkomarn.Campfire.gui;
+package xyz.nkomarn.Campfire.menu;
 
 import com.cnaude.chairs.core.Chairs;
 import com.cnaude.chairs.core.PlayerSitData;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Campfire.listener.PvPListener;
-import xyz.nkomarn.Kerosene.gui.Gui;
-import xyz.nkomarn.Kerosene.gui.GuiButton;
+import xyz.nkomarn.Kerosene.menu.Menu;
+import xyz.nkomarn.Kerosene.menu.MenuButton;
 import xyz.nkomarn.Kerosene.util.ToggleUtil;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-public class TogglesMenu extends Gui {
+public class TogglesMenu extends Menu {
     public TogglesMenu(Player player) {
         super(player, "Toggles", 27);
 
@@ -32,7 +29,7 @@ public class TogglesMenu extends Gui {
         armorStandToggleMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&f&lArmor Stand Arms"));
         armorStandToggleMeta.setLore(getStatusLore(ToggleUtil.getToggleState(uuid, "armor-stand-arms")));
         armorStandToggle.setItemMeta(armorStandToggleMeta);
-        addButton(new GuiButton(this, armorStandToggle, 12, (button, clickType) -> {
+        addButton(new MenuButton(this, armorStandToggle, 12, (button, clickType) -> {
             boolean state = toggleState(uuid, "armor-stand-arms");
             ItemMeta meta = button.getItem().getItemMeta();
             meta.setLore(getStatusLore(state));
@@ -44,7 +41,7 @@ public class TogglesMenu extends Gui {
         pvpToggleMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lPVP"));
         pvpToggleMeta.setLore(getStatusLore(PvPListener.ENABLED_PLAYERS.contains(uuid)));
         pvpToggle.setItemMeta(pvpToggleMeta);
-        addButton(new GuiButton(this, pvpToggle, 13, (button, clickType) -> {
+        addButton(new MenuButton(this, pvpToggle, 13, (button, clickType) -> {
             if (PvPListener.ENABLED_PLAYERS.contains(uuid)) {
                 PvPListener.ENABLED_PLAYERS.remove(uuid);
             } else {
@@ -61,7 +58,7 @@ public class TogglesMenu extends Gui {
         chairsToggleMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lChairs"));
         chairsToggleMeta.setLore(getStatusLore(!Chairs.getInstance().getPlayerSitData().isSittingDisabled(uuid)));
         chairsToggle.setItemMeta(chairsToggleMeta);
-        addButton(new GuiButton(this, chairsToggle, 14, (button, clickType) -> {
+        addButton(new MenuButton(this, chairsToggle, 14, (button, clickType) -> {
             PlayerSitData sitData = Chairs.getInstance().getPlayerSitData();
             if (sitData.isSittingDisabled(uuid)) {
                 sitData.enableSitting(uuid);

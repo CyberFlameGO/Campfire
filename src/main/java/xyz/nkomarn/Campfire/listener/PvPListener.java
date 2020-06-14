@@ -29,23 +29,33 @@ public class PvPListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
-            if (isPvPDisabled((Player) event.getDamager(), (Player) event.getEntity())) event.setCancelled(true);
+            if (isPvPDisabled((Player) event.getDamager(), (Player) event.getEntity())) {
+                event.setCancelled(true);
+            }
         } else if (event.getDamager() instanceof Projectile) {
             final Projectile arrow = (Projectile) event.getDamager();
             if (arrow.getShooter() instanceof Player && event.getEntity() instanceof Player) {
-                if (isPvPDisabled((Player) arrow.getShooter(), (Player) event.getEntity())) event.setCancelled(true);
+                if (isPvPDisabled((Player) arrow.getShooter(), (Player) event.getEntity())) {
+                    event.setCancelled(true);
+                }
             }
         } else if (event.getDamager() instanceof ThrownPotion) {
             final ThrownPotion potion = (ThrownPotion) event.getDamager();
             if (potion.getShooter() instanceof Player && event.getEntity() instanceof Player) {
-                if (isPvPDisabled((Player) potion.getShooter(), (Player) event.getEntity())) event.setCancelled(true);
+                if (isPvPDisabled((Player) potion.getShooter(), (Player) event.getEntity())) {
+                    event.setCancelled(true);
+                }
             }
         } else if (event.getDamager() instanceof LightningStrike) {
             if (event.getDamager().getMetadata("TRIDENT").size() >= 1 && event.getEntity() instanceof Player) {
-                if (!ENABLED_PLAYERS.contains(event.getEntity().getUniqueId())) event.setCancelled(true);
+                if (!ENABLED_PLAYERS.contains(event.getEntity().getUniqueId())) {
+                    event.setCancelled(true);
+                }
             }
         } else if (event.getDamager() instanceof Firework && event.getEntity() instanceof Player) {
-            if (!ENABLED_PLAYERS.contains(event.getEntity().getUniqueId())) event.setCancelled(true);
+            if (!ENABLED_PLAYERS.contains(event.getEntity().getUniqueId())) {
+                event.setCancelled(true);
+            }
         }
     }
 
@@ -54,7 +64,9 @@ public class PvPListener implements Listener {
         if (event.getCombuster() instanceof Arrow) {
             final Arrow arrow = (Arrow) event.getCombuster();
             if (arrow.getShooter() instanceof Player && event.getEntity() instanceof Player) {
-                if (isPvPDisabled((Player) arrow.getShooter(), (Player) event.getEntity())) event.setCancelled(true);
+                if (isPvPDisabled((Player) arrow.getShooter(), (Player) event.getEntity())) {
+                    event.setCancelled(true);
+                }
             }
         }
     }
@@ -64,7 +76,9 @@ public class PvPListener implements Listener {
         if (event.getPotion().getShooter() instanceof Player) {
             for (LivingEntity entity : event.getAffectedEntities()) {
                 if (entity instanceof Player) {
-                    if (isPvPDisabled((Player) event.getPotion().getShooter(), (Player) entity)) event.setCancelled(true);
+                    if (isPvPDisabled((Player) event.getPotion().getShooter(), (Player) entity)) {
+                        event.setCancelled(true);
+                    }
                 }
             }
         }
@@ -75,7 +89,9 @@ public class PvPListener implements Listener {
         if (event.getEntity().getSource() instanceof Player) {
             for (LivingEntity entity : event.getAffectedEntities()) {
                 if (entity instanceof Player) {
-                    if (isPvPDisabled((Player) event.getEntity().getSource(), (Player) entity)) event.setCancelled(true);
+                    if (isPvPDisabled((Player) event.getEntity().getSource(), (Player) entity)) {
+                        event.setCancelled(true);
+                    }
                 }
             }
         }
@@ -84,7 +100,9 @@ public class PvPListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerFish(PlayerFishEvent event) {
         if (event.getCaught() instanceof Player) {
-            if (isPvPDisabled(event.getPlayer(), (Player) event.getCaught())) event.setCancelled(true);
+            if (isPvPDisabled(event.getPlayer(), (Player) event.getCaught())) {
+                event.setCancelled(true);
+            }
         }
     }
 
@@ -97,7 +115,9 @@ public class PvPListener implements Listener {
     }
 
     private boolean isPvPDisabled(final Player attacker, final Player attacked) {
-        if (ENABLED_PLAYERS.contains(attacker.getUniqueId()) && ENABLED_PLAYERS.contains(attacked.getUniqueId())) {
+        if (attacker.equals(attacked)) {
+            return false;
+        } else if (ENABLED_PLAYERS.contains(attacker.getUniqueId()) && ENABLED_PLAYERS.contains(attacked.getUniqueId())) {
             return false;
         } else if (ENABLED_PLAYERS.contains(attacker.getUniqueId())) {
             attacker.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor

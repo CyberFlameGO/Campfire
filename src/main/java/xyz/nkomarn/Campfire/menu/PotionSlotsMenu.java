@@ -1,4 +1,4 @@
-package xyz.nkomarn.Campfire.gui;
+package xyz.nkomarn.Campfire.menu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,8 +12,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Campfire.util.Config;
 import xyz.nkomarn.Kerosene.data.PlayerData;
-import xyz.nkomarn.Kerosene.gui.Gui;
-import xyz.nkomarn.Kerosene.gui.GuiButton;
+import xyz.nkomarn.Kerosene.menu.Menu;
+import xyz.nkomarn.Kerosene.menu.MenuButton;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class PotionSlotsMenu extends Gui {
+public class PotionSlotsMenu extends Menu {
     public PotionSlotsMenu(Player player) {
         super(player, "Potion Slots", 27);
         fill(Material.WHITE_STAINED_GLASS_PANE);
@@ -32,14 +32,14 @@ public class PotionSlotsMenu extends Gui {
         ItemMeta backMeta = back.getItemMeta();
         backMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&lBack"));
         back.setItemMeta(backMeta);
-        addButton(new GuiButton(this, back, 10, (button, clickType) -> new PerksMenu(player)));
+        addButton(new MenuButton(this, back, 10, (button, clickType) -> new PerksMenu(player)));
 
         Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
             try (Connection connection = PlayerData.getConnection()) {
                 createSlots(connection, player);
                 Arrays.asList(1, 2, 3).forEach(slot -> {
                     if (player.hasPermission(String.format("campfire.perks.potions.%s", slot))) {
-                        addButton(new GuiButton(this, getSlotItem(connection, player, slot), 11 + slot, (button, shiftClicked) -> {
+                        addButton(new MenuButton(this, getSlotItem(connection, player, slot), 11 + slot, (button, shiftClicked) -> {
                             if (button.getItem().getType() != Material.BARRIER) new PotionSlotSelectionMenu(player, slot);
                         }));
                     } else {
@@ -51,7 +51,7 @@ public class PotionSlotsMenu extends Gui {
                                 ChatColor.GRAY + "use more effect slots."
                         ));
                         unavailable.setItemMeta(unavailableMeta);
-                        addButton(new GuiButton(this, unavailable, 11 + slot, (button, clickType) ->
+                        addButton(new MenuButton(this, unavailable, 11 + slot, (button, clickType) ->
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 0.8f, 1.0f)));
                     }
                 });

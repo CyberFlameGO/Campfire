@@ -1,4 +1,4 @@
-package xyz.nkomarn.Campfire.listener;
+package xyz.nkomarn.Campfire.listener.player;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,9 +22,9 @@ import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class PlayerJoinListener implements Listener {
+public class JoinListener implements Listener {
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         PlayerList.updateTeams(player);
         Border.sendBorder(player);

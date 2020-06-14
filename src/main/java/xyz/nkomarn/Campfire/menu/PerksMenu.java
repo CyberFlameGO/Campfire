@@ -1,4 +1,4 @@
-package xyz.nkomarn.Campfire.gui;
+package xyz.nkomarn.Campfire.menu;
 
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
@@ -7,8 +7,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import xyz.nkomarn.Campfire.Campfire;
-import xyz.nkomarn.Kerosene.gui.Gui;
-import xyz.nkomarn.Kerosene.gui.GuiButton;
+import xyz.nkomarn.Kerosene.menu.Menu;
+import xyz.nkomarn.Kerosene.menu.MenuButton;
 
 import java.util.Arrays;
 
@@ -16,7 +16,7 @@ import java.util.Arrays;
  * The donor perks menu. This menu features things like potion slots,
  * particle effects, and many more intended to reward donors.
  */
-public class PerksMenu extends Gui {
+public class PerksMenu extends Menu {
     public PerksMenu(Player player) {
         super(player, "Donor Perks", 27);
         fill(Material.WHITE_STAINED_GLASS_PANE);
@@ -32,7 +32,7 @@ public class PerksMenu extends Gui {
         potionsMeta.addEnchant(Enchantment.MENDING, 1, true);
         potionsMeta.setColor(Color.fromRGB(255, 95, 195));
         potions.setItemMeta(potionsMeta);
-        addButton(new GuiButton(this, potions, 10, (button, clickType) -> new PotionSlotsMenu(player)));
+        addButton(new MenuButton(this, potions, 10, (button, clickType) -> new PotionSlotsMenu(player)));
 
         ItemStack particles = new ItemStack(Material.PINK_TULIP);
         ItemMeta particlesMeta = particles.getItemMeta();
@@ -43,7 +43,7 @@ public class PerksMenu extends Gui {
         ));
         particlesMeta.addEnchant(Enchantment.MENDING, 1, true);
         particles.setItemMeta(particlesMeta);
-        addButton(new GuiButton(this, particles, 11, (button, clickType) -> Bukkit.getScheduler()
+        addButton(new MenuButton(this, particles, 11, (button, clickType) -> Bukkit.getScheduler()
                 .runTask(Campfire.getCampfire(), () -> player.chat("/pp"))));
 
         open();

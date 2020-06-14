@@ -1,4 +1,4 @@
-package xyz.nkomarn.Campfire.gui;
+package xyz.nkomarn.Campfire.menu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,15 +12,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Campfire.util.Config;
 import xyz.nkomarn.Kerosene.data.PlayerData;
-import xyz.nkomarn.Kerosene.gui.Gui;
-import xyz.nkomarn.Kerosene.gui.GuiButton;
+import xyz.nkomarn.Kerosene.menu.Menu;
+import xyz.nkomarn.Kerosene.menu.MenuButton;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collections;
 
-public class PotionSlotSelectionMenu extends Gui {
+public class PotionSlotSelectionMenu extends Menu {
     public PotionSlotSelectionMenu(Player player, int slot) {
         super(player, String.format("Set Slot #%s", slot), 27);
         fillBorderAlternating(Material.GRAY_STAINED_GLASS_PANE, Material.BLACK_STAINED_GLASS_PANE);
@@ -31,7 +31,7 @@ public class PotionSlotSelectionMenu extends Gui {
         noneMeta.setLore(Collections.singletonList(ChatColor.GRAY + "No effects"));
         noneMeta.addEnchant(Enchantment.MENDING, 1, true);
         none.setItemMeta(noneMeta);
-        addButton(new GuiButton(this, none, 10, (button, clickType) -> setPotionSlot(player, slot, "")));
+        addButton(new MenuButton(this, none, 10, (button, clickType) -> setPotionSlot(player, slot, "")));
 
         ConfigurationSection speedSection = Config.getConfig().getConfigurationSection("perks.potions.SPEED");
         ItemStack speed = new ItemStack(Material.valueOf(speedSection.getString("item")));
@@ -39,7 +39,7 @@ public class PotionSlotSelectionMenu extends Gui {
         speedMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', speedSection.getString("name")));
         speedMeta.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', speedSection.getString("lore"))));
         speed.setItemMeta(speedMeta);
-        addButton(new GuiButton(this, speed, 11, (button, clickType) -> setPotionSlot(player, slot, "SPEED")));
+        addButton(new MenuButton(this, speed, 11, (button, clickType) -> setPotionSlot(player, slot, "SPEED")));
 
         ConfigurationSection jumpBoostSection = Config.getConfig().getConfigurationSection("perks.potions.JUMP");
         ItemStack jumpBoost = new ItemStack(Material.valueOf(jumpBoostSection.getString("item")));
@@ -47,7 +47,7 @@ public class PotionSlotSelectionMenu extends Gui {
         jumpBoostMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', jumpBoostSection.getString("name")));
         jumpBoostMeta.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', jumpBoostSection.getString("lore"))));
         jumpBoost.setItemMeta(jumpBoostMeta);
-        addButton(new GuiButton(this, jumpBoost, 12, (button, clickType) -> setPotionSlot(player, slot, "JUMP")));
+        addButton(new MenuButton(this, jumpBoost, 12, (button, clickType) -> setPotionSlot(player, slot, "JUMP")));
 
         ConfigurationSection strengthSection = Config.getConfig().getConfigurationSection("perks.potions.INCREASE_DAMAGE");
         ItemStack strength = new ItemStack(Material.valueOf(strengthSection.getString("item")));
@@ -55,7 +55,7 @@ public class PotionSlotSelectionMenu extends Gui {
         strengthMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', strengthSection.getString("name")));
         strengthMeta.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', strengthSection.getString("lore"))));
         strength.setItemMeta(strengthMeta);
-        addButton(new GuiButton(this, strength, 13, (button, clickType) -> setPotionSlot(player, slot, "INCREASE_DAMAGE")));
+        addButton(new MenuButton(this, strength, 13, (button, clickType) -> setPotionSlot(player, slot, "INCREASE_DAMAGE")));
 
         ConfigurationSection nightVisionSection = Config.getConfig().getConfigurationSection("perks.potions.NIGHT_VISION");
         ItemStack nightVision = new ItemStack(Material.valueOf(nightVisionSection.getString("item")));
@@ -63,7 +63,7 @@ public class PotionSlotSelectionMenu extends Gui {
         nightVisionMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', nightVisionSection.getString("name")));
         nightVisionMeta.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', nightVisionSection.getString("lore"))));
         nightVision.setItemMeta(nightVisionMeta);
-        addButton(new GuiButton(this, nightVision, 14, (button, clickType) -> setPotionSlot(player, slot, "NIGHT_VISION")));
+        addButton(new MenuButton(this, nightVision, 14, (button, clickType) -> setPotionSlot(player, slot, "NIGHT_VISION")));
 
         ConfigurationSection waterBreathingSection = Config.getConfig().getConfigurationSection("perks.potions.WATER_BREATHING");
         ItemStack waterBreathing = new ItemStack(Material.valueOf(waterBreathingSection.getString("item")));
@@ -71,7 +71,7 @@ public class PotionSlotSelectionMenu extends Gui {
         waterBreathingMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', waterBreathingSection.getString("name")));
         waterBreathingMeta.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', waterBreathingSection.getString("lore"))));
         waterBreathing.setItemMeta(waterBreathingMeta);
-        addButton(new GuiButton(this, waterBreathing, 15, (button, clickType) -> setPotionSlot(player, slot, "WATER_BREATHING")));
+        addButton(new MenuButton(this, waterBreathing, 15, (button, clickType) -> setPotionSlot(player, slot, "WATER_BREATHING")));
 
         ConfigurationSection slowFallingSection = Config.getConfig().getConfigurationSection("perks.potions.SLOW_FALLING");
         ItemStack slowFalling = new ItemStack(Material.valueOf(slowFallingSection.getString("item")));
@@ -79,7 +79,7 @@ public class PotionSlotSelectionMenu extends Gui {
         slowFallingMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', slowFallingSection.getString("name")));
         slowFallingMeta.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', slowFallingSection.getString("lore"))));
         slowFalling.setItemMeta(slowFallingMeta);
-        addButton(new GuiButton(this, slowFalling, 16, (button, clickType) -> setPotionSlot(player, slot, "SLOW_FALLING")));
+        addButton(new MenuButton(this, slowFalling, 16, (button, clickType) -> setPotionSlot(player, slot, "SLOW_FALLING")));
 
         open();
     }

@@ -27,15 +27,6 @@ public class ReportCommand implements CommandExecutor {
                     reason.append(args[i]).append(" ");
                 }
 
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (player.hasPermission("campfire.staff")) {
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                                "&4&lReport: &c%s reported %s: \"%s\"", sender.getName(), args[0], reason.toString().trim()
-                        )));
-                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1.0f, 1.0f);
-                    }
-                }
-
                 try {
                     Webhooks hook = new Webhooks(Config.getString("webhooks.moderation"));
                     hook.addEmbed(new Webhooks.EmbedObject()
@@ -53,6 +44,15 @@ public class ReportCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&4&lReport: &cFailed to send your report.."));
                 }
+
+                Bukkit.getOnlinePlayers().stream()
+                        .filter(player -> player.hasPermission("campfire.staff"))
+                        .forEach(player -> {
+                            player.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
+                                    "&4&lReport: &c%s reported %s: \"%s\"", sender.getName(), args[0], reason.toString().trim()
+                            )));
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1.0f, 1.0f);
+                        });
             });
         }
         return true;

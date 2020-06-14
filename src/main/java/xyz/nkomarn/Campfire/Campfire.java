@@ -3,6 +3,9 @@ package xyz.nkomarn.Campfire;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.nkomarn.Campfire.command.*;
 import xyz.nkomarn.Campfire.listener.*;
+import xyz.nkomarn.Campfire.listener.entity.SpawnListener;
+import xyz.nkomarn.Campfire.listener.entity.PickupItemListener;
+import xyz.nkomarn.Campfire.listener.player.*;
 import xyz.nkomarn.Campfire.maps.Maps;
 import xyz.nkomarn.Campfire.task.BorderCheck;
 import xyz.nkomarn.Campfire.task.EffectsTask;
@@ -20,16 +23,17 @@ public class Campfire extends JavaPlugin {
         Arrays.asList(
                 new AdvancementCriterionListener(),
                 new BorderListener(),
-                new EntityPickupItemListener(),
-                new EntitySpawnListener(),
-                new PlayerChatListener(),
-                new PlayerCommandPreProcessListener(),
-                new PlayerInteractEntityListener(),
-                new PlayerJoinListener(),
-                new PlayerQuitListener(),
-                new PlayerRespawnListener(),
+                new PickupItemListener(),
+                new SpawnListener(),
+                new ChatListener(),
+                new CommandPreProcessListener(),
+                new InteractEntityListener(),
+                new JoinListener(),
+                new QuitListener(),
+                new RespawnListener(),
                 new PvPListener(),
-                new TransactionListener()
+                new TransactionListener(),
+                new VanishListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
 
         getCommand("campfire").setExecutor(new CampfireCommand());
