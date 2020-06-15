@@ -22,12 +22,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.15-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>xyz.nkomarn</groupId>
             <artifactId>Kerosene</artifactId>
             <version>LATEST</version>
@@ -82,16 +76,21 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.cnaude.chairs</groupId>
+            <groupId>com.github.Shevchik</groupId>
             <artifactId>Chairs</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/Chairs.jar</systemPath>
+            <version>arrow-842d80db34-1</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>de.myzelyam</groupId>
             <artifactId>SuperVanish</artifactId>
             <version>6.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>authlib</artifactId>
+            <version>1.5.21</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -124,6 +123,10 @@
         <repository>
             <id>cubekrowd-repo</id>
             <url>https://mavenrepo.cubekrowd.net/artifactory/repo/</url>
+        </repository>
+        <repository>
+            <id>minecraft-repo</id>
+            <url>https://libraries.minecraft.net/</url>
         </repository>
     </repositories>
 
