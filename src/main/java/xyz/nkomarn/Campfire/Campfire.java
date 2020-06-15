@@ -6,8 +6,8 @@ import xyz.nkomarn.Campfire.listener.*;
 import xyz.nkomarn.Campfire.listener.entity.SpawnListener;
 import xyz.nkomarn.Campfire.listener.entity.PickupItemListener;
 import xyz.nkomarn.Campfire.listener.player.*;
+import xyz.nkomarn.Campfire.listener.world.ChunkLoadListener;
 import xyz.nkomarn.Campfire.maps.Maps;
-import xyz.nkomarn.Campfire.task.BorderCheck;
 import xyz.nkomarn.Campfire.task.EffectsTask;
 import xyz.nkomarn.Campfire.task.PlaytimeCheck;
 
@@ -22,7 +22,6 @@ public class Campfire extends JavaPlugin {
 
         Arrays.asList(
                 new AdvancementCriterionListener(),
-                new BorderListener(),
                 new PickupItemListener(),
                 new SpawnListener(),
                 new ChatListener(),
@@ -33,7 +32,8 @@ public class Campfire extends JavaPlugin {
                 new RespawnListener(),
                 new PvPListener(),
                 new TransactionListener(),
-                new VanishListener()
+                new VanishListener(),
+                new ChunkLoadListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
 
         getCommand("campfire").setExecutor(new CampfireCommand());
@@ -53,8 +53,6 @@ public class Campfire extends JavaPlugin {
 
         getServer().getScheduler().runTaskTimerAsynchronously(this,
                 new PlaytimeCheck(), 0L, 1200L);
-        getServer().getScheduler().runTaskTimerAsynchronously(this,
-                new BorderCheck(), 0L, 10L);
         getServer().getScheduler().runTaskTimerAsynchronously(this,
                 new EffectsTask(), 0L, 200L);
     }
