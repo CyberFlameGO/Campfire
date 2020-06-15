@@ -1,5 +1,4 @@
 messages:
-  border: "&4&lBorder: &7You crossed the world border, so you have been put back at spawn."
   join:
     top: "&c&lFire&6&lstar&e&lter"
     bottom: "&rWelcome back."
@@ -107,11 +106,6 @@ perks:
       lore: "&7Level II"
 
 world:
-  border:
-    worlds:
-      world: 50000
-      world_nether: 30000
-      world_the_end: 50000
   wild:
     cooldown: 5
     world: "world"

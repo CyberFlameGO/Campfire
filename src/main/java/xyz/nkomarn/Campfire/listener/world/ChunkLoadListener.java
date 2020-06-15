@@ -9,9 +9,11 @@ import xyz.nkomarn.Campfire.util.Border;
 public class ChunkLoadListener implements Listener {
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        Block block = event.getChunk().getBlock(8, 0, 8);
-        if (Border.isLocationOutsideBorder(event.getWorld(), block.getX(), block.getY())) {
-            event.getChunk().unload(false);
+        if (event.isNewChunk()) {
+            Block block = event.getChunk().getBlock(8, 0, 8);
+            if (Border.isLocationOutsideBorder(event.getWorld(), block.getX(), block.getY())) {
+                event.getChunk().unload(false);
+            }
         }
     }
 }

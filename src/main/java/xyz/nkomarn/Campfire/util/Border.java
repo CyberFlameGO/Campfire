@@ -27,17 +27,7 @@ public class Border {
      * @return Whether the given location would land outside of the border.
      */
     public static boolean isLocationOutsideBorder(World world, double x, double z) {
-        int border = getWorldBorder(world);
+        double border = world.getWorldBorder().getSize() / 2;
         return x > border || x < -border || z > border || z < -border;
-    }
-
-    /**
-     * Returns the set border in blocks radius for a world.
-     *
-     * @param world The world to fetch the border radius for.
-     * @return The border, in blocks radius, for the given world.
-     */
-    private static int getWorldBorder(World world) {
-        return Config.getInteger(String.format("world.border.worlds.%s", world.getName()));
     }
 }
