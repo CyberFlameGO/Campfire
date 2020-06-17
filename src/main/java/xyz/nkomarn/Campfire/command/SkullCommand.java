@@ -35,7 +35,7 @@ public class SkullCommand implements TabExecutor {
                 Player player = (Player) sender;
                 if (args.length < 1) {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                            "%sGet another player's skull using /skull [name].", prefix
+                            "%sGet another player's skull using /skull <name>.", prefix
                     )));
                 } else { // TODO check for valid usernames with a pattern (borrow from Phase)
                     OfflinePlayer skullPlayer = Bukkit.getOfflinePlayer(args[0]);
