@@ -12,18 +12,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Campfire.task.EffectsTask;
 import xyz.nkomarn.Campfire.util.Config;
+import xyz.nkomarn.Campfire.util.cache.EffectsCache;
 import xyz.nkomarn.Kerosene.data.PlayerData;
 import xyz.nkomarn.Kerosene.menu.Menu;
 import xyz.nkomarn.Kerosene.menu.MenuButton;
-import xyz.nkomarn.Kerosene.util.item.ItemBuilder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class PotionSlotSelectionMenu extends Menu {
     public PotionSlotSelectionMenu(Player player, int slot) {
@@ -90,11 +87,11 @@ public class PotionSlotSelectionMenu extends Menu {
     }
 
     private void setPotionSlot(Player player, int slot, String effect) {
-        EffectsTask.EFFECT_CACHE.get(player.getUniqueId())[slot - 1] = effect;
+        EffectsCache.CACHE.get(player.getUniqueId())[slot - 1] = effect;
 
         Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
             try (Connection connection = PlayerData.getConnection()) {
-                String query = String.format("UPDATE `potions` SET `slot%s` = ? WHERE `uuid` = ?;", slot);
+                String query = String.format("UPDATE `effects` SET `slot%s` = ? WHERE `uuid` = ?;", slot);
                 try (PreparedStatement statement = connection.prepareStatement(query)) {
                     statement.setString(1, effect);
                     statement.setString(2, player.getUniqueId().toString());

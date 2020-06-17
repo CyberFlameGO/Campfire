@@ -1,6 +1,5 @@
 package xyz.nkomarn.Campfire.listener.player;
 
-import de.Keyle.MyPet.api.util.configuration.Try;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -12,6 +11,7 @@ import xyz.nkomarn.Campfire.task.EffectsTask;
 import xyz.nkomarn.Campfire.util.Config;
 import xyz.nkomarn.Campfire.util.PlayerList;
 import xyz.nkomarn.Campfire.util.Webhooks;
+import xyz.nkomarn.Campfire.util.cache.EffectsCache;
 import xyz.nkomarn.Kerosene.data.PlayerData;
 
 import java.awt.*;
@@ -29,27 +29,9 @@ public class JoinListener implements Listener {
         Player player = event.getPlayer();
         PlayerList.updateTeams(player);
 
-        EffectsTask.loadPlayerEffects(player.getUniqueId());
-
-        /*if (player.hasPermission("firstarter.vanish")) {
-            event.setJoinMessage("");
-            Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
-                if (onlinePlayer.hasPermission("firestarter.vanish")) {
-                    onlinePlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                            "&c&lVanish: &7%s joined silently.", player.getName()
-                    )));
-                }
-            });
-        } else {
-            if (VanishUtil.isVanished(player)) {
-                VanishUtil.showPlayer(player);
-            }
-
-            VanishUtil.getOnlineVanishedPlayers().forEach(uuid ->
-                    player.hidePlayer(Kerosene.getKerosene(), Bukkit.getPlayer(uuid)));
-        }*/
-
         Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
+            EffectsCache.cache(player.getUniqueId());
+
             player.sendTitle(ChatColor.translateAlternateColorCodes('&',
                     Config.getString("messages.join.top")), ChatColor.translateAlternateColorCodes('&',
                     Config.getString("messages.join.bottom")), 10, 70, 20
