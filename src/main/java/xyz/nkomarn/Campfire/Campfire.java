@@ -8,6 +8,7 @@ import xyz.nkomarn.Campfire.listener.entity.PickupItemListener;
 import xyz.nkomarn.Campfire.listener.player.*;
 import xyz.nkomarn.Campfire.listener.world.ChunkLoadListener;
 import xyz.nkomarn.Campfire.maps.Maps;
+import xyz.nkomarn.Campfire.task.DataExporter;
 import xyz.nkomarn.Campfire.task.EffectsTask;
 import xyz.nkomarn.Campfire.task.PlaytimeCheck;
 
@@ -52,9 +53,11 @@ public class Campfire extends JavaPlugin {
         Maps.loadMaps();
 
         getServer().getScheduler().runTaskTimerAsynchronously(this,
-                new PlaytimeCheck(), 0L, 1200L);
+                new PlaytimeCheck(), 0L, 6000L);
         getServer().getScheduler().runTaskTimerAsynchronously(this,
                 new EffectsTask(), 0L, 200L);
+        getServer().getScheduler().runTaskTimerAsynchronously(this,
+                new DataExporter(), 0L, 6000L);
     }
 
     /**
