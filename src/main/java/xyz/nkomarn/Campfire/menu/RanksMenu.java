@@ -1,22 +1,14 @@
 package xyz.nkomarn.Campfire.menu;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 import xyz.nkomarn.Campfire.util.Config;
 import xyz.nkomarn.Kerosene.menu.Menu;
-import xyz.nkomarn.Kerosene.util.item.ItemBuilder;
 import xyz.nkomarn.Kerosene.util.item.SkullBuilder;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * A Gui menu displaying all of the obtainable

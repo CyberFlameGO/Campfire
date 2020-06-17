@@ -36,8 +36,14 @@ public class PotionSlotsMenu extends Menu {
             for (int slot = 1; slot <= 3; slot++) {
                 if (player.hasPermission(String.format("campfire.perks.potions.%s", slot))) {
                     final int finalSlot = slot;
-                    addButton(new MenuButton(this, getSlotItem(player.getUniqueId(), slot), 11 + slot, ((menuButton, clickType) -> {
-                        new PotionSlotSelectionMenu(player, finalSlot);
+                    addButton(new MenuButton(this, getSlotItem(player.getUniqueId(), slot), 11 + slot, ((button, clickType) -> {
+                        if (clickType.isShiftClick()) {
+                            EffectsCache.put(player.getUniqueId(), finalSlot, null);
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASEDRUM, 0.8f, 0.6f);
+                            button.setItem(getSlotItem(player.getUniqueId(), finalSlot));
+                        } else {
+                            new PotionSlotSelectionMenu(player, finalSlot);
+                        }
                     })));
                 } else {
                     ItemStack unavailable = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)

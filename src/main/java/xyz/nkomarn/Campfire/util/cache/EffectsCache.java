@@ -2,7 +2,6 @@ package xyz.nkomarn.Campfire.util.cache;
 
 import xyz.nkomarn.Campfire.util.Config;
 import xyz.nkomarn.Kerosene.data.PlayerData;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -70,6 +69,33 @@ public final class EffectsCache {
     }
 
     /**
+     * Cache an effect slot and update the database.
+     * @param uuid The player for which to update the effect slot.
+     * @param slot The effect slot to update.
+     * @param effect The effect to which to set the slot to.
+     */
+    public static void put(UUID uuid, int slot, String effect) {
+        CACHE.get(uuid)[slot - 1] = effect;
+        try (Connection connection = PlayerData.getConnection()) {
+            String query = String.format("UPDATE `effects` SET `slot%s` = ? WHERE `uuid` = ?;", slot);
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, effect);
+                statement.setString(2, uuid.toString());
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Invalidate cached slots for a player.
+     */
+    public static void invalidate(UUID uuid) {
+        CACHE.remove(uuid);
+    }
+
+    /**
      * Returns the level for a specific potion effect, as defined in the config.
      *
      * @param effect The effect for which to return the level.
@@ -80,12 +106,5 @@ public final class EffectsCache {
             EFFECT_LEVEL.put(effect, Config.getInteger(String.format("perks.potions.%s.level", effect), 1) - 1);
         }
         return EFFECT_LEVEL.get(effect);
-    }
-
-    /**
-     * Invalidate cached slots for a player.
-     */
-    public static void invalidate(UUID uuid) {
-        CACHE.remove(uuid);
     }
 }
