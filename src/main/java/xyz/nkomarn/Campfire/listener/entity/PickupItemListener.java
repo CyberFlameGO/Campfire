@@ -9,9 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.Collections;
+import xyz.nkomarn.Kerosene.util.item.ItemBuilder;
 
 public class PickupItemListener implements Listener {
     @EventHandler(ignoreCancelled = true)
@@ -24,12 +22,9 @@ public class PickupItemListener implements Listener {
                 BlockStateMeta stateMeta = (BlockStateMeta) item.getItemMeta();
                 Beehive hive = (Beehive) stateMeta.getBlockState();
 
-                ItemMeta itemMeta = item.getItemMeta();
-                itemMeta.setLore(Collections.singletonList(
-                        ChatColor.WHITE + String.format("%s bee(s)", hive.getEntityCount())
-                ));
-                item.setItemMeta(itemMeta);
-                event.getItem().setItemStack(item);
+                event.getItem().setItemStack(ItemBuilder.of(item)
+                        .lore(ChatColor.WHITE + String.format("%s bee(s)", hive.getEntityCount()))
+                        .build());
             }
         }
     }

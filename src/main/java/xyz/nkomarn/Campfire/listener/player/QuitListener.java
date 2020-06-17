@@ -1,13 +1,13 @@
 package xyz.nkomarn.Campfire.listener.player;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Campfire.listener.PvPListener;
+import xyz.nkomarn.Campfire.task.EffectsTask;
 import xyz.nkomarn.Campfire.util.PlayerList;
 import xyz.nkomarn.Kerosene.data.PlayerData;
 
@@ -19,8 +19,11 @@ public class QuitListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        PvPListener.ENABLED_PLAYERS.remove(event.getPlayer().getUniqueId());
+
+        PvPListener.ENABLED_PLAYERS.remove(player.getUniqueId());
         PlayerList.updateHeader();
+
+        EffectsTask.EFFECT_CACHE.remove(player.getUniqueId());
 
         /*if (player.hasPermission("firstarter.vanish")) {
             event.setQuitMessage("");

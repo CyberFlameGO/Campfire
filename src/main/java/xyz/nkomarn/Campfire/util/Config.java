@@ -44,6 +44,16 @@ public class Config {
     }
 
     /**
+     * Fetches an integer from the configuration
+     *      * if location is not found, defaultValue is returned
+     * @param location Configuration location of the integer
+     * @param defaultValue Default value to return of no config option is found
+     */
+    public static int getInteger(final String location, final int defaultValue) {
+        return getConfig().getInt(location, defaultValue);
+    }
+
+    /**
      * Fetches a double from the configuration
      * if location is not found, 0.0 is returned
      * @param location Configuration location of the double

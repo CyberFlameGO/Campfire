@@ -80,30 +80,4 @@ public class RanksMenu extends Menu {
     private List<String> getLore(String rank) {
         return Config.getConfig().getStringList(String.format("perks.ranks.%s", rank));
     }
-
-    /**
-     * Create a player head ItemStack with a custom texture.
-     * @param texture The texture to use for the player head.
-     * @return ItemStack of a player head with the texture applied.
-     */
-    private ItemStack createSkull(final String texture, final String displayName, final List<String> lore) {
-        ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
-        SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
-        skullMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName));
-        skullMeta.setLore(lore);
-
-        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), null);
-        gameProfile.getProperties().put("textures", new Property("textures", texture));
-
-        try {
-            final Field field = skullMeta.getClass().getDeclaredField("profile");
-            field.setAccessible(true);
-            field.set(skullMeta, gameProfile);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        skull.setItemMeta(skullMeta);
-        return skull;
-    }
 }

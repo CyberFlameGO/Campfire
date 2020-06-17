@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
-import org.bukkit.util.StringUtil;
 import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Campfire.maps.FastMapRenderer;
 import xyz.nkomarn.Campfire.util.PlayerList;

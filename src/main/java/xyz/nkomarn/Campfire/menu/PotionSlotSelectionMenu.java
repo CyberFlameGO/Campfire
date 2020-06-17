@@ -10,15 +10,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import xyz.nkomarn.Campfire.Campfire;
+import xyz.nkomarn.Campfire.task.EffectsTask;
 import xyz.nkomarn.Campfire.util.Config;
 import xyz.nkomarn.Kerosene.data.PlayerData;
 import xyz.nkomarn.Kerosene.menu.Menu;
 import xyz.nkomarn.Kerosene.menu.MenuButton;
+import xyz.nkomarn.Kerosene.util.item.ItemBuilder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class PotionSlotSelectionMenu extends Menu {
     public PotionSlotSelectionMenu(Player player, int slot) {
@@ -31,7 +36,7 @@ public class PotionSlotSelectionMenu extends Menu {
         noneMeta.setLore(Collections.singletonList(ChatColor.GRAY + "No effects"));
         noneMeta.addEnchant(Enchantment.MENDING, 1, true);
         none.setItemMeta(noneMeta);
-        addButton(new MenuButton(this, none, 10, (button, clickType) -> setPotionSlot(player, slot, "")));
+        addButton(new MenuButton(this, none, 10, (button, clickType) -> setPotionSlot(player, slot, null)));
 
         ConfigurationSection speedSection = Config.getConfig().getConfigurationSection("perks.potions.SPEED");
         ItemStack speed = new ItemStack(Material.valueOf(speedSection.getString("item")));
@@ -85,6 +90,8 @@ public class PotionSlotSelectionMenu extends Menu {
     }
 
     private void setPotionSlot(Player player, int slot, String effect) {
+        EffectsTask.EFFECT_CACHE.get(player.getUniqueId())[slot - 1] = effect;
+
         Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
             try (Connection connection = PlayerData.getConnection()) {
                 String query = String.format("UPDATE `potions` SET `slot%s` = ? WHERE `uuid` = ?;", slot);
@@ -96,7 +103,7 @@ public class PotionSlotSelectionMenu extends Menu {
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                if (effect.length() < 1) {
+                if (effect == null) {
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASEDRUM, 0.8f, 0.6f);
                 } else {
                     player.playSound(player.getLocation(), Sound.ENTITY_WITCH_DRINK, 1.0f, 0.9f);

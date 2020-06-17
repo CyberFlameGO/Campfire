@@ -1,5 +1,6 @@
 package xyz.nkomarn.Campfire.listener.player;
 
+import de.Keyle.MyPet.api.util.configuration.Try;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -7,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import xyz.nkomarn.Campfire.Campfire;
+import xyz.nkomarn.Campfire.task.EffectsTask;
 import xyz.nkomarn.Campfire.util.Config;
 import xyz.nkomarn.Campfire.util.PlayerList;
 import xyz.nkomarn.Campfire.util.Webhooks;
@@ -26,6 +28,8 @@ public class JoinListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         PlayerList.updateTeams(player);
+
+        EffectsTask.loadPlayerEffects(player.getUniqueId());
 
         /*if (player.hasPermission("firstarter.vanish")) {
             event.setJoinMessage("");
