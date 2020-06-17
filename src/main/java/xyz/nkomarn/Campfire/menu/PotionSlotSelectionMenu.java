@@ -14,8 +14,10 @@ import xyz.nkomarn.Campfire.util.Config;
 import xyz.nkomarn.Campfire.util.cache.EffectsCache;
 import xyz.nkomarn.Kerosene.menu.Menu;
 import xyz.nkomarn.Kerosene.menu.MenuButton;
+import xyz.nkomarn.Kerosene.util.item.ItemBuilder;
 
 import java.util.Collections;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class PotionSlotSelectionMenu extends Menu {
     public PotionSlotSelectionMenu(Player player, int slot) {
@@ -30,57 +32,28 @@ public class PotionSlotSelectionMenu extends Menu {
         none.setItemMeta(noneMeta);
         addButton(new MenuButton(this, none, 10, (button, clickType) -> setPotionSlot(player, slot, null)));
 
-        ConfigurationSection speedSection = Config.getConfig().getConfigurationSection("perks.potions.SPEED");
-        ItemStack speed = new ItemStack(Material.valueOf(speedSection.getString("item")));
-        ItemMeta speedMeta = speed.getItemMeta();
-        speedMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', speedSection.getString("name")));
-        speedMeta.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', speedSection.getString("lore"))));
-        speed.setItemMeta(speedMeta);
-        addButton(new MenuButton(this, speed, 11, (button, clickType) -> setPotionSlot(player, slot, "SPEED")));
-
-        ConfigurationSection jumpBoostSection = Config.getConfig().getConfigurationSection("perks.potions.JUMP");
-        ItemStack jumpBoost = new ItemStack(Material.valueOf(jumpBoostSection.getString("item")));
-        ItemMeta jumpBoostMeta = jumpBoost.getItemMeta();
-        jumpBoostMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', jumpBoostSection.getString("name")));
-        jumpBoostMeta.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', jumpBoostSection.getString("lore"))));
-        jumpBoost.setItemMeta(jumpBoostMeta);
-        addButton(new MenuButton(this, jumpBoost, 12, (button, clickType) -> setPotionSlot(player, slot, "JUMP")));
-
-        ConfigurationSection strengthSection = Config.getConfig().getConfigurationSection("perks.potions.INCREASE_DAMAGE");
-        ItemStack strength = new ItemStack(Material.valueOf(strengthSection.getString("item")));
-        ItemMeta strengthMeta = strength.getItemMeta();
-        strengthMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', strengthSection.getString("name")));
-        strengthMeta.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', strengthSection.getString("lore"))));
-        strength.setItemMeta(strengthMeta);
-        addButton(new MenuButton(this, strength, 13, (button, clickType) -> setPotionSlot(player, slot, "INCREASE_DAMAGE")));
-
-        ConfigurationSection nightVisionSection = Config.getConfig().getConfigurationSection("perks.potions.NIGHT_VISION");
-        ItemStack nightVision = new ItemStack(Material.valueOf(nightVisionSection.getString("item")));
-        ItemMeta nightVisionMeta = nightVision.getItemMeta();
-        nightVisionMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', nightVisionSection.getString("name")));
-        nightVisionMeta.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', nightVisionSection.getString("lore"))));
-        nightVision.setItemMeta(nightVisionMeta);
-        addButton(new MenuButton(this, nightVision, 14, (button, clickType) -> setPotionSlot(player, slot, "NIGHT_VISION")));
-
-        ConfigurationSection waterBreathingSection = Config.getConfig().getConfigurationSection("perks.potions.WATER_BREATHING");
-        ItemStack waterBreathing = new ItemStack(Material.valueOf(waterBreathingSection.getString("item")));
-        ItemMeta waterBreathingMeta = waterBreathing.getItemMeta();
-        waterBreathingMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', waterBreathingSection.getString("name")));
-        waterBreathingMeta.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', waterBreathingSection.getString("lore"))));
-        waterBreathing.setItemMeta(waterBreathingMeta);
-        addButton(new MenuButton(this, waterBreathing, 15, (button, clickType) -> setPotionSlot(player, slot, "WATER_BREATHING")));
-
-        ConfigurationSection slowFallingSection = Config.getConfig().getConfigurationSection("perks.potions.SLOW_FALLING");
-        ItemStack slowFalling = new ItemStack(Material.valueOf(slowFallingSection.getString("item")));
-        ItemMeta slowFallingMeta = slowFalling.getItemMeta();
-        slowFallingMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', slowFallingSection.getString("name")));
-        slowFallingMeta.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', slowFallingSection.getString("lore"))));
-        slowFalling.setItemMeta(slowFallingMeta);
-        addButton(new MenuButton(this, slowFalling, 16, (button, clickType) -> setPotionSlot(player, slot, "SLOW_FALLING")));
+        AtomicInteger effectSlot = new AtomicInteger(11);
+        ConfigurationSection section = Config.getConfig().getConfigurationSection("perks.potions");
+        section.getKeys(false).forEach(effectName -> {
+            ConfigurationSection effectSection = section.getConfigurationSection(effectName);
+            ItemStack effectItem = new ItemBuilder(Material.valueOf(effectSection.getString("item")))
+                    .name(effectSection.getString("name"))
+                    .lore(Collections.singletonList(effectSection.getString("lore")))
+                    .build();
+            addButton(new MenuButton(this, effectItem, effectSlot.getAndIncrement(), ((button, clickType) ->
+                    setPotionSlot(player, slot, effectName))));
+        });
 
         open();
     }
 
+    /**
+     * Cache an effect slot and update the database. Also play sound effects based on effect.
+     *
+     * @param player   The player for which to update the effect slot.
+     * @param slot   The effect slot to update.
+     * @param effect The effect to which to set the slot to.
+     */
     private void setPotionSlot(Player player, int slot, String effect) {
         Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
             EffectsCache.put(player.getUniqueId(), slot, effect);

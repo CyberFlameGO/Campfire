@@ -22,6 +22,7 @@ public class PlayerList {
 
     /**
      * Get the scoreboard team that the player should be part of based on permissions.
+     *
      * @param player The player to get the team for.
      * @return The team name that the player should be a part of.
      */
@@ -35,6 +36,7 @@ public class PlayerList {
 
     /**
      * Returns the highest priority team out of a set of teams.
+     *
      * @param teams A set of teams that a player is a part of.
      * @return The highest priority group out of the set.
      */
@@ -46,6 +48,7 @@ public class PlayerList {
 
     /**
      * Adds a player to their correct scoreboard team based on permissions.
+     *
      * @param player The player for which to update teams.
      */
     public static void updateTeams(Player player) {

@@ -70,8 +70,9 @@ public final class EffectsCache {
 
     /**
      * Cache an effect slot and update the database.
-     * @param uuid The player for which to update the effect slot.
-     * @param slot The effect slot to update.
+     *
+     * @param uuid   The player for which to update the effect slot.
+     * @param slot   The effect slot to update.
      * @param effect The effect to which to set the slot to.
      */
     public static void put(UUID uuid, int slot, String effect) {
