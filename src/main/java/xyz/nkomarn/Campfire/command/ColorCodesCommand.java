@@ -3,8 +3,12 @@ package xyz.nkomarn.Campfire.command;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 
-public class ColorCodesCommand implements CommandExecutor {
+import java.util.Collections;
+import java.util.List;
+
+public class ColorCodesCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         String colorCodes = "§r \n" +
@@ -27,5 +31,10 @@ public class ColorCodesCommand implements CommandExecutor {
                 "§r ";
         sender.sendMessage(colorCodes);
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+        return Collections.emptyList();
     }
 }

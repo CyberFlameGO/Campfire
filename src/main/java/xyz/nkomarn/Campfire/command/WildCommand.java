@@ -6,6 +6,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -16,7 +17,9 @@ import xyz.nkomarn.Kerosene.util.AdvancementUtil;
 import xyz.nkomarn.Kerosene.util.ClaimUtil;
 import xyz.nkomarn.Kerosene.util.LocationUtil;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -24,7 +27,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Asynchronous random teleportation command.
  * Uses PaperLib to load chunks and teleport asynchronously.
  */
-public class WildCommand implements CommandExecutor {
+public class WildCommand implements TabExecutor {
     private static final HashMap<UUID, Long> cooldown = new HashMap<>();
 
     @Override
@@ -108,5 +111,10 @@ public class WildCommand implements CommandExecutor {
 
             attemptWildTeleport(player, world); // If all else fails, try again :")
         });
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+        return Collections.emptyList();
     }
 }

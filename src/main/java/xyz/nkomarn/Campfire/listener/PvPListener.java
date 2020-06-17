@@ -126,14 +126,14 @@ public class PvPListener implements Listener {
         } else if (ENABLED_PLAYERS.contains(attacker.getUniqueId()) && ENABLED_PLAYERS.contains(attacked.getUniqueId())) {
             return false;
         } else if (ENABLED_PLAYERS.contains(attacker.getUniqueId())) {
-            attacker.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor
+            attacker.sendActionBar(ChatColor
                     .translateAlternateColorCodes('&', String.format(
                             "&c&lPVP: &7%s's PvP is disabled.", attacked.getName()
-                    ))));
+                    )));
             return true;
         } else {
-            attacker.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor
-                    .translateAlternateColorCodes('&', "&c&lPVP: &7Your PvP is disabled.")));
+            attacker.sendActionBar(ChatColor
+                    .translateAlternateColorCodes('&', "&c&lPVP: &7Your PvP is disabled."));
             return true;
         }
     }

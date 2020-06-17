@@ -7,6 +7,7 @@ import org.bukkit.Statistic;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Kerosene.data.PlayerData;
@@ -17,8 +18,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.List;
 
-public class PlaytimeCommand implements CommandExecutor {
+public class PlaytimeCommand implements TabExecutor {
     private final DateFormat FORMAT = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
 
     @Override
@@ -62,5 +65,13 @@ public class PlaytimeCommand implements CommandExecutor {
 
     private String intToTimeString(final int time) {
         return (time / 24 / 60) + " days, " + (time / 60 % 24) + " hours, and " + (time % 60) + " minutes";
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
+        if (args.length > 1) {
+            return Collections.emptyList();
+        }
+        return null;
     }
 }
