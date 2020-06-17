@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Kerosene.data.PlayerData;
@@ -15,9 +16,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
-public class ShopLogCommand implements CommandExecutor {
+public class ShopLogCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (sender instanceof Player) {
@@ -51,5 +54,10 @@ public class ShopLogCommand implements CommandExecutor {
             });
         }
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+        return Collections.emptyList();
     }
 }

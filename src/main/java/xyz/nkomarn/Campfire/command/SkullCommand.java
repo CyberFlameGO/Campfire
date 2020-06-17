@@ -7,13 +7,17 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Kerosene.util.CooldownUtil;
 
-public class SkullCommand implements CommandExecutor {
+import java.util.Collections;
+import java.util.List;
+
+public class SkullCommand implements TabExecutor {
     private static final String prefix = "&5&lSkull: &7";
 
     @Override
@@ -31,7 +35,7 @@ public class SkullCommand implements CommandExecutor {
                 Player player = (Player) sender;
                 if (args.length < 1) {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                            "%sGet another player's skull using /skull [name].", prefix
+                            "%sGet another player's skull using /skull <name>.", prefix
                     )));
                 } else { // TODO check for valid usernames with a pattern (borrow from Phase)
                     OfflinePlayer skullPlayer = Bukkit.getOfflinePlayer(args[0]);
@@ -45,5 +49,13 @@ public class SkullCommand implements CommandExecutor {
             }
         });
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
+        if(args.length == 1) {
+            return null;
+        }
+        return Collections.emptyList();
     }
 }

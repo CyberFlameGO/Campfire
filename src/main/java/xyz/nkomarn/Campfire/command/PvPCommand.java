@@ -4,70 +4,114 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import xyz.nkomarn.Campfire.listener.PvPListener;
 
-public class PvPCommand implements CommandExecutor {
-    private final String prefix = "&c&lPVP: &7";
+import javax.swing.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+public class PvPCommand implements TabExecutor {
+    private static final String PREFIX = "&c&lPVP: &7";
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if (!(sender instanceof Player)) return true;
-        final Player player = (Player) sender;
+        if (!(sender instanceof Player) && args.length != 2) {
+            sender.sendMessage(ChatColor.RED + "Usage: 'pvp <on/off> <player>'");
+            return true;
+        }
 
         if (args.length < 1) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                "%sToggle your PvP using /pvp [on/off].", prefix
-            )));
-        } else if (args[0].equals("on")) {
-            if (args.length > 1) {
-                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[1]);
-                if (!sender.hasPermission("campfire.admin")) {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lError: &7Insufficient permissions."));
-                } else if (offlinePlayer.isOnline()) {
-                    PvPListener.ENABLED_PLAYERS.add(offlinePlayer.getUniqueId());
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                            "%sEnabled %s's PvP.", prefix, offlinePlayer.getName()
-                    )));
-                } else {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                            "%s%s is not online.", prefix, offlinePlayer.getName()
-                    )));
-                }
+            Player player = (Player) sender;
+
+            if (PvPListener.ENABLED_PLAYERS.contains(player.getUniqueId())) {
+                PvPListener.ENABLED_PLAYERS.remove(player.getUniqueId());
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
+                        "%sDisabled your PvP.", PREFIX
+                )));
             } else {
                 PvPListener.ENABLED_PLAYERS.add(player.getUniqueId());
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                        "%sEnabled your PvP.", prefix
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
+                        "%sEnabled your PvP.", PREFIX
                 )));
             }
-        } else if (args[0].equals("off")) {
-            if (args.length > 1) {
-                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[1]);
-                if (!sender.hasPermission("campfire.admin")) {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lError: &7Insufficient permissions."));
-                } else if (offlinePlayer.isOnline()) {
-                    PvPListener.ENABLED_PLAYERS.remove(offlinePlayer.getUniqueId());
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                            "%sDisabled %s's PvP.", prefix, offlinePlayer.getName()
-                    )));
-                } else {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                            "%s%s is not online.", prefix, offlinePlayer.getName()
-                    )));
-                }
+            return true;
+        }
+
+        boolean newState;
+        if(args[0].equalsIgnoreCase("on")) {
+            newState = true;
+        } else if(args[0].equalsIgnoreCase("off")) {
+            newState = false;
+        } else {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
+                    "%sToggle your PvP using /pvp [on/off].", PREFIX
+            )));
+            return true;
+        }
+
+        if (args.length == 1) {
+            Player player = (Player) sender;
+            if (newState) {
+                PvPListener.ENABLED_PLAYERS.add(player.getUniqueId());
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
+                        "%sEnabled your PvP.", PREFIX
+                )));
             } else {
                 PvPListener.ENABLED_PLAYERS.remove(player.getUniqueId());
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                        "%sDisabled your PvP.", prefix
+                        "%sDisabled your PvP.", PREFIX
                 )));
             }
-        } else {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                    "%sToggle your PvP using /pvp [on/off].", prefix
-            )));
+            return true;
         }
+
+        if (args.length == 2 && sender.hasPermission("campfire.admin")) {
+            Player player = Bukkit.getPlayer(args[1]);
+
+            if (player == null) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
+                        "%s%s is not online.", PREFIX, args[1]
+                )));
+                return true;
+            }
+
+            if (newState) {
+                PvPListener.ENABLED_PLAYERS.add(player.getUniqueId());
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
+                        "%sEnabled %s's PvP.", PREFIX, player.getName()
+                )));
+            } else {
+                PvPListener.ENABLED_PLAYERS.remove(player.getUniqueId());
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
+                        "%sDisabled %s's PvP.", PREFIX, player.getName()
+                )));
+            }
+
+            return true;
+        }
+
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
+                "%sToggle your PvP using /pvp [on/off].", PREFIX
+        )));
+
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (args.length == 1) {
+            return Arrays.asList("on", "off");
+        }
+
+        if(args.length == 2 && sender.hasPermission("campfire.admin")) {
+            return null;
+        }
+
+        return Collections.emptyList();
     }
 }
