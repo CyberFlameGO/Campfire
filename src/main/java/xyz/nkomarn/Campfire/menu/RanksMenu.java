@@ -10,6 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import xyz.nkomarn.Campfire.util.Config;
 import xyz.nkomarn.Kerosene.menu.Menu;
+import xyz.nkomarn.Kerosene.util.item.ItemBuilder;
+import xyz.nkomarn.Kerosene.util.item.SkullBuilder;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -26,29 +28,44 @@ public class RanksMenu extends Menu {
         fill(Material.WHITE_STAINED_GLASS_PANE);
         fillBorderAlternating(Material.LIGHT_BLUE_STAINED_GLASS_PANE, Material.BLUE_STAINED_GLASS_PANE);
 
-        ItemStack scoutHead = createSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5" +
-                "taW5lY3JhZnQubmV0L3RleHR1cmUvNjhjOTg2Nzk5YmFmZTcxODRhOGFlMjMzZGI2ZDlhYjhlOWI4NDRmYTlkNGRh" +
-                "NjhmYTNkYzk0YWM4ZmU4MjAifX19", "&f&lScout", getLore("scout"));
+        ItemStack scoutHead = new SkullBuilder()
+                .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjh" +
+                        "jOTg2Nzk5YmFmZTcxODRhOGFlMjMzZGI2ZDlhYjhlOWI4NDRmYTlkNGRhNjhmYTNkYzk0YWM4ZmU4MjAifX19")
+                .name("&f&lScout")
+                .lore(getLore("scout"))
+                .build();
         getInventory().setItem(11, scoutHead);
 
-        ItemStack camperHead = createSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5" +
-                "taW5lY3JhZnQubmV0L3RleHR1cmUvZWQ2ZGNjNDc2ODMyMzZhYjU5ZDk2ZWIwYjI3YzM4ZDIzNDFkNDg1MDViOGVh" +
-                "NGVhNTdhYWYxNzI3Y2QzYzE4NyJ9fX0=", "&f&lCamper", getLore("camper"));
+        ItemStack camperHead = new SkullBuilder()
+                .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWQ" +
+                        "2ZGNjNDc2ODMyMzZhYjU5ZDk2ZWIwYjI3YzM4ZDIzNDFkNDg1MDViOGVhNGVhNTdhYWYxNzI3Y2QzYzE4NyJ9fX0=")
+                .name("&f&lCamper")
+                .lore(getLore("camper"))
+                .build();
         getInventory().setItem(12, camperHead);
 
-        ItemStack pioneerHead = createSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy" +
-                "5taW5lY3JhZnQubmV0L3RleHR1cmUvNDMzZTJmMWI5MTk4MDVlZjdiNGRhYmNkZjJhZTY2YjNjM2E0NGEzMjg1Yjc" +
-                "0ZmU5NWI1ODVhYjEwNTFlYTQifX19", "&f&lPioneer", getLore("pioneer"));
+        ItemStack pioneerHead = new SkullBuilder()
+                .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDM" +
+                        "zZTJmMWI5MTk4MDVlZjdiNGRhYmNkZjJhZTY2YjNjM2E0NGEzMjg1Yjc0ZmU5NWI1ODVhYjEwNTFlYTQifX19")
+                .name("&f&lPioneer")
+                .lore(getLore("pioneer"))
+                .build();
         getInventory().setItem(13, pioneerHead);
 
-        ItemStack vanguardHead = createSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlc" +
-                "y5taW5lY3JhZnQubmV0L3RleHR1cmUvNGZkODVhOTY4MzM0ZmZhODc0ZDYzZTgwNjhjNGQxODM1ZTI5YjhkYTE3Y2" +
-                "Y1OGQ4ZGUwYTcxMzM4ZWNiZjYwIn19fQ==", "&f&lVanguard", getLore("vanguard"));
+        ItemStack vanguardHead = new SkullBuilder()
+                .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGZ" +
+                        "kODVhOTY4MzM0ZmZhODc0ZDYzZTgwNjhjNGQxODM1ZTI5YjhkYTE3Y2Y1OGQ4ZGUwYTcxMzM4ZWNiZjYwIn19fQ==")
+                .name("&f&lVanguard")
+                .lore(getLore("vanguard"))
+                .build();
         getInventory().setItem(14, vanguardHead);
 
-        ItemStack sparkHead = createSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5" +
-                "taW5lY3JhZnQubmV0L3RleHR1cmUvY2Q0NzMwYWQ1MmE5Yjk5Nzk1MGU2MzdlNTk1NDJmNjY2NDFhYTJmY2Q5OWFm" +
-                "M2E5Mzc3MzZmMDQyNjQyNjg4In19fQ==", "&f&lSpark", getLore("spark"));
+        ItemStack sparkHead = new SkullBuilder()
+                .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2Q" +
+                        "0NzMwYWQ1MmE5Yjk5Nzk1MGU2MzdlNTk1NDJmNjY2NDFhYTJmY2Q5OWFmM2E5Mzc3MzZmMDQyNjQyNjg4In19fQ==")
+                .name("&f&lSpark")
+                .lore(getLore("spark"))
+                .build();
         getInventory().setItem(15, sparkHead);
 
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 0.8f, 1.0f);
@@ -60,12 +77,8 @@ public class RanksMenu extends Menu {
      * @param rank The name of the rank in the config.
      * @return A ChatColor translated lore list.
      */
-    private List<String> getLore(final String rank) {
-        final List<String> lore = new ArrayList<>();
-        for (String line : Config.getConfig().getStringList(String.format("perks.ranks.%s", rank))) {
-            lore.add(ChatColor.translateAlternateColorCodes('&', line));
-        }
-        return lore;
+    private List<String> getLore(String rank) {
+        return Config.getConfig().getStringList(String.format("perks.ranks.%s", rank));
     }
 
     /**

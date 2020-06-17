@@ -56,8 +56,11 @@ public class Campfire extends JavaPlugin {
                 new PlaytimeCheck(), 0L, 6000L);
         getServer().getScheduler().runTaskTimerAsynchronously(this,
                 new EffectsTask(), 0L, 200L);
-        getServer().getScheduler().runTaskTimerAsynchronously(this,
-                new DataExporter(), 0L, 6000L);
+
+        if (getServer().getPluginManager().isPluginEnabled("PrometheusExporter")) {
+            getServer().getScheduler().runTaskTimerAsynchronously(this,
+                    new DataExporter(), 0L, 6000L);
+        }
     }
 
     /**

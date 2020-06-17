@@ -6,12 +6,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import xyz.nkomarn.Campfire.listener.PvPListener;
-import xyz.nkomarn.Campfire.util.ItemBuilder;
 import xyz.nkomarn.Kerosene.menu.Menu;
 import xyz.nkomarn.Kerosene.menu.MenuButton;
 import xyz.nkomarn.Kerosene.util.ToggleUtil;
+import xyz.nkomarn.Kerosene.util.item.ItemBuilder;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,36 +26,36 @@ public class TogglesMenu extends Menu {
 
         // ArmorStand toggle
         ItemStack armorStandToggle = new ItemBuilder(Material.ARMOR_STAND)
-                .withDisplayName(ChatColor.translateAlternateColorCodes('&', "&f&lArmor Stand Arms"))
-                .withLore(getStatusLore(ToggleUtil.getToggleState(uuid, "armor-stand-arms")))
+                .name(ChatColor.translateAlternateColorCodes('&', "&f&lArmor Stand Arms"))
+                .lore(getStatusLore(ToggleUtil.getToggleState(uuid, "armor-stand-arms")))
                 .build();
         addButton(new MenuButton(this, armorStandToggle, 12, (button, clickType) -> {
             boolean state = toggleState(uuid, "armor-stand-arms");
             ItemStack newItem = ItemBuilder.of(button.getItem())
-                    .withLore(getStatusLore(state))
+                    .lore(getStatusLore(state))
                     .build();
             button.setItem(newItem);
         }));
 
         // PVP toggle
         ItemStack pvpToggle = new ItemBuilder(Material.GOLDEN_SWORD)
-                .withDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lPVP"))
-                .withLore(getStatusLore(PvPListener.ENABLED_PLAYERS.contains(uuid)))
+                .name(ChatColor.translateAlternateColorCodes('&', "&6&lPVP"))
+                .lore(getStatusLore(PvPListener.ENABLED_PLAYERS.contains(uuid)))
                 .build();
         addButton(new MenuButton(this, pvpToggle, 13, (button, clickType) -> {
             if (PvPListener.ENABLED_PLAYERS.contains(uuid)) PvPListener.ENABLED_PLAYERS.remove(uuid);
             else  PvPListener.ENABLED_PLAYERS.add(uuid);
 
             ItemStack newItem = ItemBuilder.of(button.getItem())
-                    .withLore(getStatusLore(PvPListener.ENABLED_PLAYERS.contains(uuid)))
+                    .lore(getStatusLore(PvPListener.ENABLED_PLAYERS.contains(uuid)))
                     .build();
             button.setItem(newItem);
         }));
 
         // Chairs toggle
         ItemStack chairsToggle = new ItemBuilder(Material.SPRUCE_STAIRS)
-                .withDisplayName(ChatColor.translateAlternateColorCodes('&', "&6&lChairs"))
-                .withLore(getStatusLore(!Chairs.getInstance().getPlayerSitData().isSittingDisabled(uuid)))
+                .name(ChatColor.translateAlternateColorCodes('&', "&6&lChairs"))
+                .lore(getStatusLore(!Chairs.getInstance().getPlayerSitData().isSittingDisabled(uuid)))
                 .build();
         addButton(new MenuButton(this, chairsToggle, 14, (button, clickType) -> {
             PlayerSitData sitData = Chairs.getInstance().getPlayerSitData();
@@ -64,7 +63,7 @@ public class TogglesMenu extends Menu {
             else sitData.disableSitting(uuid);
 
             ItemStack newItem = ItemBuilder.of(button.getItem())
-                    .withLore(getStatusLore(!Chairs.getInstance().getPlayerSitData().isSittingDisabled(uuid)))
+                    .lore(getStatusLore(!Chairs.getInstance().getPlayerSitData().isSittingDisabled(uuid)))
                     .build();
             button.setItem(newItem);
         }));
@@ -79,7 +78,6 @@ public class TogglesMenu extends Menu {
     }
 
     private List<String> getStatusLore(boolean state) {
-        return Collections.singletonList(ChatColor.translateAlternateColorCodes('&',
-                state ? "&7Status: &aEnabled" : "&7Status: &cDisabled"));
+        return Collections.singletonList(state ? "&7Status: &aEnabled" : "&7Status: &cDisabled");
     }
 }
