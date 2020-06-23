@@ -30,6 +30,7 @@ public class PerksMenu extends Menu {
                 .name("&f&lPotion Effects")
                 .lore("&7Configure your &dpermanent", "&dpotion effect &7slots.")
                 .enchantUnsafe(Enchantment.MENDING, 1)
+                .addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_POTION_EFFECTS)
                 .color(255, 95, 195)
                 .build();
         addButton(new MenuButton(this, potions, 10, (button, clickType) -> new PotionSlotsMenu(player)));
@@ -39,6 +40,7 @@ public class PerksMenu extends Menu {
                 .name("&f&lParticle Effects")
                 .lore("&7Configure your &bparticle", "&beffects &7and styles.")
                 .enchantUnsafe(Enchantment.MENDING, 1)
+                .addItemFlags(ItemFlag.HIDE_ENCHANTS)
                 .build();
         addButton(new MenuButton(this, particles, 11, (button, clickType) -> {
             Bukkit.getScheduler().runTask(Campfire.getCampfire(), () -> player.chat("/pp"));
@@ -50,7 +52,7 @@ public class PerksMenu extends Menu {
                         .get(player.getUniqueId(), "claim-boost") ? "&c&lOFF" : "&a&lON"))
                 .lore("&eDoubles &7the amount of &eclaim", "&eblocks &7you get per hour.")
                 .enchantUnsafe(Enchantment.MENDING, 1)
-                .addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+                .addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS);
         if (!player.hasPermission("campfire.perks.claim-boost")) claimBlocks.addLore("&cComes with Ember rank.");
 
         addButton(new MenuButton(this, claimBlocks.build(), 15, ((button, clickType) -> {
