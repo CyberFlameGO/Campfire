@@ -3,8 +3,8 @@ package xyz.nkomarn.Campfire;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.nkomarn.Campfire.command.*;
 import xyz.nkomarn.Campfire.listener.*;
-import xyz.nkomarn.Campfire.listener.entity.SpawnListener;
 import xyz.nkomarn.Campfire.listener.entity.PickupItemListener;
+import xyz.nkomarn.Campfire.listener.entity.SpawnListener;
 import xyz.nkomarn.Campfire.listener.player.*;
 import xyz.nkomarn.Campfire.listener.world.ChunkLoadListener;
 import xyz.nkomarn.Campfire.maps.Maps;
@@ -39,7 +39,8 @@ public class Campfire extends JavaPlugin {
                 new PvPListener(),
                 new TransactionListener(),
                 new VanishListener(),
-                new ChunkLoadListener()
+                new ChunkLoadListener(),
+                new CustomEnchantmentListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
 
         getCommand("campfire").setExecutor(new CampfireCommand());
