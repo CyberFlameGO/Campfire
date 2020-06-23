@@ -3,6 +3,7 @@ package xyz.nkomarn.Campfire.menu.perks;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Kerosene.menu.Menu;
@@ -12,9 +13,6 @@ import xyz.nkomarn.Kerosene.util.item.ItemBuilder;
 import xyz.nkomarn.Kerosene.util.item.PotionBuilder;
 import xyz.nkomarn.Kerosene.util.item.SkullBuilder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -30,10 +28,7 @@ public class PerksMenu extends Menu {
         // Potions
         ItemStack potions = new PotionBuilder()
                 .name("&f&lPotion Effects")
-                .lore(
-                        "&7Configure your &dpermanent",
-                        "&dpotion effect &7slots."
-                )
+                .lore("&7Configure your &dpermanent", "&dpotion effect &7slots.")
                 .enchantUnsafe(Enchantment.MENDING, 1)
                 .color(255, 95, 195)
                 .build();
@@ -42,51 +37,43 @@ public class PerksMenu extends Menu {
         // Particles
         ItemStack particles = new ItemBuilder(Material.PINK_TULIP)
                 .name("&f&lParticle Effects")
-                .lore(
-                        "&7Configure your &bparticle",
-                        "&beffects &7and styles."
-                )
+                .lore("&7Configure your &bparticle", "&beffects &7and styles.")
                 .enchantUnsafe(Enchantment.MENDING, 1)
                 .build();
         addButton(new MenuButton(this, particles, 11, (button, clickType) -> {
             Bukkit.getScheduler().runTask(Campfire.getCampfire(), () -> player.chat("/pp"));
         }));
 
-        // Claim Block Boost TODO comes with xxx rank (possibly make a method for that since its also used below)
-        ItemStack claimBlocks = new ItemBuilder(Material.GOLDEN_SHOVEL)
+        // Claim Block Boost
+        ItemBuilder claimBlocks = new ItemBuilder(Material.GOLDEN_SHOVEL)
                 .name(String.format("&f&lClaim Boost (%s&f&l)", ToggleUtil
                         .get(player.getUniqueId(), "claim-boost") ? "&c&lOFF" : "&a&lON"))
-                .lore(
-                        "&eDoubles &7the amount of &eclaim", // TODO also show status of it in here
-                        "&eblocks &7you get per hour."
-                )
+                .lore("&eDoubles &7the amount of &eclaim", "&eblocks &7you get per hour.")
                 .enchantUnsafe(Enchantment.MENDING, 1)
-                .build();
-        addButton(new MenuButton(this, claimBlocks, 15, ((button, clickType) -> {
-            UUID uuid = player.getUniqueId();
-            ToggleUtil.set(uuid, "claim-boost", !ToggleUtil.get(uuid, "claim-boost"));
-            button.setItem(new ItemBuilder(claimBlocks).name(String.format("&f&lClaim Boost (%s&f&l)", ToggleUtil
-                    .get(player.getUniqueId(), "claim-boost") ? "&c&lOFF" : "&a&lON")).build());
+                .addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        if (!player.hasPermission("campfire.perks.claim-boost")) claimBlocks.addLore("&cComes with Ember rank.");
+
+        addButton(new MenuButton(this, claimBlocks.build(), 15, ((button, clickType) -> {
+            if (player.hasPermission("campfire.perks.claim-boost")) {
+                UUID uuid = player.getUniqueId();
+                ToggleUtil.set(uuid, "claim-boost", !ToggleUtil.get(uuid, "claim-boost"));
+                button.setItem(claimBlocks.name(String.format("&f&lClaim Boost (%s&f&l)", ToggleUtil
+                        .get(player.getUniqueId(), "claim-boost") ? "&c&lOFF" : "&a&lON")).build());
+            } else {
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+            }
         })));
 
 
         // Skull
-        List<String> skullLore = new ArrayList<>(Arrays.asList(
-                "&7Obtain the heads of players,",
-                "&7even if they're offline."
-        ));
-        if (!player.hasPermission("campfire.perks.skull")) {
-            skullLore.add("&dComes with xxx rank.");
-        }
-
-
-        ItemStack skull = new SkullBuilder()
+        SkullBuilder skull = new SkullBuilder()
                 .name("&f&lSkulls")
-                .lore(skullLore)
+                .lore("&7Obtain the heads of players,", "&7even if they're offline.")
                 .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTd" +
-                        "hYjVkZDNhMDM5NTliMTQ3ZWMwNzg4MmRiMjFmY2UzNTI4NzAzMjRiNTliYTk1ZTdlYTJmMzlmMzViOTIifX19")
-                .build();
-        addButton(new MenuButton(this, skull, 16, (button, clickType) -> {
+                        "hYjVkZDNhMDM5NTliMTQ3ZWMwNzg4MmRiMjFmY2UzNTI4NzAzMjRiNTliYTk1ZTdlYTJmMzlmMzViOTIifX19");
+        if (!player.hasPermission("campfire.perks.skull")) skull.addLore("&cComes with Pyre rank.");
+
+        addButton(new MenuButton(this, skull.build(), 16, (button, clickType) -> {
             if (player.hasPermission("campfire.perks.skull")) {
                 close();
                 Bukkit.getScheduler().runTask(Campfire.getCampfire(), () -> player.chat("/skull"));

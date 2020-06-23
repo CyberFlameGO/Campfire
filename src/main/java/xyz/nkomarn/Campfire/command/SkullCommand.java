@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Kerosene.util.CooldownUtil;
+import xyz.nkomarn.Kerosene.util.item.SkullBuilder;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,23 +27,29 @@ public class SkullCommand implements TabExecutor {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
                         "%sYou must be a player to use this command.", prefix
                 )));
-            } else if (CooldownUtil.cooldownToMinutes(CooldownUtil.getCooldown(((Player) sender).getUniqueId(), "skull")) < 720) {
+                return;
+            }
+
+            Player player = (Player) sender;
+
+            if (CooldownUtil.cooldownToMinutes(CooldownUtil.getCooldown(player.getUniqueId(), "skull")) < 720) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
                         "%sYou can only get a skull every 12 hours.", prefix // TODO add remaining minutes/hours cooldown
                 )));
             } else {
-                Player player = (Player) sender;
                 if (args.length < 1) {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
                             "%sGet another player's skull using /skull <name>.", prefix
                     )));
                 } else { // TODO check for valid usernames with a pattern (borrow from Phase)
                     OfflinePlayer skullPlayer = Bukkit.getOfflinePlayer(args[0]);
-                    ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
-                    SkullMeta playerHeadMeta = (SkullMeta) playerHead.getItemMeta();
-                    playerHeadMeta.setOwningPlayer(skullPlayer);
-                    playerHead.setItemMeta(playerHeadMeta);
-                    Bukkit.getScheduler().runTask(Campfire.getCampfire(), () -> player.getInventory().addItem(playerHead)); // TODO check to make sure they have an open slot in their inventory first
+                    ItemStack skull = new SkullBuilder()
+                            .name(String.format("&d&l%s's &5&lSkull", skullPlayer.getName()))
+                            .player(skullPlayer)
+                            .build();
+                    Bukkit.getScheduler().runTask(Campfire.getCampfire(), () ->
+                            player.getInventory().addItem(skull).forEach((integer, itemStack) ->
+                                player.getWorld().dropItemNaturally(player.getLocation(), itemStack)));
                     CooldownUtil.resetCooldown(player.getUniqueId(), "skull");
                 }
             }
