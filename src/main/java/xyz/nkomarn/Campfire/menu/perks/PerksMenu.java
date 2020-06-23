@@ -46,6 +46,28 @@ public class PerksMenu extends Menu {
             Bukkit.getScheduler().runTask(Campfire.getCampfire(), () -> player.chat("/pp"));
         }));
 
+        // Pets
+        ItemStack pets = new ItemBuilder(Material.WOLF_SPAWN_EGG)
+                .name("&f&lPets")
+                .lore("&7View and manage", "&7your stored pets.")
+                .enchantUnsafe(Enchantment.MENDING, 1)
+                .addItemFlags(ItemFlag.HIDE_ENCHANTS)
+                .build();
+        addButton(new MenuButton(this, pets, 12, (button, clickType) -> {
+            Bukkit.getScheduler().runTask(Campfire.getCampfire(), () -> player.chat("/petswitch"));
+        }));
+
+        // Jobs
+        ItemStack jobs = new ItemBuilder(Material.ANVIL)
+                .name("&f&lJobs")
+                .lore("&7View and join", "&7multiple jobs.")
+                .enchantUnsafe(Enchantment.MENDING, 1)
+                .addItemFlags(ItemFlag.HIDE_ENCHANTS)
+                .build();
+        addButton(new MenuButton(this, jobs, 13, (button, clickType) -> {
+            Bukkit.getScheduler().runTask(Campfire.getCampfire(), () -> player.chat("/jobs"));
+        }));
+
         // Claim Block Boost
         ItemBuilder claimBlocks = new ItemBuilder(Material.GOLDEN_SHOVEL)
                 .name(String.format("&f&lClaim Boost (%s&f&l)", ToggleUtil
@@ -86,4 +108,5 @@ public class PerksMenu extends Menu {
 
         open();
     }
+
 }
