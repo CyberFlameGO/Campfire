@@ -2,18 +2,16 @@ package xyz.nkomarn.Campfire.menu;
 
 import com.cnaude.chairs.core.Chairs;
 import com.cnaude.chairs.core.PlayerSitData;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ItemFlag;
 import xyz.nkomarn.Campfire.listener.PvPListener;
 import xyz.nkomarn.Kerosene.menu.Menu;
 import xyz.nkomarn.Kerosene.menu.MenuButton;
 import xyz.nkomarn.Kerosene.util.ToggleUtil;
 import xyz.nkomarn.Kerosene.util.item.ItemBuilder;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 public class TogglesMenu extends Menu {
@@ -22,62 +20,102 @@ public class TogglesMenu extends Menu {
 
         UUID uuid = player.getUniqueId();
         fill(Material.WHITE_STAINED_GLASS_PANE);
-        fillBorderAlternating(Material.ORANGE_STAINED_GLASS_PANE, Material.RED_STAINED_GLASS_PANE);
+        fillBorderAlternating(Material.CYAN_STAINED_GLASS_PANE, Material.BLUE_STAINED_GLASS_PANE);
 
-        // ArmorStand toggle
-        ItemStack armorStandToggle = new ItemBuilder(Material.ARMOR_STAND)
-                .name(ChatColor.translateAlternateColorCodes('&', "&f&lArmor Stand Arms"))
-                .lore(getStatusLore(ToggleUtil.get(uuid, "armor-stand-arms")))
-                .build();
-        addButton(new MenuButton(this, armorStandToggle, 12, (button, clickType) -> {
-            boolean state = toggleState(uuid, "armor-stand-arms");
-            ItemStack newItem = ItemBuilder.of(button.getItem())
-                    .lore(getStatusLore(state))
-                    .build();
-            button.setItem(newItem);
+        // Armor Stand Arms
+        ItemBuilder armorStandToggle = new ItemBuilder(Material.ARMOR_STAND)
+                .name("&f&lArmor Stand Arms")
+                .lore(
+                        "&7Makes every armor stand",
+                        "&7you place have arms.",
+                        getStatusText(ToggleUtil.get(uuid, "armor-stand-arms"))
+                )
+                .addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        setGlint(armorStandToggle, ToggleUtil.get(uuid, "armor-stand-arms"));
+        addButton(new MenuButton(this, armorStandToggle.build(), 11, (button, clickType) -> {
+            boolean newState = !ToggleUtil.get(uuid, "armor-stand-arms");
+            ToggleUtil.set(uuid, "armor-stand-arms", newState);
+            setGlint(armorStandToggle, newState);
+            button.setItem(armorStandToggle.removeLoreLine(3).addLore(getStatusText(newState)).build());
         }));
 
-        // PVP toggle
-        ItemStack pvpToggle = new ItemBuilder(Material.GOLDEN_SWORD)
-                .name(ChatColor.translateAlternateColorCodes('&', "&6&lPVP"))
-                .lore(getStatusLore(PvPListener.ENABLED_PLAYERS.contains(uuid)))
-                .build();
-        addButton(new MenuButton(this, pvpToggle, 13, (button, clickType) -> {
-            if (PvPListener.ENABLED_PLAYERS.contains(uuid)) PvPListener.ENABLED_PLAYERS.remove(uuid);
-            else  PvPListener.ENABLED_PLAYERS.add(uuid);
+        // Invisible Item Frames
+        ItemBuilder itemFrame = new ItemBuilder(Material.ITEM_FRAME)
+                .name("&f&lInvisible Item Frames")
+                .lore(
+                        "&7Makes every item frame",
+                        "&7you place be invisible.",
+                        getStatusText(ToggleUtil.get(uuid, "invisible-item-frames"))
+                )
+                .addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        setGlint(itemFrame, ToggleUtil.get(uuid, "invisible-item-frames"));
+        addButton(new MenuButton(this, itemFrame.build(), 12, ((button, clickType) -> {
+            boolean newState = !ToggleUtil.get(uuid, "invisible-item-frames");
+            ToggleUtil.set(uuid, "invisible-item-frames", newState);
+            setGlint(itemFrame, newState);
+            button.setItem(itemFrame.removeLoreLine(3).addLore(getStatusText(newState)).build());
+        })));
 
-            ItemStack newItem = ItemBuilder.of(button.getItem())
-                    .lore(getStatusLore(PvPListener.ENABLED_PLAYERS.contains(uuid)))
-                    .build();
-            button.setItem(newItem);
+
+        // PvP
+        ItemBuilder pvp = new ItemBuilder(Material.IRON_AXE)
+                .name("&f&lPvP")
+                .lore(
+                        "&7Enables your PvP and allows",
+                        "&7you to fight with other players.",
+                        getStatusText(PvPListener.ENABLED_PLAYERS.contains(uuid))
+                )
+                .addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+        setGlint(pvp, PvPListener.ENABLED_PLAYERS.contains(uuid));
+        addButton(new MenuButton(this, pvp.build(), 14, (button, clickType) -> {
+            boolean newState = !PvPListener.ENABLED_PLAYERS.contains(uuid);
+            setGlint(pvp, newState);
+            button.setItem(pvp.removeLoreLine(3).addLore(getStatusText(newState)).build());
+
+            if (PvPListener.ENABLED_PLAYERS.contains(uuid)) {
+                PvPListener.ENABLED_PLAYERS.remove(uuid);
+            }
+            else {
+                PvPListener.ENABLED_PLAYERS.add(uuid);
+            }
         }));
 
-        // Chairs toggle
-        ItemStack chairsToggle = new ItemBuilder(Material.SPRUCE_STAIRS)
-                .name(ChatColor.translateAlternateColorCodes('&', "&6&lChairs"))
-                .lore(getStatusLore(!Chairs.getInstance().getPlayerSitData().isSittingDisabled(uuid)))
-                .build();
-        addButton(new MenuButton(this, chairsToggle, 14, (button, clickType) -> {
-            PlayerSitData sitData = Chairs.getInstance().getPlayerSitData();
-            if (sitData.isSittingDisabled(uuid)) sitData.enableSitting(uuid);
-            else sitData.disableSitting(uuid);
+        // Chairs
+        PlayerSitData sitData = Chairs.getInstance().getPlayerSitData();
+        ItemBuilder chairs = new ItemBuilder(Material.SPRUCE_STAIRS)
+                .name("&f&lSitting")
+                .lore(
+                        "&7Allows you to right-click",
+                        "&7on stairs to sit in them.",
+                        getStatusText(!Chairs.getInstance().getPlayerSitData().isSittingDisabled(uuid))
+                )
+                .addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        setGlint(chairs, !Chairs.getInstance().getPlayerSitData().isSittingDisabled(uuid));
+        addButton(new MenuButton(this, chairs.build(), 15, (button, clickType) -> {
+            boolean newState = sitData.isSittingDisabled(uuid);
+            setGlint(chairs, newState);
+            button.setItem(chairs.removeLoreLine(3).addLore(getStatusText(newState)).build());
 
-            ItemStack newItem = ItemBuilder.of(button.getItem())
-                    .lore(getStatusLore(!Chairs.getInstance().getPlayerSitData().isSittingDisabled(uuid)))
-                    .build();
-            button.setItem(newItem);
+            if (sitData.isSittingDisabled(uuid)) {
+                sitData.enableSitting(uuid);
+            }
+            else {
+                sitData.disableSitting(uuid);
+            }
         }));
 
         open();
     }
 
-    private boolean toggleState(UUID uuid, String toggleName) {
-        boolean newState = !ToggleUtil.get(uuid, toggleName);
-        ToggleUtil.set(uuid, toggleName, newState);
-        return newState;
+    private void setGlint(ItemBuilder item, boolean state) {
+        if (state) {
+            item.enchantUnsafe(Enchantment.MENDING, 1);
+        } else {
+            item.removeEnchant(Enchantment.MENDING);
+        }
     }
 
-    private List<String> getStatusLore(boolean state) {
-        return Collections.singletonList(state ? "&7Status: &aEnabled" : "&7Status: &cDisabled");
+    private String getStatusText(boolean state) {
+        return state ? "&aEnabled" : "&cDisabled";
     }
 }
