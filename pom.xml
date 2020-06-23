@@ -57,12 +57,12 @@
             <version>v1.2.10</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>xyz.nkomarn</groupId>
-            <artifactId>Barrel</artifactId>
-            <version>1.0</version>
-            <scope>provided</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>xyz.nkomarn</groupId>-->
+<!--            <artifactId>Barrel</artifactId>-->
+<!--            <version>1.0</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.github.FirestarterMC</groupId>
             <artifactId>GriefPrevention</artifactId>

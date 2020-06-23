@@ -27,7 +27,7 @@ public class TogglesMenu extends Menu {
         // ArmorStand toggle
         ItemStack armorStandToggle = new ItemBuilder(Material.ARMOR_STAND)
                 .name(ChatColor.translateAlternateColorCodes('&', "&f&lArmor Stand Arms"))
-                .lore(getStatusLore(ToggleUtil.getToggleState(uuid, "armor-stand-arms")))
+                .lore(getStatusLore(ToggleUtil.get(uuid, "armor-stand-arms")))
                 .build();
         addButton(new MenuButton(this, armorStandToggle, 12, (button, clickType) -> {
             boolean state = toggleState(uuid, "armor-stand-arms");
@@ -72,8 +72,8 @@ public class TogglesMenu extends Menu {
     }
 
     private boolean toggleState(UUID uuid, String toggleName) {
-        boolean newState = !ToggleUtil.getToggleState(uuid, toggleName);
-        ToggleUtil.setToggleState(uuid, toggleName, newState);
+        boolean newState = !ToggleUtil.get(uuid, toggleName);
+        ToggleUtil.set(uuid, toggleName, newState);
         return newState;
     }
 

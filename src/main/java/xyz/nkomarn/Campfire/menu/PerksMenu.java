@@ -8,6 +8,7 @@ import xyz.nkomarn.Campfire.Campfire;
 import xyz.nkomarn.Kerosene.menu.Menu;
 import xyz.nkomarn.Kerosene.menu.MenuButton;
 import xyz.nkomarn.Kerosene.util.item.ItemBuilder;
+import xyz.nkomarn.Kerosene.util.item.PotionBuilder;
 
 /**
  * The donor perks menu. This menu features things like potion slots,
@@ -20,7 +21,7 @@ public class PerksMenu extends Menu {
         fillBorderAlternating(Material.MAGENTA_STAINED_GLASS_PANE, Material.PURPLE_STAINED_GLASS_PANE);
 
         // Potions
-        ItemStack potions = new ItemBuilder(Material.POTION)
+        ItemStack potions = new PotionBuilder()
                 .name(ChatColor.translateAlternateColorCodes('&', "&f&lPotion Effects"))
                 .lore(
                         "&7Configure your &dpermanent",
