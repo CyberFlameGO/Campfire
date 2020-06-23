@@ -1,4 +1,4 @@
-package xyz.nkomarn.Campfire.menu;
+package xyz.nkomarn.Campfire.menu.perks;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

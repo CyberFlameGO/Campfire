@@ -44,6 +44,8 @@ commands:
 permissions:
   campfire.perks:
     default: op
+  campfire.perks.claim-boost:
+    default: op
   campfire.perks.potions:
     default: op
   campfire.perks.skull:

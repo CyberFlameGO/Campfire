@@ -1,4 +1,4 @@
-package xyz.nkomarn.Campfire.menu;
+package xyz.nkomarn.Campfire.menu.perks;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import xyz.nkomarn.Campfire.Campfire;
+import xyz.nkomarn.Campfire.menu.perks.PotionSlotsMenu;
 import xyz.nkomarn.Campfire.util.Config;
 import xyz.nkomarn.Campfire.util.cache.EffectsCache;
 import xyz.nkomarn.Kerosene.menu.Menu;

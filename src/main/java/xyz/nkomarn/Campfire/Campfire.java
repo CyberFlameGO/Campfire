@@ -11,7 +11,11 @@ import xyz.nkomarn.Campfire.maps.Maps;
 import xyz.nkomarn.Campfire.task.DataExporter;
 import xyz.nkomarn.Campfire.task.EffectsTask;
 import xyz.nkomarn.Campfire.task.PlaytimeCheck;
+import xyz.nkomarn.Kerosene.data.LocalStorage;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 public class Campfire extends JavaPlugin {
@@ -23,6 +27,7 @@ public class Campfire extends JavaPlugin {
 
         Arrays.asList(
                 new AdvancementCriterionListener(),
+                new AccrueClaimBlocks(),
                 new PickupItemListener(),
                 new SpawnListener(),
                 new ChatListener(),
