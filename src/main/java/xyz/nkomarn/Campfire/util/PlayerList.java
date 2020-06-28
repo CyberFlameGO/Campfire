@@ -70,8 +70,10 @@ public class PlayerList {
      */
     public static void updateHeader() {
         Bukkit.getScheduler().runTaskLaterAsynchronously(Campfire.getCampfire(), () -> {
+            /*String header = ChatColor.translateAlternateColorCodes('&', String.format(Config.getString("tablist.header"),
+                    Bukkit.getOnlinePlayers().size() - VanishAPI.getInvisiblePlayers().size()));*/
             String header = ChatColor.translateAlternateColorCodes('&', String.format(Config.getString("tablist.header"),
-                    Bukkit.getOnlinePlayers().size() - VanishAPI.getInvisiblePlayers().size()));
+                    Bukkit.getOnlinePlayers().size()));
             Bukkit.getOnlinePlayers().forEach(player -> player.setPlayerListHeader(header));
         }, 5L);
     }

@@ -53,6 +53,7 @@ public class PvPListener implements Listener {
                 }
             }
         } else if (event.getDamager() instanceof Firework && event.getEntity() instanceof Player) {
+            event.setCancelled(true);
             LivingEntity boostedEntity = ((Firework) event.getDamager()).getBoostedEntity();
 
             if (boostedEntity instanceof Player) {
@@ -126,14 +127,16 @@ public class PvPListener implements Listener {
         } else if (ENABLED_PLAYERS.contains(attacker.getUniqueId()) && ENABLED_PLAYERS.contains(attacked.getUniqueId())) {
             return false;
         } else if (ENABLED_PLAYERS.contains(attacker.getUniqueId())) {
-            attacker.sendActionBar(ChatColor
-                    .translateAlternateColorCodes('&', String.format(
-                            "&c&lPVP: &7%s's PvP is disabled.", attacked.getName()
-                    )));
+            attacker.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(
+                    ChatColor
+                            .translateAlternateColorCodes('&', String.format(
+                                    "&c&lPVP: &7%s's PvP is disabled.", attacked.getName()
+                            )))
+            );
             return true;
         } else {
-            attacker.sendActionBar(ChatColor
-                    .translateAlternateColorCodes('&', "&c&lPVP: &7Your PvP is disabled."));
+            attacker.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(
+                    ChatColor.translateAlternateColorCodes('&', "&c&lPVP: &7Your PvP is disabled.")));
             return true;
         }
     }
