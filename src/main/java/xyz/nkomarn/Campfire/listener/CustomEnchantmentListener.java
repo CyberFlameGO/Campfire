@@ -8,7 +8,6 @@ import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -17,63 +16,55 @@ public class CustomEnchantmentListener implements Listener {
     @EventHandler
     public void onAnvilPrepare(PrepareAnvilEvent event) {
         AnvilInventory anvil = event.getInventory();
-        ItemStack firstItem = anvil.getFirstItem();
-        ItemStack secondItem = anvil.getSecondItem();
+        ItemStack leftItem = anvil.getFirstItem();
+        ItemStack rightItem = anvil.getSecondItem();
 
-        if (firstItem == null || secondItem == null) {
-            return;
-        }
+        if (leftItem == null || rightItem == null) return;
+        if (leftItem.getItemMeta() instanceof EnchantmentStorageMeta && !(rightItem.getItemMeta() instanceof EnchantmentStorageMeta)) return;
 
-        if (!(secondItem.getItemMeta() instanceof EnchantmentStorageMeta)) {
-            return;
-        }
+        ItemStack result = event.getResult();
+        Map<Enchantment, Integer> leftIllegal = getIllegalEnchantments(leftItem);
+        Map<Enchantment, Integer> rightIllegal = getIllegalEnchantments(rightItem);
+        Map<Enchantment, Integer> combinedIllegal = combineEnchantmentMaps(leftIllegal, rightIllegal);
 
-        ItemStack result = firstItem.clone();
-        boolean isRecipientEnchantmentStorage = (result.getItemMeta() instanceof EnchantmentStorageMeta);
-
-        Map<Enchantment, Integer> firstItemEnchantments = firstItem.getEnchantments();
-        if (isRecipientEnchantmentStorage) {
-            firstItemEnchantments = ((EnchantmentStorageMeta) firstItem.getItemMeta()).getStoredEnchants();
-        }
-
-        Map<Enchantment, Integer> enchantmentsToAdd = ((EnchantmentStorageMeta) secondItem.getItemMeta()).getStoredEnchants();
-        Map<Enchantment, Integer> finalEnchantments = combineEnchantments(firstItemEnchantments, enchantmentsToAdd);
-        if (isRecipientEnchantmentStorage) {
+        if (result.getItemMeta() instanceof EnchantmentStorageMeta) {
             EnchantmentStorageMeta meta = (EnchantmentStorageMeta) result.getItemMeta();
-            finalEnchantments.forEach((enchantment, level) -> meta.addStoredEnchant(enchantment, level, true));
+            combinedIllegal.keySet().forEach(meta::removeStoredEnchant);
+            combinedIllegal.forEach((enchantment, integer) -> meta.addStoredEnchant(enchantment, integer, true));
             result.setItemMeta(meta);
         } else {
-            result.addUnsafeEnchantments(finalEnchantments
-                    .entrySet()
-                    .stream()
-                    .filter(entry -> entry.getKey().canEnchantItem(result))
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+            combinedIllegal.forEach((enchantment, integer) -> {
+                if (enchantment.canEnchantItem(result)) {
+                    result.addUnsafeEnchantment(enchantment, integer);
+                }
+            });
         }
-
         event.setResult(result);
     }
 
-    private Map<Enchantment, Integer> combineEnchantments(Map<Enchantment, Integer> first, Map<Enchantment, Integer> second) {
-        Map<Enchantment, Integer> result = new HashMap<>(first);
+    private Map<Enchantment, Integer> getIllegalEnchantments(ItemStack itemStack) {
+        Map<Enchantment, Integer> result;
+        if (itemStack.getItemMeta() instanceof EnchantmentStorageMeta) {
+            result = ((EnchantmentStorageMeta) itemStack.getItemMeta()).getStoredEnchants();
+        } else {
+            result = itemStack.getEnchantments();
+        }
 
-        second.forEach((enchantment, level) -> {
-            if (first.containsKey(enchantment)) {
-                int firstLevel = first.get(enchantment);
+        return result.entrySet().stream()
+                .filter(entry -> entry.getKey().getMaxLevel() < entry.getValue())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
 
-                if (firstLevel < level) {
-                    result.put(enchantment, level);
-                } else if (firstLevel == level) {
-                    int resultLevel = level + 1;
-                    if(resultLevel > enchantment.getMaxLevel()) {
-                        resultLevel = level;
-                    }
-                    result.put(enchantment, resultLevel);
-                }
-            } else {
+    private Map<Enchantment, Integer> combineEnchantmentMaps(Map<Enchantment, Integer> left, Map<Enchantment, Integer> right) {
+        Map<Enchantment, Integer> result = left;
+        right.forEach((enchantment, level) -> {
+            if (!result.containsKey(enchantment)) {
                 result.put(enchantment, level);
+                return;
             }
+            int leftLevel = result.get(enchantment);
+            result.put(enchantment, Math.max(leftLevel, level));
         });
-
         return result;
     }
 }
