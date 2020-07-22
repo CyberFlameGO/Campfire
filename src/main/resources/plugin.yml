@@ -1,10 +1,10 @@
 name: Campfire
-version: 3.2
+version: 4.0
 author: TechToolbox (@nkomarn)
-main: xyz.nkomarn.Campfire.Campfire
+main: xyz.nkomarn.campfire.Campfire
 description: Firestarter's package of basic server utilities.
 website: https://firestartermc.com/opensource
-api-version: 1.15
+api-version: 1.16
 depend: ['Kerosene', 'GriefPrevention', 'Chairs']
 
 commands:

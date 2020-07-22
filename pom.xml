@@ -6,7 +6,7 @@
 
     <groupId>xyz.nkomarn</groupId>
     <artifactId>Campfire</artifactId>
-    <version>3.2</version>
+    <version>4.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -49,12 +49,6 @@
             <groupId>com.acrobot.chestshop</groupId>
             <artifactId>chestshop</artifactId>
             <version>3.10</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.FirestarterMC</groupId>
-            <artifactId>Crazy-Auctions</artifactId>
-            <version>v1.2.10</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
