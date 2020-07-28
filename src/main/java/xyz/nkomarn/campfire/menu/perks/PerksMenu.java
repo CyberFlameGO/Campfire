@@ -71,18 +71,19 @@ public class PerksMenu extends Menu {
 
         // Claim Block Boost
         ItemBuilder claimBlocks = new ItemBuilder(Material.GOLDEN_SHOVEL)
-                .name(String.format("&f&lClaim Boost (%s&f&l)", Toggle.get(player.getUniqueId(), "claim-boost") ? "&c&lOFF" : "&a&lON"))
+                .name(String.format("&f&lClaim Boost (%s&f&l)", player.hasPermission("campfire.perks.claim-boost") ? "&a&lON" : "&c&lOFF"))
                 .lore("&eDoubles &7the amount of &eclaim", "&eblocks &7you get per hour.")
-                .enchantUnsafe(Enchantment.MENDING, 1)
                 .addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS);
-        if (!player.hasPermission("campfire.perks.claim-boost")) claimBlocks.addLore("&cComes with Ember rank.");
+
+        if (!player.hasPermission("campfire.perks.claim-boost")) {
+            claimBlocks.addLore("&cComes with Ember rank.");
+        } else {
+            claimBlocks.enchantUnsafe(Enchantment.MENDING, 1);
+        }
 
         addButton(new MenuButton(this, claimBlocks.build(), 15, ((button, clickType) -> {
             if (player.hasPermission("campfire.perks.claim-boost")) {
-                UUID uuid = player.getUniqueId();
-                Toggle.set(uuid, "claim-boost", !Toggle.get(uuid, "claim-boost"));
-                button.setItem(claimBlocks.name(String.format("&f&lClaim Boost (%s&f&l)",
-                        Toggle.get(player.getUniqueId(), "claim-boost") ? "&c&lOFF" : "&a&lON")).build());
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES, 1.0f, 1.0f);
             } else {
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
             }
