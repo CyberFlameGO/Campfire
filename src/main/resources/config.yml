@@ -21,6 +21,12 @@ tablist:
     mod:
       color: "GOLD"
       prefix: "&6[Mod] "
+    pyre:
+      color: "YELLOW"
+      prefix: ""
+    ember:
+      color: "YELLOW"
+      prefix: ""
     spark:
       color: "YELLOW"
       prefix: ""

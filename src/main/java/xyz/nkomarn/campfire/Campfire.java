@@ -6,7 +6,9 @@ import xyz.nkomarn.campfire.listener.*;
 import xyz.nkomarn.campfire.listener.entity.PickupItemListener;
 import xyz.nkomarn.campfire.listener.entity.SpawnListener;
 import xyz.nkomarn.campfire.listener.player.*;
+import xyz.nkomarn.campfire.listener.shop.TransactionListener;
 import xyz.nkomarn.campfire.listener.world.ChunkLoadListener;
+import xyz.nkomarn.campfire.log.ShopLog;
 import xyz.nkomarn.campfire.map.Maps;
 import xyz.nkomarn.campfire.task.EffectsTask;
 import xyz.nkomarn.campfire.task.PlaytimeCheck;
@@ -58,6 +60,7 @@ public class Campfire extends JavaPlugin {
         getServer().getScheduler().runTaskTimerAsynchronously(this, new EffectsTask(), 0L, 200L);
 
         STORAGE = new LocalStorage("campfire");
+        ShopLog.load();
         Maps.loadMaps();
 
         /*if (getServer().getPluginManager().isPluginEnabled("PrometheusExporter")) {

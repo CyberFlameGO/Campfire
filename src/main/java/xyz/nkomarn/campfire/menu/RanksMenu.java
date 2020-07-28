@@ -26,7 +26,7 @@ public class RanksMenu extends Menu {
                 .name("&f&lScout")
                 .lore(getLore("scout"))
                 .build();
-        getInventory().setItem(11, scoutHead);
+        getInventory().setItem(10, scoutHead);
 
         ItemStack camperHead = new SkullBuilder()
                 .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWQ" +
@@ -34,7 +34,7 @@ public class RanksMenu extends Menu {
                 .name("&f&lCamper")
                 .lore(getLore("camper"))
                 .build();
-        getInventory().setItem(12, camperHead);
+        getInventory().setItem(11, camperHead);
 
         ItemStack pioneerHead = new SkullBuilder()
                 .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDM" +
@@ -42,7 +42,7 @@ public class RanksMenu extends Menu {
                 .name("&f&lPioneer")
                 .lore(getLore("pioneer"))
                 .build();
-        getInventory().setItem(13, pioneerHead);
+        getInventory().setItem(12, pioneerHead);
 
         ItemStack vanguardHead = new SkullBuilder()
                 .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGZ" +
@@ -50,7 +50,7 @@ public class RanksMenu extends Menu {
                 .name("&f&lVanguard")
                 .lore(getLore("vanguard"))
                 .build();
-        getInventory().setItem(14, vanguardHead);
+        getInventory().setItem(13, vanguardHead);
 
         ItemStack sparkHead = new SkullBuilder()
                 .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2Q" +
@@ -58,7 +58,23 @@ public class RanksMenu extends Menu {
                 .name("&f&lSpark")
                 .lore(getLore("spark"))
                 .build();
-        getInventory().setItem(15, sparkHead);
+        getInventory().setItem(14, sparkHead);
+
+        ItemStack emberHead = new SkullBuilder()
+                .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjd" +
+                        "kNTdiNWJjOWFiM2Y1M2VjOWNjMmY5NGI3MmMxMzRhY2RlODU1YTY0M2MyNWU1YTI2YzNlMGIyYTYwM2FkZCJ9fX0=")
+                .name("&f&lEmber")
+                .lore(getLore("ember"))
+                .build();
+        getInventory().setItem(15, emberHead);
+
+        ItemStack pyreHead = new SkullBuilder()
+                .texture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmQ" +
+                        "4MjEwOTJjZTVlNzU1NzQ1MWM3MjNhMDM0MWU5MGI5M2UwNTY0ZTJiMDE0ODFkZTgxZWVhMjcxZjA0YzViNiJ9fX0=")
+                .name("&f&lPyre")
+                .lore(getLore("pyre"))
+                .build();
+        getInventory().setItem(16, pyreHead);
 
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 0.8f, 1.0f);
         open();

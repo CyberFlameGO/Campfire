@@ -7,7 +7,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import org.jetbrains.annotations.NotNull;
 import xyz.nkomarn.campfire.Campfire;
+import xyz.nkomarn.kerosene.Kerosene;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,7 +28,7 @@ public class PlayerList {
      * @param player The player to get the team for.
      * @return The team name that the player should be a part of.
      */
-    private static String getTeam(Player player) {
+    private static String getTeam(@NotNull Player player) {
         Set<PermissionAttachmentInfo> permissions = player.getEffectivePermissions();
         return getHighestPriority(permissions.parallelStream()
                 .filter(permission -> permission.getPermission().startsWith("group."))
@@ -40,7 +42,7 @@ public class PlayerList {
      * @param teams A set of teams that a player is a part of.
      * @return The highest priority group out of the set.
      */
-    private static String getHighestPriority(Set<String> teams) {
+    private static String getHighestPriority(@NotNull Set<String> teams) {
         return TEAM_PRIORITY.stream()
                 .filter(team -> teams.contains("group." + team))
                 .findFirst().orElse("default");
@@ -51,7 +53,7 @@ public class PlayerList {
      *
      * @param player The player for which to update teams.
      */
-    public static void updateTeams(Player player) {
+    public static void updateTeams(@NotNull Player player) {
         String team = getTeam(player);
         String teamName = TEAM_PRIORITY.indexOf(team) + team;
         Team scoreboardTeam = SCOREBOARD.getTeam(teamName);
