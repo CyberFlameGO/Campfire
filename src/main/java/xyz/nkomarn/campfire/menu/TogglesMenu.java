@@ -15,6 +15,7 @@ import xyz.nkomarn.kerosene.util.item.ItemBuilder;
 import java.util.UUID;
 
 public class TogglesMenu extends Menu {
+
     public TogglesMenu(Player player) {
         super(player, "Toggles", 27);
 
@@ -67,7 +68,7 @@ public class TogglesMenu extends Menu {
                 )
                 .addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         setGlint(pvp, PvPListener.ENABLED_PLAYERS.contains(uuid));
-        addButton(new MenuButton(this, pvp.build(), 14, (button, clickType) -> {
+        addButton(new MenuButton(this, pvp.build(), 13, (button, clickType) -> {
             boolean newState = !PvPListener.ENABLED_PLAYERS.contains(uuid);
             setGlint(pvp, newState);
             button.setItem(pvp.removeLoreLine(3).addLore(getStatusText(newState)).build());
@@ -91,7 +92,7 @@ public class TogglesMenu extends Menu {
                 )
                 .addItemFlags(ItemFlag.HIDE_ENCHANTS);
         setGlint(chairs, !Chairs.getInstance().getPlayerSitData().isSittingDisabled(uuid));
-        addButton(new MenuButton(this, chairs.build(), 15, (button, clickType) -> {
+        addButton(new MenuButton(this, chairs.build(), 14, (button, clickType) -> {
             boolean newState = sitData.isSittingDisabled(uuid);
             setGlint(chairs, newState);
             button.setItem(chairs.removeLoreLine(3).addLore(getStatusText(newState)).build());
@@ -102,6 +103,23 @@ public class TogglesMenu extends Menu {
             else {
                 sitData.disableSitting(uuid);
             }
+        }));
+
+        // Shop notifications
+        ItemBuilder shops = new ItemBuilder(Material.BARREL)
+                .name("&f&lShop Notifications")
+                .lore(
+                        "&7Choose whether chest shop notifications will",
+                        "&7display when a player buys from your shop.",
+                        getStatusText(Toggle.get(uuid, "shop-notifications"))
+                )
+                .addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        setGlint(shops, Toggle.get(uuid, "shop-notifications"));
+        addButton(new MenuButton(this, shops.build(), 15, (button, clickType) -> {
+            boolean newState = !Toggle.get(uuid, "shop-notifications");
+            Toggle.set(uuid, "shop-notifications", newState);
+            setGlint(shops, newState);
+            button.setItem(shops.removeLoreLine(3).addLore(getStatusText(newState)).build());
         }));
 
         open();
