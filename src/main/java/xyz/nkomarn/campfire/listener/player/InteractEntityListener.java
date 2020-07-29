@@ -1,13 +1,21 @@
 package xyz.nkomarn.campfire.listener.player;
 
+import com.google.common.collect.Lists;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MerchantRecipe;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.UUID;
 
 public class InteractEntityListener implements Listener {
@@ -23,6 +31,27 @@ public class InteractEntityListener implements Listener {
                     player.getInventory().getItemInMainHand().setAmount(Math.max(0, player.getInventory().getItemInMainHand().getAmount() - 1));
                     player.getInventory().addItem(new ItemStack(Material.MILK_BUCKET, 1)).values().forEach(item ->
                             player.getWorld().dropItemNaturally(player.getLocation(), item));
+                }
+            }
+        }
+    }
+
+    @EventHandler // TODO remove once 1.16 villager crash has been fixed
+    public void onInventory(InventoryOpenEvent event) {
+        if (event.getInventory().getType() == InventoryType.MERCHANT) {
+            if (event.getInventory().getHolder() instanceof Villager) {
+                Villager villager = (Villager) event.getInventory().getHolder();
+
+                if (villager.getProfession() == Villager.Profession.CARTOGRAPHER) {
+                    event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                            "&c&lError: &7Cartographers are currently disabled as trading with them causes server crashes."
+                    ));
+                    event.setCancelled(true);
+                    event.getPlayer().closeInventory();
+
+                    if (event.getPlayer() instanceof Player) {
+                        ((Player) event.getPlayer()).playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
+                    }
                 }
             }
         }
