@@ -133,3 +133,16 @@ world:
       cooldown:
         top: "&c&lCan't teleport just yet."
         bottom: "&rWait [minutes] more minute(s)."
+    portal:
+      min:
+        x: 19701
+        y: 70
+        z: -47025
+      max:
+        x: 19703
+        y: 72
+        z: -47023
+      particle:
+        x: 19702
+        y: 70
+        z: -47024

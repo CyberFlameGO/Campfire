@@ -11,6 +11,7 @@ import xyz.nkomarn.campfire.listener.world.ChunkLoadListener;
 import xyz.nkomarn.campfire.log.ShopLog;
 import xyz.nkomarn.campfire.map.Maps;
 import xyz.nkomarn.campfire.task.EffectsTask;
+import xyz.nkomarn.campfire.task.PortalTask;
 import xyz.nkomarn.campfire.task.PlaytimeCheck;
 import xyz.nkomarn.kerosene.data.db.LocalStorage;
 
@@ -58,6 +59,7 @@ public class Campfire extends JavaPlugin {
 
         getServer().getScheduler().runTaskTimerAsynchronously(this, new PlaytimeCheck(), 0L, 6000L);
         getServer().getScheduler().runTaskTimerAsynchronously(this, new EffectsTask(), 0L, 200L);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new PortalTask(getServer()), 0L, 10L);
 
         STORAGE = new LocalStorage("campfire");
         ShopLog.load();
