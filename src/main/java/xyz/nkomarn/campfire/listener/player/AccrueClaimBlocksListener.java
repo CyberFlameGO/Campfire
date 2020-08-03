@@ -5,7 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-public class AccrueClaimBlocks implements Listener {
+public class AccrueClaimBlocksListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onAccrue(@NotNull AccrueClaimBlocksEvent event) {
