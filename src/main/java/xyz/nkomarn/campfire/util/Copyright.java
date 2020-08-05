@@ -228,6 +228,10 @@ public class Copyright extends BukkitRunnable implements Listener {
             Player player = (Player) viewer;
 
             for (ItemStack item : event.getInventory().getMatrix()) {
+                if (item == null) {
+                    continue;
+                }
+
                 if (item.getType() != Material.FILLED_MAP) {
                     continue;
                 }

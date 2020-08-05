@@ -17,6 +17,8 @@ import org.jetbrains.annotations.Nullable;
 import xyz.nkomarn.campfire.Campfire;
 import xyz.nkomarn.campfire.util.Copyright;
 import xyz.nkomarn.kerosene.Kerosene;
+import xyz.nkomarn.kerosene.gui.predefined.ConfirmationGui;
+import xyz.nkomarn.kerosene.menu.ConfirmationMenu;
 import xyz.nkomarn.kerosene.util.Economy;
 
 import java.sql.Connection;
@@ -61,7 +63,7 @@ public class CopyrightCommand implements TabExecutor {
 
             if (mapItem.getType() != Material.FILLED_MAP) {
                 player.sendMessage(PREFIX + ChatColor.translateAlternateColorCodes('&',
-                        "Hold a map in your hand to purchase &e+ 60 days&7 of copyright for &e$8,000&7."
+                        "Hold a map in your hand to purchase &e+ 60 days&7 of copyright for &e$6,000&7."
                 ));
                 return true;
             }
@@ -72,22 +74,32 @@ public class CopyrightCommand implements TabExecutor {
                 return true;
             }
 
-            if (Economy.getBalance(player) < 8000) {
-                player.sendMessage(PREFIX + ChatColor.translateAlternateColorCodes('&', "You need &e$8,000&7 to purchase copyright."));
+            if (Economy.getBalance(player) < 6000) {
+                player.sendMessage(PREFIX + ChatColor.translateAlternateColorCodes('&', "You need &e$6,000&7 to purchase copyright."));
                 return true;
             }
 
-            int mapId = ((MapMeta) mapItem.getItemMeta()).getMapView().getId();
-            Copyright.copyrightMap(mapId, player).thenAccept(result -> {
-                if (!result) {
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lError: &7Failed to copyright your map."));
-                    return;
-                }
+            ConfirmationGui confirm = new ConfirmationGui("Purchase 60 days of map copyright for $6,000.",
+                    (event) -> {
+                        int mapId = ((MapMeta) mapItem.getItemMeta()).getMapView().getId();
 
-                Economy.withdraw(player, 8000);
-                player.sendMessage(PREFIX + ChatColor.translateAlternateColorCodes('&', "Purchased copyright for &e+ 60 days&7 for this map."));
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_IRON_XYLOPHONE, 1.0f, 1.0f);
-            });
+                        Copyright.copyrightMap(mapId, player).thenAccept(result -> {
+                            if (!result) {
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&lError: &7Failed to copyright your map."));
+                                return;
+                            }
+
+                            Economy.withdraw(player, 6000);
+                            player.sendMessage(PREFIX + ChatColor.translateAlternateColorCodes('&', "Purchased copyright for &e+ 60 days&7 for this map."));
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_IRON_XYLOPHONE, 1.0f, 1.0f);
+                            Campfire.getCampfire().getLogger().info(player.getName() + " copyrighed map #" + mapId + ".");
+                        });
+
+                        event.getGui().close();
+                    },
+                    (event) -> event.getGui().close());
+
+            confirm.open(player);
         }
 
         return true;
