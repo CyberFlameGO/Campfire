@@ -3,6 +3,7 @@ package xyz.nkomarn.campfire.listener.player;
 import com.google.common.collect.Lists;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -26,12 +27,16 @@ public class InteractEntityListener implements Listener {
             Player player = event.getPlayer();
             Player clickedPlayer = (Player) event.getRightClicked();
 
-            if (clickedPlayer.getUniqueId().equals(UUID.fromString("9b6edc28-2ca3-4ede-82b6-777116812905"))) {
+            UUID clickedUUID = clickedPlayer.getUniqueId();
+            if (clickedUUID.equals(UUID.fromString("9b6edc28-2ca3-4ede-82b6-777116812905"))) {
                 if (player.getInventory().getItemInMainHand().getType().equals(Material.BUCKET)) {
                     player.getInventory().getItemInMainHand().setAmount(Math.max(0, player.getInventory().getItemInMainHand().getAmount() - 1));
                     player.getInventory().addItem(new ItemStack(Material.MILK_BUCKET, 1)).values().forEach(item ->
                             player.getWorld().dropItemNaturally(player.getLocation(), item));
                 }
+            } else if (clickedUUID.equals(UUID.fromString("dd96e851-b3e8-4b0f-8618-29ec734251c6"))) {
+                clickedPlayer.getWorld().playSound(clickedPlayer.getLocation(), Sound.ENTITY_DOLPHIN_AMBIENT_WATER, 1.0f, 1.0f);
+                clickedPlayer.getWorld().spawnParticle(Particle.WATER_SPLASH, clickedPlayer.getLocation(), 3);
             }
         }
     }

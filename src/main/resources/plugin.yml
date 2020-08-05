@@ -13,6 +13,9 @@ commands:
   colorcodes:
     description: "View all of the usable in-game color codes."
     aliases: ['colors', 'color']
+  copyright:
+    description: "View and purchase map copyright."
+    aliases: ['patent']
   wild:
     description: "Teleport to a random location in the world."
     aliases: ['rtp', 'wildtp']
@@ -49,6 +52,8 @@ permissions:
   campfire.perks.potions:
     default: op
   campfire.perks.skull:
+    default: op
+  campfire.perks.phantom-protection:
     default: op
   campfire.staff:
     default: op

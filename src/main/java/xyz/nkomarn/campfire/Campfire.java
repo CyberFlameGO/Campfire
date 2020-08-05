@@ -14,6 +14,7 @@ import xyz.nkomarn.campfire.task.EffectsTask;
 import xyz.nkomarn.campfire.task.PhantomTask;
 import xyz.nkomarn.campfire.task.PortalTask;
 import xyz.nkomarn.campfire.task.PlaytimeCheck;
+import xyz.nkomarn.campfire.util.Copyright;
 import xyz.nkomarn.kerosene.data.db.LocalStorage;
 
 import java.util.Arrays;
@@ -30,6 +31,7 @@ public class Campfire extends JavaPlugin {
         Arrays.asList(
                 new AdvancementCriterionListener(),
                 new AccrueClaimBlocksListener(),
+                new Copyright(),
                 new SpawnerListener(),
                 new PickupItemListener(),
                 new SpawnListener(),
@@ -48,6 +50,7 @@ public class Campfire extends JavaPlugin {
 
         getCommand("campfire").setExecutor(new CampfireCommand());
         getCommand("colorcodes").setExecutor(new ColorCodesCommand());
+        getCommand("copyright").setExecutor(new CopyrightCommand());
         getCommand("wild").setExecutor(new WildCommand());
         getCommand("perks").setExecutor(new PerksCommand());
         getCommand("playtime").setExecutor(new PlaytimeCommand());
@@ -65,8 +68,9 @@ public class Campfire extends JavaPlugin {
         getServer().getScheduler().runTaskTimer(this, new PhantomTask(getServer()), 0L, 40L);
 
         STORAGE = new LocalStorage("campfire");
-        ShopLog.load();
         Maps.loadMaps();
+        ShopLog.load();
+        Copyright.load();
 
         /*if (getServer().getPluginManager().isPluginEnabled("PrometheusExporter")) {
             getServer().getScheduler().runTaskTimerAsynchronously(this,

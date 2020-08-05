@@ -66,7 +66,7 @@ public class PlaytimeCommand implements TabExecutor {
         });
     }
 
-    private String getTimeString(int time) {
+    private String getTimeString(long time) {
         return (time / 24 / 60) + " days, " + (time / 60 % 24) + " hours, and " + (time % 60) + " minutes";
     }
 
