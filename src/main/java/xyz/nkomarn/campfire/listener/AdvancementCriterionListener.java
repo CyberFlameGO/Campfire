@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
-import xyz.nkomarn.Barrel.event.CrateRewardEvent;
+// import xyz.nkomarn.Barrel.event.CrateRewardEvent;
 import xyz.nkomarn.kerosene.util.Advancement;
 
 /**
@@ -58,10 +58,10 @@ public class AdvancementCriterionListener implements Listener {
         AdvancementUtil.grantAdvancement(event.getChanger(), "claim-trust");
     }*/
 
-    @EventHandler()
+    /*@EventHandler()
     public void onCrateReward(@NotNull CrateRewardEvent event) {
         Advancement.grantAdvancement(event.getPlayer(), "crates");
-    }
+    }*/
 
     @EventHandler()
     public void onJobJoin(@NotNull JobsJoinEvent event) {
