@@ -50,12 +50,13 @@ public class PlaytimeCommand implements TabExecutor {
 
         Kerosene.getPool().submit(() -> {
             try {
-                final PreparedStatement statement = PlayerData.getConnection().prepareStatement(QUERY);
+                Connection connection = PlayerData.getConnection();
+                PreparedStatement statement = connection.prepareStatement(QUERY);
                 statement.setString(1, player.getUniqueId().toString());
 
                 ResultSet result = statement.executeQuery();
 
-                try (statement; result) {
+                try (connection; statement; result) {
                     if (!result.next()) {
                         future.complete(ERROR_PREFIX + "Couldn't fetch playtime data for that player.");
                         return;

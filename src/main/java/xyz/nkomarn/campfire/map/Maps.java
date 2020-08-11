@@ -26,7 +26,7 @@ public class Maps {
         try (Connection connection = Campfire.getStorage().getConnection()) {
             connection.prepareStatement("CREATE TABLE IF NOT EXISTS maps (id INTEGER PRIMARY KEY, map_id INTEGER NOT NULL, image TEXT NOT NULL);").execute();
 
-            final PreparedStatement statement = Campfire.getStorage().getConnection().prepareStatement("SELECT * FROM maps");
+            PreparedStatement statement = Campfire.getStorage().getConnection().prepareStatement("SELECT * FROM maps");
             ResultSet result = statement.executeQuery();
 
             try (statement; result) {

@@ -28,12 +28,13 @@ public class ShopLogCommand implements TabExecutor {
 
         Kerosene.getPool().submit(() -> {
             try {
-                final PreparedStatement statement = Campfire.getStorage().getConnection().prepareStatement(SQL);
+                Connection connection = Campfire.getStorage().getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL);
                 statement.setString(1, player.getUniqueId().toString());
 
                 ResultSet result = statement.executeQuery();
 
-                try (statement; result) {
+                try (connection; statement; result) {
                     ShopLog.Builder builder = new ShopLog.Builder(player);
 
                     while (result.next()) {
