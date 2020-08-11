@@ -9,15 +9,12 @@ import xyz.nkomarn.campfire.util.Config;
 
 public class PortalTask implements Runnable {
 
-    private final Server server;
     private final World spawnWorld;
-
     private final Location minorCorner;
     private final Location majorCorner;
     private final Location particleLocation;
 
     public PortalTask(@NotNull Server server) {
-        this.server = server;
         this.spawnWorld = server.getWorld("world");
 
         this.minorCorner = new Location(
@@ -52,7 +49,7 @@ public class PortalTask implements Runnable {
 
             Bukkit.getScheduler().runTask(Campfire.getCampfire(), () -> {
                 player.chat("/wild");
-                knockback(player);
+                knockback(player, 2, 2);
             });
         }
     }
@@ -64,9 +61,9 @@ public class PortalTask implements Runnable {
                 && (location.getBlockZ() >= minor.getBlockZ() && location.getBlockZ() <= major.getBlockZ());
     }
 
-    public void knockback(Player player) {
+    public static void knockback(Player player, int multiplier, int y) {
         Vector locationVector = player.getLocation().toVector();
-        Vector vector = locationVector.normalize().multiply(2).setY(2);
+        Vector vector = locationVector.normalize().multiply(multiplier).setY(y);
 
         if (player.isInsideVehicle()) {
             player.getVehicle().setVelocity(vector);

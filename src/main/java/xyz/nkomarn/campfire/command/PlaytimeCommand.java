@@ -20,50 +20,59 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class PlaytimeCommand implements TabExecutor {
 
     private static final String ERROR_PREFIX = ChatColor.translateAlternateColorCodes('&', "&c&lError: &7");
     private static final DateFormat FORMAT = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
+    private static final String QUERY = "SELECT `joined` FROM `playerdata` WHERE `uuid` = ?;";
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (args.length < 1) {
-            if (sender instanceof Player) {
-                sendPlaytime((Player) sender, (Player) sender);
-            }
-        } else {
-            sendPlaytime((Player) sender, Bukkit.getOfflinePlayer(args[0]));
+        if (!(sender instanceof Player)) {
+            return true;
         }
 
+        Player player = (Player) sender;
+
+        if (args.length < 1) {
+            getPlaytimeMessage(player, player).thenAccept(player::sendMessage);
+            return true;
+        }
+
+        getPlaytimeMessage(player, Bukkit.getOfflinePlayer(args[0])).thenAccept(player::sendMessage);
         return true;
     }
 
-    private void sendPlaytime(@NotNull Player sender, @NotNull OfflinePlayer player) {
+    private CompletableFuture<String> getPlaytimeMessage(@NotNull OfflinePlayer sender, @NotNull OfflinePlayer player) {
+        CompletableFuture<String> future = new CompletableFuture<>();
+
         Kerosene.getPool().submit(() -> {
-            try (Connection connection = PlayerData.getConnection()) {
-                try (PreparedStatement statement = connection.prepareStatement("SELECT `joined` FROM `playerdata` WHERE `uuid` = ?;")) {
-                    statement.setString(1, player.getUniqueId().toString());
+            try {
+                final PreparedStatement statement = PlayerData.getConnection().prepareStatement(QUERY);
+                statement.setString(1, player.getUniqueId().toString());
 
-                    try (ResultSet result = statement.executeQuery()) {
-                        if (result.next()) {
-                            int playtime = (player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20) / 60;
+                ResultSet result = statement.executeQuery();
 
-                            String message = "&r \n&f&l" + (sender.getUniqueId().equals(player.getUniqueId()) ? "Your" : player.getName() + "'s") +
-                                    " Playtime: &a" + getTimeString(playtime) + "\n" +
-                                    "&f&lJoin date: &a" + FORMAT.format(result.getLong(1)) + " UTC\n&r ";
-
-                            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
-                        } else {
-                            sender.sendMessage(ERROR_PREFIX + "Couldn't fetch playtime data for that player.");
-                        }
+                try (statement; result) {
+                    if (!result.next()) {
+                        future.complete(ERROR_PREFIX + "Couldn't fetch playtime data for that player.");
+                        return;
                     }
+
+                    int playtime = (player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 20) / 60;
+                    String message = "&r \n&f&l" + (sender.getUniqueId().equals(player.getUniqueId()) ? "Your" : player.getName() + "'s") +
+                            " Playtime: &a" + getTimeString(playtime) + "\n" + "&f&lJoin date: &a" + FORMAT.format(result.getLong(1)) + " UTC\n&r ";
+                    future.complete(ChatColor.translateAlternateColorCodes('&', message));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-                sender.sendMessage(ERROR_PREFIX + "Couldn't fetch playtime data for that player.");
+                future.complete(ERROR_PREFIX + "Couldn't fetch playtime data for that player.");
             }
         });
+
+        return future;
     }
 
     private String getTimeString(long time) {

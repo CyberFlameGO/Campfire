@@ -43,6 +43,9 @@ commands:
   skull:
     description: "Obtain another player's head, even if they're offline."
     permission: "campfire.perks.skull"
+  findshop:
+    aliases: ['finditem', 'locateitem', 'locateshop', 'search', 'searchitem']
+    description: "Search all shops on the server that sell a specific item."
 
 permissions:
   campfire.perks:

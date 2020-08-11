@@ -14,6 +14,6 @@ public class RespawnListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onRespawn(PlayerRespawnEvent event) {
-        event.getPlayer().sendTitle(TITLE, SUBTITLE,10, 140,20);
+        event.getPlayer().sendTitle(TITLE, SUBTITLE, 10, 140, 20);
     }
 }

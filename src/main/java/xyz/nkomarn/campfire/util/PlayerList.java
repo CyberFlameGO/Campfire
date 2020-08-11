@@ -15,10 +15,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Utility class to manage the player list and
- * ranks using scoreboard teams.
+ * Utility class to manage the player list and ranks using scoreboard teams.
  */
 public class PlayerList {
+
+    private static final String HEADER = ChatColor.translateAlternateColorCodes('&', Config.getString("tablist.header"));
     private static final Scoreboard SCOREBOARD = Bukkit.getServer().getScoreboardManager().getMainScoreboard();
     private static final List<String> TEAM_PRIORITY = Config.getConfig().getStringList("tablist.priority");
 
@@ -29,8 +30,7 @@ public class PlayerList {
      * @return The team name that the player should be a part of.
      */
     private static String getTeam(@NotNull Player player) {
-        Set<PermissionAttachmentInfo> permissions = player.getEffectivePermissions();
-        return getHighestPriority(permissions.parallelStream()
+        return getHighestPriority(player.getEffectivePermissions().parallelStream()
                 .filter(permission -> permission.getPermission().startsWith("group."))
                 .map(PermissionAttachmentInfo::getPermission)
                 .collect(Collectors.toSet()));
@@ -54,16 +54,26 @@ public class PlayerList {
      * @param player The player for which to update teams.
      */
     public static void updateTeams(@NotNull Player player) {
-        String team = getTeam(player);
-        String teamName = TEAM_PRIORITY.indexOf(team) + team;
-        Team scoreboardTeam = SCOREBOARD.getTeam(teamName);
+        String teamName = getTeam(player);
+        String configName = TEAM_PRIORITY.indexOf(teamName) + teamName;
+        Team team = SCOREBOARD.getTeam(configName);
 
-        if (scoreboardTeam == null) {
-            scoreboardTeam = SCOREBOARD.registerNewTeam(teamName);
-            scoreboardTeam.setColor(ChatColor.valueOf(Config.getString("tablist.teams." + team + ".color")));
-            scoreboardTeam.setPrefix(ChatColor.translateAlternateColorCodes('&', Config.getString("tablist.teams." + team + ".prefix")));
+        if (team == null) {
+            team = SCOREBOARD.registerNewTeam(configName);
+            team.setColor(ChatColor.valueOf(Config.getString("tablist.teams." + teamName + ".color")));
+            team.setPrefix(ChatColor.translateAlternateColorCodes('&', Config.getString("tablist.teams." + teamName + ".prefix")));
         }
-        scoreboardTeam.addEntry(player.getName());
+
+        team.addEntry(player.getName());
+    }
+
+    /**
+     * Returns the current online player count, adjusted for vanished players.
+     *
+     * @return Current adjusted online player count.
+     */
+    public static int getAdjustedPlayerCount() {
+        return Bukkit.getOnlinePlayers().size() - VanishAPI.getInvisiblePlayers().size();
     }
 
     /**
@@ -71,8 +81,7 @@ public class PlayerList {
      */
     public static void updateHeader() {
         Bukkit.getScheduler().runTaskLaterAsynchronously(Campfire.getCampfire(), () -> {
-            String header = ChatColor.translateAlternateColorCodes('&', String.format(Config.getString("tablist.header"),
-                    Bukkit.getOnlinePlayers().size() - VanishAPI.getInvisiblePlayers().size()));
+            String header = String.format(HEADER, getAdjustedPlayerCount());
             Bukkit.getOnlinePlayers().forEach(player -> player.setPlayerListHeader(header));
         }, 5L);
     }

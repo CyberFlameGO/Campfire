@@ -21,10 +21,11 @@ import java.util.UUID;
 public class FastMapRenderer extends MapRenderer {
 
     private final BufferedImage image;
-    private final Set<UUID> renderedPlayers = new HashSet<>();
+    private final Set<UUID> renderedPlayers;
 
     public FastMapRenderer(@NotNull BufferedImage image) {
         this.image = image;
+        this.renderedPlayers = new HashSet<>();
     }
 
     @Override

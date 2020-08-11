@@ -14,8 +14,10 @@ public class TransactionListener implements Listener {
     public void onTransaction(@NotNull TransactionEvent event) {
         OfflinePlayer owner = Bukkit.getOfflinePlayer(event.getOwnerAccount().getUuid());
 
-        if (!owner.isOnline()) {
-            ShopLog.log(owner, event);
+        if (owner.isOnline()) {
+            return;
         }
+
+        ShopLog.log(owner, event);
     }
 }

@@ -13,44 +13,39 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Base64;
-import java.util.logging.Logger;
+import java.util.concurrent.atomic.AtomicInteger;;
 
 /**
  * Utility class to manage custom server maps.
  */
 public class Maps {
 
-    private static final Logger LOGGER = Campfire.getCampfire().getLogger();
-
     public static void loadMaps() {
-        int loadedMaps = 0;
+        AtomicInteger loadedMaps = new AtomicInteger();
 
         try (Connection connection = Campfire.getStorage().getConnection()) {
             connection.prepareStatement("CREATE TABLE IF NOT EXISTS maps (id INTEGER PRIMARY KEY, map_id INTEGER NOT NULL, image TEXT NOT NULL);").execute();
 
-            try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM maps;")) {
-                try (ResultSet result = statement.executeQuery()) {
-                    while (result.next()) {
-                        MapView view = Bukkit.getMap(result.getInt(2));
-                        if (view != null) {
-                            view.getRenderers().forEach(view::removeRenderer);
+            final PreparedStatement statement = Campfire.getStorage().getConnection().prepareStatement("SELECT * FROM maps");
+            ResultSet result = statement.executeQuery();
 
-                            try {
-                                BufferedImage image = ImageIO.read(new ByteArrayInputStream(Base64.getDecoder()
-                                        .decode(result.getString(3).getBytes())));
-                                view.addRenderer(new FastMapRenderer(image));
-                                loadedMaps++;
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
+            try (statement; result) {
+                while (result.next()) {
+                    MapView mapView = Bukkit.getMap(result.getInt(2));
+
+                    if (mapView == null) {
+                        continue;
                     }
+
+                    BufferedImage mapImage = ImageIO.read(new ByteArrayInputStream(Base64.getDecoder().decode(result.getString(3).getBytes())));
+                    mapView.addRenderer(new FastMapRenderer(mapImage));
+                    loadedMaps.incrementAndGet();
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
+        } finally {
+            Campfire.getCampfire().getLogger().info("Loaded " + loadedMaps.get() + " maps.");
         }
-
-        LOGGER.info(String.format("Loaded %s maps.", loadedMaps));
     }
 }

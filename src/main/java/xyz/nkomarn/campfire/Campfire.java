@@ -10,10 +10,7 @@ import xyz.nkomarn.campfire.listener.shop.TransactionListener;
 import xyz.nkomarn.campfire.listener.world.ChunkLoadListener;
 import xyz.nkomarn.campfire.log.ShopLog;
 import xyz.nkomarn.campfire.map.Maps;
-import xyz.nkomarn.campfire.task.EffectsTask;
-import xyz.nkomarn.campfire.task.PhantomTask;
-import xyz.nkomarn.campfire.task.PortalTask;
-import xyz.nkomarn.campfire.task.PlaytimeCheck;
+import xyz.nkomarn.campfire.task.*;
 import xyz.nkomarn.campfire.util.Copyright;
 import xyz.nkomarn.kerosene.data.db.LocalStorage;
 
@@ -23,7 +20,9 @@ public class Campfire extends JavaPlugin {
 
     private static Campfire CAMPFIRE;
     private static LocalStorage STORAGE;
+    private static DataExporter EXPORTER;
 
+    @Override
     public void onEnable() {
         CAMPFIRE = this;
         saveDefaultConfig();
@@ -31,26 +30,27 @@ public class Campfire extends JavaPlugin {
         Arrays.asList(
                 new AdvancementCriterionListener(),
                 new AccrueClaimBlocksListener(),
-                new Copyright(),
-                new SpawnerListener(),
-                new PickupItemListener(),
-                new SpawnListener(),
                 new ChatListener(),
+                new ChunkLoadListener(),
                 new CommandPreProcessListener(),
+                new Copyright(),
+                new CustomEnchantmentListener(),
                 new InteractEntityListener(),
                 new JoinListener(),
+                new PickupItemListener(),
+                new PvPListener(),
                 new QuitListener(),
                 new RespawnListener(),
-                new PvPListener(),
+                new SpawnListener(),
+                new SpawnerListener(),
                 new TransactionListener(),
-                new VanishListener(),
-                new ChunkLoadListener(),
-                new CustomEnchantmentListener()
+                new VanishListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
 
         getCommand("campfire").setExecutor(new CampfireCommand());
         getCommand("colorcodes").setExecutor(new ColorCodesCommand());
         getCommand("copyright").setExecutor(new CopyrightCommand());
+        // getCommand("findshop").setExecutor(new FindShopCommand());
         getCommand("wild").setExecutor(new WildCommand());
         getCommand("perks").setExecutor(new PerksCommand());
         getCommand("playtime").setExecutor(new PlaytimeCommand());
@@ -72,10 +72,17 @@ public class Campfire extends JavaPlugin {
         ShopLog.load();
         Copyright.load();
 
-        /*if (getServer().getPluginManager().isPluginEnabled("PrometheusExporter")) {
-            getServer().getScheduler().runTaskTimerAsynchronously(this,
-                    new DataExporter(), 0L, 6000L);
-        }*/
+        if (getServer().getPluginManager().isPluginEnabled("PrometheusExporter")) {
+            EXPORTER = new DataExporter();
+            getServer().getScheduler().runTaskTimerAsynchronously(this, EXPORTER, 0L, 6000L);
+        }
+    }
+
+    @Override
+    public void onDisable() {
+        if (EXPORTER != null) {
+            EXPORTER.shutdown();
+        }
     }
 
     public static Campfire getCampfire() {

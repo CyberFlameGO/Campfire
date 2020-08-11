@@ -7,7 +7,7 @@ import org.bukkit.World;
  * Utility class used to modify and send the world border
  * to online players using NMS and packets.
  */
-public class BorderUtil {
+public class Border {
     /**
      * Checks whether a location is outside of the set border for a world.
      *

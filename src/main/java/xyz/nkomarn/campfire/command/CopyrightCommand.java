@@ -16,15 +16,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import xyz.nkomarn.campfire.Campfire;
 import xyz.nkomarn.campfire.util.Copyright;
-import xyz.nkomarn.kerosene.Kerosene;
-import xyz.nkomarn.kerosene.gui.predefined.ConfirmationGui;
-import xyz.nkomarn.kerosene.menu.ConfirmationMenu;
+import xyz.nkomarn.kerosene.gui.predefined.ConfirmationGui;;
 import xyz.nkomarn.kerosene.util.Economy;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 public class CopyrightCommand implements TabExecutor {
@@ -33,6 +27,7 @@ public class CopyrightCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+
         if (!(sender instanceof Player)) {
             return true;
         }

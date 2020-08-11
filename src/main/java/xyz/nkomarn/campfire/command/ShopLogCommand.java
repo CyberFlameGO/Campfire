@@ -1,73 +1,57 @@
 package xyz.nkomarn.campfire.command;
 
-import org.apache.commons.lang.WordUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import xyz.nkomarn.campfire.Campfire;
 import xyz.nkomarn.campfire.log.ShopLog;
-import xyz.nkomarn.kerosene.data.db.PlayerData;
+import xyz.nkomarn.kerosene.Kerosene;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.NumberFormat;
+import java.sql.*;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
 public class ShopLogCommand implements TabExecutor {
 
-    private static final NumberFormat FORMAT = NumberFormat.getNumberInstance(Locale.US);
+    private static final String SQL = "SELECT type, amount, price FROM shop_log WHERE uuid = ?";
+
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
-                try (Connection connection = Campfire.getStorage().getConnection()) {
-                    try (PreparedStatement statement =  connection.prepareStatement("SELECT type, amount, price FROM shop_log WHERE uuid = ?")) {
-                        statement.setString(1, player.getUniqueId().toString());
-                        try (ResultSet result = statement.executeQuery()) {
-                            StringBuilder log = new StringBuilder("&r \n"
-                                    + "&6&lSHOP LOG:\n");
-                            boolean empty = true;
-                            while (result.next()) {
-                                empty = false;
-                                log.append(String.format("&6%sx &7%s (&6$%s&7)\n",
-                                        result.getInt(2),
-                                        WordUtils.capitalize(result.getString(1).toLowerCase().replace("_", " ")),
-                                        NumberFormat.getNumberInstance(Locale.US).format(result.getDouble(3))
-                                ));
-                            }
-
-                            if (empty) {
-                                log.append("&7(Nothing to see here)\n");
-                            } else {
-                                log.append("&7Total: $" + FORMAT.format(ShopLog.getTotalEarnings(player).get()) + "\n");
-                            }
-
-                            log.append("&r ");
-                            player.sendMessage(ChatColor.translateAlternateColorCodes('&', log.toString()));
-                        } catch (InterruptedException | ExecutionException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            });
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        if (!(sender instanceof Player)) {
+            return true;
         }
+
+        Player player = (Player) sender;
+
+        Kerosene.getPool().submit(() -> {
+            try {
+                final PreparedStatement statement = Campfire.getStorage().getConnection().prepareStatement(SQL);
+                statement.setString(1, player.getUniqueId().toString());
+
+                ResultSet result = statement.executeQuery();
+
+                try (statement; result) {
+                    ShopLog.Builder builder = new ShopLog.Builder(player);
+
+                    while (result.next()) {
+                        builder.append(result.getInt(2), result.getString(1), result.getDouble(3));
+                    }
+
+                    builder.build().thenAccept(player::sendMessage);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
         return true;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         return Collections.emptyList();
     }
 }

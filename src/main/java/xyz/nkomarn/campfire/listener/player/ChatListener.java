@@ -31,11 +31,11 @@ public class ChatListener implements Listener {
     }
 
     private void notify(@NotNull String player, @NotNull String text) {
-        Bukkit.getOnlinePlayers().stream()
-                .filter(online -> online.hasPermission("campfire.staff"))
-                .forEach(staff -> staff.sendMessage(MUTED_PREFIX + "(" + player + ") " + text));
-
         Kerosene.getPool().submit(() -> {
+            Bukkit.getOnlinePlayers().stream()
+                    .filter(online -> online.hasPermission("campfire.staff"))
+                    .forEach(staff -> staff.sendMessage(MUTED_PREFIX + "(" + player + ") " + text));
+
             DiscordWebhook hook = new DiscordWebhook(Config.getString("webhooks.moderation"));
             hook.addEmbed(new DiscordWebhook.EmbedObject()
                     .setDescription("⚡ Filter alert: `" + player + "`")

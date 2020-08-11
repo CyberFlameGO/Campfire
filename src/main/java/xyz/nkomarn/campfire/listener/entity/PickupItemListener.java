@@ -16,18 +16,22 @@ public class PickupItemListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPickupItem(@NotNull EntityPickupItemEvent event) {
-        if (event.getEntity() instanceof Player) {
-            ItemStack item = event.getItem().getItemStack();
-            Material material = item.getType();
-
-            if (material == Material.BEEHIVE || material == Material.BEE_NEST) {
-                BlockStateMeta stateMeta = (BlockStateMeta) item.getItemMeta();
-                Beehive hive = (Beehive) stateMeta.getBlockState();
-
-                event.getItem().setItemStack(ItemBuilder.of(item)
-                        .lore(ChatColor.WHITE + String.format("%s bee(s)", hive.getEntityCount()))
-                        .build());
-            }
+        if (!(event.getEntity() instanceof Player)) {
+            return;
         }
+
+        ItemStack item = event.getItem().getItemStack();
+        Material material = item.getType();
+
+        if (!(material == Material.BEEHIVE || material == Material.BEE_NEST)) {
+            return;
+        }
+
+        Beehive hive = (Beehive) ((BlockStateMeta) item.getItemMeta()).getBlockState();
+        int beeCount = hive.getEntityCount();
+
+        event.getItem().setItemStack(ItemBuilder.of(item)
+                .lore(ChatColor.GREEN + String.valueOf(beeCount) + " " + (beeCount == 1 ? "bee" : "bees"))
+                .build());
     }
 }

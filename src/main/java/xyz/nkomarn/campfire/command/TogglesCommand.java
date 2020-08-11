@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class TogglesCommand implements TabExecutor {
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (!(sender instanceof Player)) return true;
