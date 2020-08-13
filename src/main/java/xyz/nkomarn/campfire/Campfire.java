@@ -1,5 +1,6 @@
 package xyz.nkomarn.campfire;
 
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.nkomarn.campfire.command.*;
 import xyz.nkomarn.campfire.listener.*;
@@ -12,6 +13,7 @@ import xyz.nkomarn.campfire.log.ShopLog;
 import xyz.nkomarn.campfire.map.Maps;
 import xyz.nkomarn.campfire.task.*;
 import xyz.nkomarn.campfire.util.Copyright;
+import xyz.nkomarn.campfire.util.cache.EffectsCache;
 import xyz.nkomarn.kerosene.data.db.LocalStorage;
 
 import java.util.Arrays;
@@ -62,15 +64,19 @@ public class Campfire extends JavaPlugin {
         getCommand("shoplog").setExecutor(new ShopLogCommand());
         getCommand("skull").setExecutor(new SkullCommand());
 
-        getServer().getScheduler().runTaskTimerAsynchronously(this, new PlaytimeCheck(), 0L, 6000L);
-        getServer().getScheduler().runTaskTimerAsynchronously(this, new EffectsTask(), 0L, 200L);
-        getServer().getScheduler().runTaskTimerAsynchronously(this, new PortalTask(getServer()), 0L, 10L);
+        getServer().getScheduler().runTaskTimer(this, new EffectsTask(), 0L, 200L);
         getServer().getScheduler().runTaskTimer(this, new PhantomTask(getServer()), 0L, 40L);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new PlaytimeCheck(getServer()), 0L, 6000L);
+        getServer().getScheduler().runTaskTimerAsynchronously(this, new PortalTask(getServer()), 0L, 10L);
 
         STORAGE = new LocalStorage("campfire");
         Maps.loadMaps();
         ShopLog.load();
         Copyright.load();
+
+        for (Player player : getServer().getOnlinePlayers()) { // If hot-loaded, re-cache potion effects
+            EffectsCache.cache(player.getUniqueId());
+        }
 
         if (getServer().getPluginManager().isPluginEnabled("PrometheusExporter")) {
             EXPORTER = new DataExporter();

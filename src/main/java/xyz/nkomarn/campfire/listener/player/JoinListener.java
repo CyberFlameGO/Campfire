@@ -27,8 +27,6 @@ import java.util.Locale;
 
 public class JoinListener implements Listener {
 
-    private static final String TITLE = ChatColor.translateAlternateColorCodes('&', Config.getString("messages.join.top"));
-    private static final String SUBTITLE = ChatColor.translateAlternateColorCodes('&', Config.getString("messages.join.bottom"));
     private static final String FOOTER = ChatColor.translateAlternateColorCodes('&', Config.getString("tablist.footer"));
     private static final NumberFormat FORMAT = NumberFormat.getNumberInstance(Locale.US);
 
@@ -40,7 +38,6 @@ public class JoinListener implements Listener {
         Kerosene.getPool().submit(() -> {
             PlayerList.updateHeader();
             player.setPlayerListFooter(FOOTER);
-            player.sendTitle(TITLE, SUBTITLE, 10, 70, 20);
             EffectsCache.cache(player.getUniqueId());
 
             if (player.hasPlayedBefore()) {

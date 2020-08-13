@@ -1,11 +1,3 @@
-messages:
-  join:
-    top: "&c&lFire&6&lstar&e&lter"
-    bottom: "&rWelcome back."
-  death:
-    top: "&c&lF"
-    bottom: "&6/back to return to your death location."
-
 tablist:
   header: "&r \n&c&lFire&6&lstar&e&lter\n&7&oSurvival Realm\n&r \n&7&oOnline players: %s"
   footer: "&r \n&7Join the Discord! &b/discord\n&r "
@@ -123,16 +115,6 @@ world:
       x: 3125
       y: 80
       z: 3125
-    title:
-      finding:
-        top: "&6&lLooking for a location..."
-        bottom: "&rHang tight until you arrive."
-      teleported:
-        top: "&6&lWelcome... home?"
-        bottom: "&rYou've arrived at an uninhabited location."
-      cooldown:
-        top: "&c&lCan't teleport just yet."
-        bottom: "&rWait [minutes] more minute(s)."
     portal:
       min:
         x: 19701
