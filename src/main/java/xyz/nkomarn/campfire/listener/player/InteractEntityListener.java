@@ -1,6 +1,5 @@
 package xyz.nkomarn.campfire.listener.player;
 
-import com.google.common.collect.Lists;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -9,19 +8,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
-import xyz.nkomarn.campfire.Campfire;
-import xyz.nkomarn.campfire.task.PortalTask;
 import xyz.nkomarn.kerosene.util.player.PlayerUtil;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -30,7 +25,7 @@ public class InteractEntityListener implements Listener {
     private final HashMap<UUID, Long> cooldowns;
 
     public InteractEntityListener() {
-        cooldowns = new HashMap<>();
+        this.cooldowns = new HashMap<>();
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -44,10 +39,10 @@ public class InteractEntityListener implements Listener {
         World world = interacted.getWorld();
         Location location = interacted.getLocation();
 
-        /*long cooldown = cooldowns.get(interacted.getUniqueId());
+        long cooldown = cooldowns.get(interacted.getUniqueId());
         if (cooldown != 0 && TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cooldown) < 5) {
             return;
-        }*/
+        }
 
         switch (interacted.getUniqueId().toString()) {
             case "9b6edc28-2ca3-4ede-82b6-777116812905": // iriscow
@@ -77,13 +72,21 @@ public class InteractEntityListener implements Listener {
                 world.playSound(location, Sound.ENTITY_CAT_AMBIENT, 1.0f, 1.0f);
                 break;
             case "d7043da0-13dd-491d-b4b4-3a5a8ac01b59": // DasBaumJunge
+                cooldowns.put(interacted.getUniqueId(), System.currentTimeMillis());
                 world.playSound(location, Sound.ITEM_AXE_STRIP, 1.0f, 1.0f);
                 world.dropItemNaturally(location, new ItemStack(Material.STICK, 1));
                 break;
             case "db7bfc04-7967-42ea-a543-0876fdd85758": // AwfulEagle
+                cooldowns.put(interacted.getUniqueId(), System.currentTimeMillis());
                 world.playSound(location, Sound.ENTITY_CHICKEN_EGG, 1.0f, 1.0f);
                 world.dropItemNaturally(location, new ItemStack(Material.EGG, 1));
+                break;
         }
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        cooldowns.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler // TODO remove once 1.16 villager crash has been fixed
