@@ -1,6 +1,8 @@
 package xyz.nkomarn.campfire.util;
 
 import org.bukkit.*;
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,13 +25,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class Copyright extends BukkitRunnable implements Listener {
 
-    private static final HashMap<Integer, CopyrightInfo> COPYRIGHT_CACHE = new HashMap<>();
+    private static final Int2ObjectMap<CopyrightInfo> COPYRIGHT_CACHE = new Int2ObjectOpenHashMap<>();
 
     public Copyright() {
         runTaskTimer(Campfire.getCampfire(), 0L, 420 * 20L);
@@ -163,29 +166,29 @@ public class Copyright extends BukkitRunnable implements Listener {
 
     @Override
     public void run() { // TODO rewrite this to only use the database when deleting
-        try (Connection connection = Campfire.getStorage().getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM map_copyright;")) {
-                try (ResultSet result = statement.executeQuery()) {
-                    while (result.next()) {
-                        if (result.getLong(3) > System.currentTimeMillis()) {
-                            continue;
-                        }
-
-                        int mapId = result.getInt(1);
-                        PreparedStatement expireStatement = connection.prepareStatement("DELETE FROM map_copyright WHERE map_id = ?;");
-                        expireStatement.setInt(1, mapId);
-                        expireStatement.executeUpdate();
-                        statement.close();
-                        COPYRIGHT_CACHE.remove(mapId);
-                    }
-                }
+        for (CopyrightInfo copyright : COPYRIGHT_CACHE.values()) {
+            if (copyright.getExpiration() > System.currentTimeMillis()) {
+                continue;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+            Kerosene.getPool().submit(() -> {
+                try {
+                    Connection connection = Campfire.getStorage().getConnection();
+                    PreparedStatement statement = connection.prepareStatement("DELETE FROM map_copyright WHERE map_id = ?;");
+                    statement.setInt(1, copyright.getMapId());
+
+                    try (connection; statement) {
+                        statement.executeUpdate();
+                        COPYRIGHT_CACHE.remove(copyright.getMapId());
+                        Campfire.getCampfire().getLogger().info("Copyright for map " + copyright.getMapId() + " expired.");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
         }
     }
 
-    // TODO Listeners for cartography table and crafting table
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(@NotNull InventoryClickEvent event) {
         if (event.getClickedInventory() == null) {
@@ -215,7 +218,6 @@ public class Copyright extends BukkitRunnable implements Listener {
     @EventHandler
     public void onCraft(PrepareItemCraftEvent event) {
         Recipe recipe = event.getRecipe();
-
         if (recipe == null) {
             return;
         }
