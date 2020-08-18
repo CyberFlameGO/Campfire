@@ -1,7 +1,10 @@
 package xyz.nkomarn.campfire.listener;
 
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -12,8 +15,10 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import xyz.nkomarn.campfire.Campfire;
 import xyz.nkomarn.kerosene.util.item.ItemBuilder;
 
 import java.util.Optional;
@@ -28,6 +33,7 @@ public class SpawnerListener implements Listener {
             return;
         }
 
+        event.setExpToDrop(0);
         ItemStack heldItem = event.getPlayer().getInventory().getItemInMainHand();
 
         if (!heldItem.getType().toString().contains("_PICKAXE")) {
@@ -38,8 +44,14 @@ public class SpawnerListener implements Listener {
             return;
         }
 
-        event.setExpToDrop(0);
-        event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), BLANK_SPAWNER);
+        if (event.getBlock().getWorld().getName().equalsIgnoreCase("world_nether")) {
+            event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), BLANK_SPAWNER);
+            return;
+        }
+
+        BlockState blockState = event.getBlock().getState();
+        CreatureSpawner spawner = (CreatureSpawner) blockState;
+        event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), getSpawnerItem(spawner.getSpawnedType()));
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -49,9 +61,20 @@ public class SpawnerListener implements Listener {
         }
 
         Optional<EntityType> msType = getMSEntity(event.getItemInHand());
+
         if (msType.isPresent()) {
             CreatureSpawner spawner = (CreatureSpawner) event.getBlockPlaced().getState();
             spawner.setSpawnedType(msType.get());
+            spawner.update();
+            return;
+        }
+
+        NamespacedKey key = new NamespacedKey(Campfire.getCampfire(), "spawner");
+        PersistentDataContainer container = event.getItemInHand().getItemMeta().getPersistentDataContainer();
+
+        if (container.has(key, PersistentDataType.STRING)) {
+            CreatureSpawner spawner = (CreatureSpawner) event.getBlockPlaced().getState();
+            spawner.setSpawnedType(EntityType.valueOf(container.get(key, PersistentDataType.STRING)));
             spawner.update();
             return;
         }
@@ -70,6 +93,21 @@ public class SpawnerListener implements Listener {
         if (event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.SPAWNER) {
             event.setCancelled(true);
         }
+    }
+
+    // TODO give blank spawner method
+
+    @NotNull
+    private ItemStack getSpawnerItem(@NotNull EntityType type) {
+        if (type == EntityType.PLAYER) {
+            return BLANK_SPAWNER;
+        }
+
+        return new ItemBuilder(Material.SPAWNER)
+                .name("&b&l" + WordUtils.capitalize(type.name().toLowerCase().replace("_", " ")) + " &3&lSpawner")
+                .lore("&fMob type can be changed by", "&fright-clicking with a spawn egg.")
+                .persistData(new NamespacedKey(Campfire.getCampfire(), "spawner"), PersistentDataType.STRING, type.name())
+                .build();
     }
 
     public static Optional<EntityType> getMSEntity(@NotNull ItemStack spawner) {
