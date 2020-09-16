@@ -1,7 +1,6 @@
 package xyz.nkomarn.campfire.listener;
 
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.BlockState;
@@ -20,8 +19,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import xyz.nkomarn.campfire.Campfire;
 import xyz.nkomarn.kerosene.util.item.ItemBuilder;
-
-import java.util.Optional;
 
 public class SpawnerListener implements Listener {
 
@@ -60,15 +57,6 @@ public class SpawnerListener implements Listener {
             return;
         }
 
-        Optional<EntityType> msType = getMSEntity(event.getItemInHand());
-
-        if (msType.isPresent()) {
-            CreatureSpawner spawner = (CreatureSpawner) event.getBlockPlaced().getState();
-            spawner.setSpawnedType(msType.get());
-            spawner.update();
-            return;
-        }
-
         NamespacedKey key = new NamespacedKey(Campfire.getCampfire(), "spawner");
         PersistentDataContainer container = event.getItemInHand().getItemMeta().getPersistentDataContainer();
 
@@ -84,7 +72,7 @@ public class SpawnerListener implements Listener {
         spawner.update();
     }
 
-    @EventHandler(ignoreCancelled = true) // TODO remove when MS support is removed
+    @EventHandler(ignoreCancelled = true)
     public void onRename(InventoryClickEvent event) {
         if (event.getInventory().getType() != InventoryType.ANVIL) {
             return;
@@ -94,8 +82,6 @@ public class SpawnerListener implements Listener {
             event.setCancelled(true);
         }
     }
-
-    // TODO give blank spawner method
 
     @NotNull
     private ItemStack getSpawnerItem(@NotNull EntityType type) {
@@ -108,18 +94,6 @@ public class SpawnerListener implements Listener {
                 .lore("&fMob type can be changed by", "&fright-clicking with a spawn egg.")
                 .persistData(new NamespacedKey(Campfire.getCampfire(), "spawner"), PersistentDataType.STRING, type.name())
                 .build();
-    }
-
-    public static Optional<EntityType> getMSEntity(@NotNull ItemStack spawner) {
-        String entityName = ChatColor.stripColor(spawner.getItemMeta().getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase();
-
-        for (EntityType type : EntityType.values()) {
-            if (type.name().equals(entityName.trim().toUpperCase())) {
-                return Optional.of(type);
-            }
-        }
-
-        return Optional.empty();
     }
 
     static {
