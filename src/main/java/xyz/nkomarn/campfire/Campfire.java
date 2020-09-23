@@ -45,14 +45,12 @@ public class Campfire extends JavaPlugin {
                 new RespawnListener(),
                 new SpawnListener(),
                 new SpawnerListener(),
-                new TransactionListener(),
-                new VanishListener()
+                new TransactionListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
 
         getCommand("campfire").setExecutor(new CampfireCommand());
         getCommand("colorcodes").setExecutor(new ColorCodesCommand());
         getCommand("copyright").setExecutor(new CopyrightCommand());
-        // getCommand("findshop").setExecutor(new FindShopCommand());
         getCommand("wild").setExecutor(new WildCommand());
         getCommand("perks").setExecutor(new PerksCommand());
         getCommand("playtime").setExecutor(new PlaytimeCommand());

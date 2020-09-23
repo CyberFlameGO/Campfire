@@ -11,7 +11,6 @@ import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
 import xyz.nkomarn.campfire.Campfire;
 import xyz.nkomarn.campfire.map.FastMapRenderer;
-import xyz.nkomarn.campfire.util.PlayerList;
 import xyz.nkomarn.kerosene.data.db.PlayerData;
 import xyz.nkomarn.kerosene.util.Advancement;
 
@@ -39,8 +38,6 @@ public class CampfireCommand implements TabExecutor {
             executeCreateMap(sender, args);
         } else if (args[0].equalsIgnoreCase("setdonor")) {
             executeSetDonor(sender, args);
-        } else if (args[0].equalsIgnoreCase("updatelist")) {
-            executeUpdateList(sender);
         } else if (args[0].equalsIgnoreCase("shutdown")) {
             shutdown();
         } else {
@@ -140,14 +137,6 @@ public class CampfireCommand implements TabExecutor {
 
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                 "&a&lSuccess: &7Marked the player as a donor."));
-    }
-
-    private void executeUpdateList(CommandSender sender) {
-        Bukkit.getScheduler().runTaskAsynchronously(Campfire.getCampfire(), () -> {
-            Bukkit.getOnlinePlayers().forEach(PlayerList::updateTeams);
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&a&lSuccess: &7Updated the ranks in player list."));
-        });
     }
 
     @Override

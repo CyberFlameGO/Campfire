@@ -4,18 +4,13 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import xyz.nkomarn.campfire.log.ShopLog;
 import xyz.nkomarn.campfire.util.Config;
-import xyz.nkomarn.campfire.util.PlayerList;
 import xyz.nkomarn.campfire.util.cache.EffectsCache;
 import xyz.nkomarn.kerosene.Kerosene;
 import xyz.nkomarn.kerosene.util.webhook.DiscordWebhook;
@@ -33,11 +28,8 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onJoin(@NotNull PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        PlayerList.updateTeams(player);
 
         Kerosene.getPool().submit(() -> {
-            PlayerList.updateHeader();
-            player.setPlayerListFooter(FOOTER);
             EffectsCache.cache(player.getUniqueId());
 
             if (player.hasPlayedBefore()) {
