@@ -37,7 +37,7 @@ public class SpawnerListener implements Listener {
             return;
         }
 
-        if (heldItem.getItemMeta().getEnchantLevel(Enchantment.SILK_TOUCH) != 2) {
+        if (!heldItem.getItemMeta().hasEnchant(Enchantment.SILK_TOUCH)) {
             return;
         }
 
