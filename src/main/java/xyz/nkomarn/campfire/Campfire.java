@@ -13,7 +13,6 @@ import xyz.nkomarn.campfire.log.ShopLog;
 import xyz.nkomarn.campfire.map.Maps;
 import xyz.nkomarn.campfire.task.*;
 import xyz.nkomarn.campfire.util.Copyright;
-import xyz.nkomarn.campfire.util.cache.EffectsCache;
 import xyz.nkomarn.kerosene.data.db.LocalStorage;
 
 import java.util.Arrays;
@@ -52,7 +51,6 @@ public class Campfire extends JavaPlugin {
         getCommand("colorcodes").setExecutor(new ColorCodesCommand());
         getCommand("copyright").setExecutor(new CopyrightCommand());
         getCommand("wild").setExecutor(new WildCommand());
-        getCommand("perks").setExecutor(new PerksCommand());
         getCommand("playtime").setExecutor(new PlaytimeCommand());
         getCommand("pvp").setExecutor(new PvPCommand());
         getCommand("ranks").setExecutor(new RanksCommand());
@@ -62,7 +60,6 @@ public class Campfire extends JavaPlugin {
         getCommand("shoplog").setExecutor(new ShopLogCommand());
         getCommand("skull").setExecutor(new SkullCommand());
 
-        getServer().getScheduler().runTaskTimer(this, new EffectsTask(), 0L, 200L);
         getServer().getScheduler().runTaskTimer(this, new PhantomTask(getServer()), 0L, 40L);
         getServer().getScheduler().runTaskTimerAsynchronously(this, new PlaytimeCheck(getServer()), 0L, 6000L);
         getServer().getScheduler().runTaskTimerAsynchronously(this, new PortalTask(getServer()), 0L, 10L);
@@ -71,10 +68,6 @@ public class Campfire extends JavaPlugin {
         Maps.loadMaps();
         ShopLog.load();
         Copyright.load();
-
-        for (Player player : getServer().getOnlinePlayers()) { // If hot-loaded, re-cache potion effects
-            EffectsCache.cache(player.getUniqueId());
-        }
 
         if (getServer().getPluginManager().isPluginEnabled("PrometheusExporter")) {
             EXPORTER = new DataExporter();

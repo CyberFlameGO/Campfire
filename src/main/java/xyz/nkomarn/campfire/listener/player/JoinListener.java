@@ -11,7 +11,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
 import xyz.nkomarn.campfire.log.ShopLog;
 import xyz.nkomarn.campfire.util.Config;
-import xyz.nkomarn.campfire.util.cache.EffectsCache;
 import xyz.nkomarn.kerosene.Kerosene;
 import xyz.nkomarn.kerosene.util.webhook.DiscordWebhook;
 
@@ -30,8 +29,6 @@ public class JoinListener implements Listener {
         Player player = event.getPlayer();
 
         Kerosene.getPool().submit(() -> {
-            EffectsCache.cache(player.getUniqueId());
-
             if (player.hasPlayedBefore()) {
                 ShopLog.getTotalEarnings(player).thenAccept(earnings -> {
                     if (earnings == 0) {
