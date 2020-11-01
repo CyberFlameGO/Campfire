@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+group 'com.firestartermc'
+version '5.0'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url 'https://papermc.io/repo/repository/maven-public/'
+    }
+    maven {
+        url 'https://ci.ender.zone/plugin/repository/everything/'
+    }
+    maven {
+        url 'https://repo.minebench.de/'
+    }
+}
+
+dependencies {
+    compileOnly 'com.destroystokyo.paper:paper-api:1.16.3-R0.1-SNAPSHOT'
+    compileOnly 'com.firestartermc:Kerosene:5.0-SNAPSHOT'
+    compileOnly 'net.ess3:EssentialsX:2.17.2'
+    compileOnly 'com.acrobot.chestshop:chestshop:3.10'
+    compile 'io.prometheus:simpleclient:0.9.0'
+}

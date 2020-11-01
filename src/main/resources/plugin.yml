@@ -1,11 +1,17 @@
-name: Campfire
-version: 4.1
-author: TechToolbox (@nkomarn)
-main: xyz.nkomarn.campfire.Campfire
-description: Firestarter's package of basic server utilities.
-website: https://firestartermc.com/opensource
-api-version: 1.16
-depend: ['Kerosene', 'GriefPrevention', 'Chairs']
+name: "Campfire"
+description: "A collection of basic utilities and survival extras."
+main: "com.firestartermc.campfire.Campfire"
+author: "Firestarter Minecraft Servers"
+website: "https://firestartermc.com"
+version: "5.0"
+api-version: "1.16"
+
+depend:
+  - "Kerosene"
+
+softdepend:
+  - "GriefPrevention"
+  - "Chairs"
 
 commands:
   campfire:
@@ -13,26 +19,6 @@ commands:
   colorcodes:
     description: "View all of the usable in-game color codes."
     aliases: ['colors', 'color']
-  copyright:
-    description: "View and purchase map copyright."
-    aliases: ['patent']
-  wild:
-    description: "Teleport to a random location in the world."
-    aliases: ['rtp', 'wildtp']
-  toggle:
-    description: "Toggle various features of the server."
-    aliases: ['toggles', 'change', 'switch', 'enable', 'disable']
-  perks:
-    description: "View and manage your donor perks."
-    aliases: ['donor', 'spark']
-  playtime:
-    description: "View your total playtime on the server."
-    aliases: ["joined", "played", "timeplayed"]
-  pvp:
-    description: "Toggle your PvP state."
-  ranks:
-    description: "View all of our ranks on the server."
-    aliases: ['rank']
   report:
     description: "Report a player to the staff team with a reason."
   setslots:
@@ -40,21 +26,8 @@ commands:
     permission: "campfire.admin"
   shoplog:
     description: "View the items that were sold from your shops while you were offline."
-  skull:
-    description: "Obtain another player's head, even if they're offline."
-    permission: "campfire.perks.skull"
 
 permissions:
-  campfire.perks:
-    default: op
-  campfire.perks.claim-boost:
-    default: op
-  campfire.perks.potions:
-    default: op
-  campfire.perks.skull:
-    default: op
-  campfire.perks.phantom-protection:
-    default: op
   campfire.staff:
     default: op
   campfire.admin:
