@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.firestartermc'
-version '5.0'
+version '5.1'
 
 repositories {
     mavenLocal()
@@ -22,7 +22,6 @@ repositories {
 dependencies {
     compileOnly 'com.destroystokyo.paper:paper-api:1.16.3-R0.1-SNAPSHOT'
     compileOnly 'com.firestartermc:Kerosene:5.0-SNAPSHOT'
-    compileOnly 'net.ess3:EssentialsX:2.17.2'
     compileOnly 'com.acrobot.chestshop:chestshop:3.10'
     compile 'io.prometheus:simpleclient:0.9.0'
 }
