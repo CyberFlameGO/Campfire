@@ -1,5 +1,5 @@
 name: "Campfire"
-description: "A collection of basic utilities and survival extras."
+description: "A collection of basic utilities and administrative utilities."
 main: "com.firestartermc.campfire.Campfire"
 author: "Firestarter Minecraft Servers"
 website: "https://firestartermc.com"
@@ -14,20 +14,26 @@ softdepend:
   - "Chairs"
 
 commands:
-  campfire:
-    description: "Base Campfire management command."
+  safeshutdown:
+    description: "Shuts down the server after safely kicking all online players."
+    permission: "firestarter.administrator"
+  setslots:
+    description: "Adjust the maximum slot count whilst the server is running."
+    usage: "/<command> <slots>"
+    permission: "firestarter.administrator"
   colorcodes:
     description: "View all of the usable in-game color codes."
     aliases: ['colors', 'color']
   report:
     description: "Report a player to the staff team with a reason."
-  setslots:
-    description: "Adjust the maximum player slot count while the server is running."
-    permission: "campfire.admin"
   shoplog:
     description: "View the items that were sold from your shops while you were offline."
 
 permissions:
+  firestarter.administrator:
+    default: op
+  firestarter.staff:
+    default: op
   campfire.staff:
     default: op
   campfire.admin:

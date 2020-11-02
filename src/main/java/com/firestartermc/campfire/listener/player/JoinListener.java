@@ -1,6 +1,5 @@
 package com.firestartermc.campfire.listener.player;
 
-import com.firestartermc.kerosene.Kerosene;
 import com.firestartermc.kerosene.util.webhook.DiscordWebhook;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -14,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import com.firestartermc.campfire.Campfire;
 
 import java.awt.*;
-import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.concurrent.ForkJoinPool;

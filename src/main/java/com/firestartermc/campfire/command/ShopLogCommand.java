@@ -1,6 +1,7 @@
 package com.firestartermc.campfire.command;
 
 import com.firestartermc.kerosene.Kerosene;
+import com.firestartermc.kerosene.util.ConcurrentUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -31,7 +32,7 @@ public class ShopLogCommand implements TabExecutor {
 
         Player player = (Player) sender;
 
-        Kerosene.getKerosene().callAsync(() -> {
+        ConcurrentUtils.callAsync(() -> {
             Connection connection = campfire.getStorage().getConnection();
             PreparedStatement statement = connection.prepareStatement(SQL);
             statement.setString(1, player.getUniqueId().toString());

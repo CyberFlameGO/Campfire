@@ -34,26 +34,21 @@ public class ReportCommand implements TabExecutor {
                     reason.append(args[i]).append(" ");
                 }
 
-                try {
-                    DiscordWebhook hook = new DiscordWebhook(campfire.getConfig().getString("webhooks.moderation"));
-                    hook.addEmbed(new DiscordWebhook.EmbedObject()
-                            .setTitle("🚩 Player Report")
-                            .setColor(Color.decode("0xff5c5c"))
-                            .addField("Reporter", sender.getName(), false)
-                            .addField("Reported Player", args[0], false)
-                            .addField("Reason", reason.toString().trim(), false)
-                    );
-                    hook.execute();
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&4&lReport: &7Your report has been sent to the staff team."));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&4&lReport: &cFailed to send your report.."));
-                }
+                var embed = DiscordWebhook.Embed.builder()
+                        .title("🚩 Player Report")
+                        .color(Color.decode("0xff5c5c"))
+                        .addField("Reporter", sender.getName(), false)
+                        .addField("Reported Player", args[0], false)
+                        .addField("Reason", reason.toString().trim(), false)
+                        .build();
+                DiscordWebhook.create(campfire.getConfig().getString("webhooks.moderation"))
+                        .embed(embed)
+                        .queue();
+
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4&lReport: &7Your report has been sent to the staff team."));
 
                 Bukkit.getOnlinePlayers().stream()
-                        .filter(player -> player.hasPermission("campfire.staff"))
+                        .filter(player -> player.hasPermission("firestarter.staff"))
                         .forEach(player -> {
                             player.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
                                     "&4&lReport: &c%s reported %s: \"%s\"", sender.getName(), args[0], reason.toString().trim()
@@ -67,7 +62,7 @@ public class ReportCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] args) {
-        if(args.length == 1) {
+        if (args.length == 1) {
             return null;
         }
         return Collections.emptyList();

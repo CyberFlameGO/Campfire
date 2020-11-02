@@ -17,6 +17,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.ForkJoinPool;
 
 public class ShopLog {
 
@@ -34,7 +35,7 @@ public class ShopLog {
      * Creates the necessary local database table for shop log.
      */
     public void load() {
-        Kerosene.getKerosene().getPool().submit(() -> {
+        ForkJoinPool.commonPool().submit(() -> {
             try (Connection connection = campfire.getStorage().getConnection()) {
                 connection.prepareStatement("CREATE TABLE IF NOT EXISTS shop_log (uuid TEXT NOT NULL, type TEXT NOT " +
                         "NULL, amount INTEGER NOT NULL, price REAL NOT NULL, PRIMARY KEY(uuid, type));").execute();
@@ -51,7 +52,7 @@ public class ShopLog {
      * @param event     The ChestShop transaction event, which includes transaction info to log.
      */
     public void log(@NotNull OfflinePlayer shopOwner, @NotNull TransactionEvent event) {
-        Kerosene.getKerosene().getPool().submit(() -> {
+        ForkJoinPool.commonPool().submit(() -> {
             try (Connection connection = campfire.getStorage().getConnection()) {
                 for (ItemStack item : event.getStock()) {
                     try (PreparedStatement statement = connection.prepareStatement(LOG_QUERY)) {
@@ -101,7 +102,7 @@ public class ShopLog {
     }
 
     public void clear(@NotNull OfflinePlayer player) {
-        Kerosene.getKerosene().getPool().submit(() -> {
+        ForkJoinPool.commonPool().submit(() -> {
             try (Connection connection = campfire.getStorage().getConnection()) {
                 try (PreparedStatement statement = connection.prepareStatement("DELETE FROM shop_log WHERE uuid = ?")) {
                     statement.setString(1, player.getUniqueId().toString());

@@ -6,54 +6,44 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
 
 public class SetSlotsCommand implements TabExecutor {
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        final String prefix = "&5&lSlots: &7";
-
-        if (args.length < 1) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                    "%sSet the maximum player slots using /setslots [# of players].", prefix
-            )));
-        } else if (!NumberUtils.isDigits(args[0])) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                    "%sAmount of slots must be a number.", prefix
-            )));
-        } else {
-            int slots = Integer.parseInt(args[0]);
-
-            // Set the maximum player slots while the server is running
-            // Code borrowed from https://github.com/MrMicky-FR/ChangeSlots
-            try {
-                Method serverGetHandle = Bukkit.getServer().getClass().getDeclaredMethod("getHandle");
-                Object playerList = serverGetHandle.invoke(Bukkit.getServer());
-                Field maxPlayersField = playerList.getClass().getSuperclass().getDeclaredField("maxPlayers");
-
-                maxPlayersField.setAccessible(true);
-                maxPlayersField.set(playerList, slots);
-
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                        "%sSet the maximum player slots to %s.", prefix, slots
-                )));
-            } catch (NoSuchMethodException | NoSuchFieldException | IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format(
-                        "%sAn error occurred while trying to set the maximum slots.", prefix
-                )));
-            }
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+        if (args.length < 1 || !NumberUtils.isDigits(args[0])) {
+            return false;
         }
+
+        var slots = Integer.parseInt(args[0]);
+        if (slots < 0) {
+            return false;
+        }
+
+        try {
+            var serverGetHandle = Bukkit.getServer().getClass().getDeclaredMethod("getHandle");
+            var playerList = serverGetHandle.invoke(Bukkit.getServer());
+            var maxPlayersField = playerList.getClass().getSuperclass().getDeclaredField("maxPlayers");
+
+            maxPlayersField.setAccessible(true);
+            maxPlayersField.set(playerList, slots);
+            sender.sendMessage(ChatColor.GREEN + "Updated maximum slots to " + NumberFormat.getInstance().format(slots) + ".");
+        } catch (Exception e) {
+            sender.sendMessage(ChatColor.RED + "Failed to adjust maximum slots.");
+        }
+
         return true;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+    @Nullable
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         return Collections.emptyList();
     }
 }

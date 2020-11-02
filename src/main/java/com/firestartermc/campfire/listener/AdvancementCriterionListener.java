@@ -1,21 +1,6 @@
 package com.firestartermc.campfire.listener;
 
-import com.Acrobot.ChestShop.Events.PreTransactionEvent;
-import com.Acrobot.ChestShop.Events.ShopCreatedEvent;
-import com.gamingmesh.jobs.api.JobsJoinEvent;
-import com.vexsoftware.votifier.model.VotifierEvent;
-import de.Keyle.MyPet.api.event.MyPetActivatedEvent;
-import de.Keyle.MyPet.api.event.MyPetCreateEvent;
-import me.ryanhamshire.GriefPrevention.events.AccrueClaimBlocksEvent;
-import me.ryanhamshire.GriefPrevention.events.ClaimCreatedEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.jetbrains.annotations.NotNull;
-// import xyz.nkomarn.Barrel.event.CrateRewardEvent;
-import xyz.nkomarn.kerosene.util.Advancement;
 
 /**
  * Listener class for all custom advancement criteria
@@ -33,7 +18,7 @@ public class AdvancementCriterionListener implements Listener {
         AdvancementUtil.grantAdvancement(event.getPlayer(), "ah-sell");
     }*/ // TODO Auctions events
 
-    @EventHandler()
+    /*@EventHandler()
     public void onShopCreated(@NotNull ShopCreatedEvent event) {
         Advancement.grantAdvancement(event.getPlayer(), "chestshop-create");
     }
@@ -53,15 +38,15 @@ public class AdvancementCriterionListener implements Listener {
         Advancement.grantAdvancement((Player) event.getCreator(), "claim");
     }
 
-    /*@EventHandler
+    @EventHandler
     public void onTrustChanged(TrustChangedEvent event) {
         AdvancementUtil.grantAdvancement(event.getChanger(), "claim-trust");
-    }*/
+    }
 
-    /*@EventHandler()
+    @EventHandler()
     public void onCrateReward(@NotNull CrateRewardEvent event) {
         Advancement.grantAdvancement(event.getPlayer(), "crates");
-    }*/
+    }
 
     @EventHandler()
     public void onJobJoin(@NotNull JobsJoinEvent event) {
@@ -83,7 +68,7 @@ public class AdvancementCriterionListener implements Listener {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(event.getVote().getUsername());
         if (offlinePlayer.isOnline()) {
             Player player = (Player) offlinePlayer;
-            Advancement.grantAdvancement(player.getPlayer(), "vote");
+            AdvancementUtils.grant(player.getPlayer(), "vote");
         }
-    }
+    }*/
 }

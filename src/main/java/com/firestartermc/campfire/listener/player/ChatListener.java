@@ -35,7 +35,7 @@ public class ChatListener implements Listener {
 
     private void notify(@NotNull String player, @NotNull String text) {
         Bukkit.getOnlinePlayers().stream()
-                .filter(online -> online.hasPermission("campfire.staff"))
+                .filter(online -> online.hasPermission("firestarter.staff"))
                 .forEach(staff -> staff.sendMessage(MUTED_PREFIX + "(" + player + ") " + text));
 
         var embed = DiscordWebhook.Embed.builder()
