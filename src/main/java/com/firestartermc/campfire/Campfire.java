@@ -39,6 +39,7 @@ public class Campfire extends JavaPlugin {
                 new TransactionListener(this)
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
 
+        getCommand("loop").setExecutor(new LoopCommand(this));
         getCommand("safeshutdown").setExecutor(new SafeShutdownCommand(this));
         getCommand("setslots").setExecutor(new SetSlotsCommand());
 

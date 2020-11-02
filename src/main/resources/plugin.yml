@@ -14,6 +14,10 @@ softdepend:
   - "Chairs"
 
 commands:
+  loop:
+    description: "Repeat an action a specified amount of times over a specified interval."
+    usage: "/<command> <amount> <interval> <action>"
+    permission: "firestarter.administrator"
   safeshutdown:
     description: "Shuts down the server after safely kicking all online players."
     permission: "firestarter.administrator"
