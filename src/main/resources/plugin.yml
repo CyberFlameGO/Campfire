@@ -32,6 +32,9 @@ commands:
     description: "Report a player to the staff team with a reason."
   shoplog:
     description: "View the items that were sold from your shops while you were offline."
+  softmute:
+    description: "Removes recipients from the messages of a specific player."
+    usage: "/<command> <player>"
 
 permissions:
   firestarter.administrator:

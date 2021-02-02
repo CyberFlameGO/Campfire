@@ -35,7 +35,7 @@ public class Campfire extends JavaPlugin {
                 new CommandPreProcessListener(),
                 new JoinListener(this),
                 new QuitListener(this),
-                new RespawnListener(),
+                new RespawnListener(this),
                 new TransactionListener(this)
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
 

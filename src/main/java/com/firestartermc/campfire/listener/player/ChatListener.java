@@ -2,9 +2,9 @@ package com.firestartermc.campfire.listener.player;
 
 import com.firestartermc.campfire.Campfire;
 import com.firestartermc.campfire.util.text.Filter;
+import com.firestartermc.kerosene.util.MessageUtils;
 import com.firestartermc.kerosene.util.webhook.DiscordWebhook;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class ChatListener implements Listener {
 
-    private static final String MUTED_PREFIX = ChatColor.translateAlternateColorCodes('&', "&4&lSoft Muted: &7");
+    private static final String MUTED_PREFIX = MessageUtils.formatColors("&#ff9a8f&lSoft Muted: &#e8e8e8", true);
     private final Campfire campfire;
 
     public ChatListener(Campfire campfire) {
