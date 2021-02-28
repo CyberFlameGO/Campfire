@@ -45,6 +45,7 @@ public class Campfire extends JavaPlugin {
 
         getCommand("colorcodes").setExecutor(new ColorCodesCommand());
         getCommand("report").setExecutor(new ReportCommand(this));
+        getCommand("ride").setExecutor(new RideCommand(this));
         getCommand("shoplog").setExecutor(new ShopLogCommand(this));
 
         shopLog.load();

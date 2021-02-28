@@ -30,6 +30,8 @@ commands:
     aliases: ['colors', 'color']
   report:
     description: "Report a player to the staff team with a reason."
+  ride:
+    description: "Sit on the shoulders of another player!"
   shoplog:
     description: "View the items that were sold from your shops while you were offline."
   softmute:
