@@ -9,9 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class CommandPreProcessListener implements Listener {
 
-    private static final String SYNTAX = ChatColor.translateAlternateColorCodes('&', "&c&lError: &7Invalid syntax.");
-    private static final String DISABLED = ChatColor.translateAlternateColorCodes('&', "&c&lError: &7This command is disabled for security.");
-    private static final String OPEN_SOURCE = "We're proudly open-source! Check out our GitHub at https://github.com/firestarter.";
+    private static final String SYNTAX = ChatColor.translateAlternateColorCodes('&', "&c&lERROR: &fInvalid command syntax.");
+    private static final String DISABLED = ChatColor.translateAlternateColorCodes('&', "&c&lERROR: &fThis command is disabled for security.");
 
     @EventHandler(ignoreCancelled = true)
     public void onCommandPreProcess(@NotNull PlayerCommandPreprocessEvent event) {

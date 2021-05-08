@@ -1,10 +1,9 @@
 package com.firestartermc.campfire.listener.player;
 
 import com.firestartermc.kerosene.util.webhook.DiscordWebhook;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,7 +19,6 @@ import java.util.concurrent.ForkJoinPool;
 public class JoinListener implements Listener {
 
     private static final NumberFormat FORMAT = NumberFormat.getNumberInstance(Locale.US);
-
     private final Campfire campfire;
 
     public JoinListener(Campfire campfire) {
@@ -38,15 +36,17 @@ public class JoinListener implements Listener {
                         return;
                     }
 
-                    TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&6&lShops: &7You " +
-                            (earnings > 0 ? "earned" : "lost") + " &6$" + FORMAT.format(earnings) + "&7 while you were away (/shoplog)."));
-                    message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/shoplog"));
-                    message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText("Click to view details.")));
-                    player.spigot().sendMessage(message);
+                    var action = earnings > 0 ? "earned" : "lost";
+                    var money = "$" + FORMAT.format(earnings);
+                    var component = Component.text("&6&lSHOPS: &eYou " + action + " " + money + " while you were away.")
+                            .clickEvent(ClickEvent.runCommand("/shoplog"))
+                            .hoverEvent(HoverEvent.showText(Component.text("Click to view details")));
+
+                    player.sendMessage(component);
                 });
             } else {
                 var embed = DiscordWebhook.Embed.builder()
-                        .description(":checkered_flag: " + event.getPlayer().getName() + " joined!")
+                        .description(":checkered_flag: `" + event.getPlayer().getName() + "` joined!")
                         .color(Color.WHITE)
                         .build();
 
