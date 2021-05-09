@@ -6,6 +6,9 @@ plugins {
 group 'com.firestartermc'
 version '5.1'
 
+targetCompatibility = '11'
+sourceCompatibility = '11'
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -21,12 +24,13 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.destroystokyo.paper:paper-api:1.16.3-R0.1-SNAPSHOT'
-    compileOnly 'com.firestartermc:Kerosene:5.1'
-    compile 'joda-time:joda-time:2.10.8'
+    compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'com.firestartermc:Kerosene:5.1.1'
+    implementation 'joda-time:joda-time:2.10.8'
     compileOnly 'net.ess3:EssentialsX:2.17.2'
     compileOnly 'com.acrobot.chestshop:chestshop:3.10'
-    compile 'io.prometheus:simpleclient:0.9.0'
+    implementation 'io.prometheus:simpleclient:0.9.0'
+    compileOnly 'org.jetbrains:annotations:20.1.0'
 }
 
 assemble.dependsOn shadowJar
