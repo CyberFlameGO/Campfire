@@ -1,3 +1,5 @@
 webhooks:
   notifications: ""
   moderation: ""
+
+filters: {}
