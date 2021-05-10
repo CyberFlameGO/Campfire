@@ -22,13 +22,13 @@ public class JoinListener implements Listener {
     public void onJoin(@NotNull PlayerJoinEvent event) {
         var player = event.getPlayer();
 
-        if (!player.hasPlayedBefore()) {
+        if (player.hasPlayedBefore()) {
             return;
         }
 
         ConcurrentUtils.callAsync(() -> {
             var embed = DiscordWebhook.Embed.builder()
-                    .description(":checkered_flag: `" + event.getPlayer().getName() + "` joined!")
+                    .description(":checkered_flag: `" + player.getName() + "` joined!")
                     .color(Color.WHITE)
                     .build();
 
