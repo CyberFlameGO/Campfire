@@ -29,7 +29,7 @@ public class SetSlotsCommand implements TabExecutor {
         try {
             var serverGetHandle = Bukkit.getServer().getClass().getDeclaredMethod("getHandle");
             var playerList = serverGetHandle.invoke(Bukkit.getServer());
-            var maxPlayersField = playerList.getClass().getSuperclass().getDeclaredField("maxPlayers");
+            var maxPlayersField = playerList.getClass().getSuperclass().getDeclaredField("f");
 
             maxPlayersField.setAccessible(true);
             maxPlayersField.set(playerList, slots);
