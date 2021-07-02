@@ -40,6 +40,7 @@ public class Campfire extends JavaPlugin {
         getCommand("colorcodes").setExecutor(new ColorCodesCommand());
         getCommand("report").setExecutor(new ReportCommand(this));
         getCommand("ride").setExecutor(new RideCommand(this));
+        getCommand("nyoom").setExecutor(new NyoomCommand(this));
 
         if (getServer().getPluginManager().isPluginEnabled("PrometheusExporter")) {
             getServer().getScheduler().runTaskTimerAsynchronously(this, exporter, 0L, 6000L);
